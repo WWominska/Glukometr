@@ -1,0 +1,27 @@
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\gen\glu\ko\metr\R.java \
+ : Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\drawable-hdpi\icon.png \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\drawable-ldpi\icon.png \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\drawable-mdpi\icon.png \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\layout\splash.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values\libs.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-de\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-el\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-es\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-et\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-fa\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-fr\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-id\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-it\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-ja\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-ms\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-nb\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-nl\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-pl\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-pt-rBR\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-ro\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-rs\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-ru\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-zh-rCN\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\res\values-zh-rTW\strings.xml \
+Y:\Studia Semestr 3\CPP\Projekt Cpp\kompilacja\android-build\bin\AndroidManifest.xml \

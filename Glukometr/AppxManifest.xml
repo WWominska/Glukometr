@@ -1,0 +1,133 @@
+<?xml version=\"1.0\" encoding=\"utf-8\"?>
+
+<Package
+  xmlns=\"http://schemas.microsoft.com/appx/manifest/foundation/windows10\"
+  xmlns:mp=\"http://schemas.microsoft.com/appx/2014/phone/manifest\"
+  xmlns:uap=\"http://schemas.microsoft.com/appx/manifest/uap/windows10\"
+  xmlns:mobile=\"http://schemas.microsoft.com/appx/manifest/mobile/windows10\"
+  IgnorableNamespaces=\"uap mp mobile\">
+
+  <Identity
+    Name=\"bb85c510-ddec-431b-b4fa-8868e407a6a5\"
+    Publisher=\"CN=janis\"
+    Version=\"1.0.0.0\"
+    ProcessorArchitecture=\"x86\" />
+
+  <mp:PhoneIdentity PhoneProductId=\"bb85c510-ddec-431b-b4fa-8868e407a6a5\" PhonePublisherId=\"00000000-0000-0000-0000-000000000000\"/>
+
+  <Properties>
+    <DisplayName>heartlistener</DisplayName>
+    <PublisherDisplayName>Default publisher display name</PublisherDisplayName>
+    <Logo>assets/logo_store.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name=\"Windows.Universal\"
+      MinVersion=\"10.0.14393.0\"
+      MaxVersionTested=\"10.0.14393.0\" />
+    <PackageDependency Name=\"Microsoft.VCLibs.140.00.Debug\" MinVersion=\"14.0.0.0\" Publisher=\"CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US\" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language=\"en\"/>
+  </Resources>
+
+  <Applications>
+    <Application Id=\"App\"
+      Executable=\"heartlistener.exe\"
+      EntryPoint=\"heartlistener.App\">
+      <uap:VisualElements
+        DisplayName=\"heartlistener\"
+        Description=\"Default package description\"
+        BackgroundColor=\"green\"
+        Square150x150Logo=\"assets/logo_150x150.png\"
+        Square44x44Logo=\"assets/logo_44x44.png\">
+
+        <uap:SplashScreen Image=\"assets/logo_620x300.png\" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  
+  <Capabilities>
+    <Capability Name=\"internetClient\" />
+    <Capability Name=\"internetClientServer\" />
+    <Capability Name=\"privateNetworkClientServer\" />
+    <DeviceCapability Name=\"bluetooth.genericAttributeProfile\">
+      <Device Id=\"any\">
+        <Function Type=\"serviceId:1800\" />
+        <Function Type=\"serviceId:1801\" />
+        <Function Type=\"serviceId:1802\" />
+        <Function Type=\"serviceId:1803\" />
+        <Function Type=\"serviceId:1804\" />
+        <Function Type=\"serviceId:1805\" />
+        <Function Type=\"serviceId:1806\" />
+        <Function Type=\"serviceId:1807\" />
+        <Function Type=\"serviceId:1808\" />
+        <Function Type=\"serviceId:1809\" />
+        <Function Type=\"serviceId:180A\" />
+        <Function Type=\"serviceId:180B\" />
+        <Function Type=\"serviceId:180C\" />
+        <Function Type=\"serviceId:180D\" />
+        <Function Type=\"serviceId:180E\" />
+        <Function Type=\"serviceId:180F\" />
+        <Function Type=\"serviceId:1810\" />
+        <Function Type=\"serviceId:1811\" />
+        <Function Type=\"serviceId:1812\" />
+        <Function Type=\"serviceId:1813\" />
+        <Function Type=\"serviceId:1814\" />
+        <Function Type=\"serviceId:1815\" />
+        <Function Type=\"serviceId:1816\" />
+        <Function Type=\"serviceId:1817\" />
+        <Function Type=\"serviceId:1818\" />
+        <Function Type=\"serviceId:1819\" />
+        <Function Type=\"serviceId:181A\" />
+        <Function Type=\"serviceId:181B\" />
+        <Function Type=\"serviceId:181C\" />
+        <Function Type=\"serviceId:181D\" />
+        <Function Type=\"serviceId:181E\" />
+        <Function Type=\"serviceId:181F\" />
+        <Function Type=\"serviceId:1820\" />
+        <Function Type=\"serviceId:1821\" />
+        <Function Type=\"serviceId:1822\" />
+        <Function Type=\"serviceId:1823\" />
+        <Function Type=\"serviceId:1824\" />
+        <Function Type=\"serviceId:1825\" />
+        <Function Type=\"serviceId:1826\" />
+        <Function Type=\"serviceId:1827\" />
+        <Function Type=\"serviceId:1828\" />
+        <Function Type=\"serviceId:1829\" />
+        <Function Type=\"serviceId:182A\" />
+        <Function Type=\"serviceId:182B\" />
+        <Function Type=\"serviceId:182C\" />
+        <Function Type=\"serviceId:182D\" />
+        <Function Type=\"serviceId:182E\" />
+        <Function Type=\"serviceId:182F\" />
+        <Function Type=\"serviceId:1830\" />
+        <Function Type=\"serviceId:FC60\" />
+        <Function Type=\"serviceId:FE00\" />
+        <Function Type=\"serviceId:FEE0\" />
+        <Function Type=\"serviceId:FEE9\" />
+        <Function Type=\"serviceId:FF00\" />
+        <Function Type=\"serviceId:FF10\" />
+        <Function Type=\"serviceId:FF20\" />
+        <Function Type=\"serviceId:FF30\" />
+        <Function Type=\"serviceId:FF40\" />
+        <Function Type=\"serviceId:FF50\" />
+        <Function Type=\"serviceId:FF60\" />
+        <Function Type=\"serviceId:FF70\" />
+        <Function Type=\"serviceId:FF80\" />
+        <Function Type=\"serviceId:FF90\" />
+        <Function Type=\"serviceId:FFA0\" />
+        <Function Type=\"serviceId:FFB0\" />
+        <Function Type=\"serviceId:FFC0\" />
+        <Function Type=\"serviceId:FFD0\" />
+        <Function Type=\"serviceId:FFE0\" />
+        <Function Type=\"serviceId:FFE5\" />
+        <Function Type=\"serviceId:FFF0\" />
+        <Function Type=\"serviceId:00001530-0000-3512-2118-0009af100700\" />
+        <Function Type=\"serviceId:f000FFC0-0451-4000-b000-000000000000\" />
+      </Device>
+    </DeviceCapability>
+    <DeviceCapability Name=\"bluetooth.rfcomm\" />
+  </Capabilities>
+</Package>
