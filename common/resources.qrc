@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/Button.qml</file>
-        <file>assets/dialog.qml</file>
         <file>assets/home.qml</file>
         <file>assets/main.qml</file>
         <file>assets/monitor.qml</file>
