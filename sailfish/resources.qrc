@@ -1,5 +1,11 @@
 <RCC>
+    <qresource prefix="/python">
+        <file alias="__init__.py">../python/__init__.py</file>
+        <file alias="glukometr.py">../python/glukometr.py</file>
+        <file alias="storage.py">../python/storage.py</file>
+    </qresource>
     <qresource prefix="/">
+        <file alias="assets/GlucoseApplication.qml">../common/assets/GlucoseApplication.qml</file>
         <file alias="assets/Button.qml">../common/assets/Button.qml</file>
         <file>assets/home.qml</file>
         <file>assets/main.qml</file>

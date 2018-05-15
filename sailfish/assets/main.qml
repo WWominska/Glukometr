@@ -43,11 +43,39 @@ Item
             color: "#209B9B"
             highlightBackgroundColor: "#2DC4C4"
         }
+
+        Button
+        {
+            id: costam
+            width: 0.75*parent.width
+            height: 0.15*parent.height
+            anchors.top: call.bottom
+            text: "wyniki bro"
+            onClicked: pageLoader.source="results.qml"
+            color: "#209B9B"
+            highlightBackgroundColor: "#2DC4C4"
+        }
+
+        Button
+        {
+            id: costam2
+            width: 0.75*parent.width
+            height: 0.15*parent.height
+            anchors.top: costam.bottom
+            text: "lol"
+            onClicked: pythonGlukometr.addMeasurement(120, 0, 0, 0, 2)
+            color: "#209B9B"
+            highlightBackgroundColor: "#2DC4C4"
+        }
     }
 
     Loader
     {
         id: pageLoader
         anchors.fill: parent
+    }
+
+    GlucoseApplication {
+        id: pythonGlukometr
     }
 }

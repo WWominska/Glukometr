@@ -5,7 +5,10 @@ Rectangle
 {
     id: results
     color: "#000000"
-    Component.onCompleted:  glukometr.obtainResults()
+
+
+    Component.onCompleted: pythonGlukometr.getMeasurements()
+
     Rectangle
     {
         id: wyniki
@@ -54,6 +57,7 @@ Rectangle
             anchors.topMargin: 15
             anchors.rightMargin: 15
             color: "#2dc4c4"
+            clip: true
         }
     }
 
@@ -68,7 +72,7 @@ Rectangle
             right: parent.right;
             bottom: menuLast.top;
         }
-        model: glukometr.pomiary
+        model: pythonGlukometr.measurements  //glukometr.pomiary
         delegate: Rectangle
         {
             id: pomiar
@@ -80,30 +84,39 @@ Rectangle
             {
                 id: sweet
                 font.pixelSize: Theme.fontSizeSmall
-                text: modelData.cukier
+                text: value
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.topMargin: 15
                 anchors.leftMargin: 15
                 color: "#2dc4c4"
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: pythonGlukometr.deleteMeasurement(id)
+                }
             }
 
             Label
             {
                 id: kiedyPomiar
                 font.pixelSize: Theme.fontSizeSmall
-                text: modelData.kiedy
+                text: meal
                 anchors.top: parent.top
                 anchors.topMargin: 15
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "#2dc4c4"
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: pythonGlukometr.updateMeasurement(id, meal+1)
+                }
             }
 
             Label
             {
                 id: data
                 font.pixelSize: Theme.fontSizeSmall
-                text: modelData.dataPomiaru
+                text: timestamp.toLocaleString()
+                anchors.left: kiedyPomiar.right
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.topMargin: 15
