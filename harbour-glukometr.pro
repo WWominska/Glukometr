@@ -46,7 +46,8 @@ SOURCES += urzadzenie.cpp \
            glukometr.cpp \
            main.cpp
 
-OTHER_FILES += common/* \
+OTHER_FILES += python/* \
+               common/* \
                common/assets/*.qml \
                sailfish/* \
                sailfish/rpm/* \
