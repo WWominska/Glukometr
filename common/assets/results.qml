@@ -4,7 +4,6 @@ Rectangle
 {
     id: results
     color: "#000000"
-    Component.onCompleted:  glukometr.obtainResults()
     Rectangle
     {
         id: wyniki
