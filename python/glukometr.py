@@ -38,7 +38,8 @@ class Measurements:
             "device_id": row[3],
             "sequence_number": row[4],
             "meal": row[5]
-        } for row in cursor.execute("SELECT * FROM measurement;")]
+        } for row in cursor.execute(
+            "SELECT * FROM measurement ORDER BY timestamp DESC")]
 
     def add(self, value, timestamp=None, device=None,
                         sequence_number=None, meal=0, commit=True):
@@ -47,6 +48,14 @@ class Measurements:
 
         """
         cursor = self.database.cursor
+
+        if device and sequence_number:
+            # check if measurement exists first
+            rows = cursor.execute("SELECT sequence_number FROM measurement " \
+                                  "WHERE sequence_number = ? AND " \
+                                  "device_id = ?", (sequence_number, device, ))
+            if len(rows.fetchall()):
+                return
 
         if not timestamp:
             timestamp = datetime.now()
@@ -70,6 +79,22 @@ class Measurements:
         if commit:
             self.database.commit()
 
+    def get_last_sequence_number(self, device_id):
+        """
+        Gets last sequence number for given device ID so we can
+        avoid getting all measurements twice
+
+        :param device_id: device id for which we want to get sequence number
+        """
+        cursor = self.database.cursor
+
+        rows = cursor.execute("SELECT sequence_number FROM measurement " \
+                              "WHERE device_id = ? ORDER BY sequence_number " \
+                              "DESC LIMIT 1", (device_id, ))
+
+        for row in rows:
+            return row[0]
+        return 0
 
     def remove(self, id, commit=True):
         """

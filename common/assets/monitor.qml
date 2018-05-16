@@ -47,29 +47,6 @@ Rectangle
         anchors.centerIn: parent
         source: "glucometr.png"
         fillMode: Image.PreserveAspectFit
-
-
-        ParticleSystem {
-            id: systwo
-            anchors.fill: parent
-
-            Emitter {
-                //burst on click
-                id: burstytwo
-                system: systwo
-                enabled: true
-                x: 160
-                y: 150
-                emitRate: glukometr.hr*100
-                maximumEmitted: 4000
-                acceleration: AngleDirection {angleVariation: 360; magnitude: 360;
-                }
-                size: 4
-                endSize: 8
-                sizeVariation: 4
-            }
-
-        }
     }
 
     Button
@@ -82,7 +59,6 @@ Rectangle
         text: "Stop"
         onButtonClick:
         {
-            burstytwo.enabled = false;
             glukometr.disconnectService();
             pageLoader.source = "results.qml";
         }

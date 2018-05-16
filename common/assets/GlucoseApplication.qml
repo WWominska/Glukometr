@@ -7,6 +7,13 @@ Item {
 
     property alias measurements: measurementsModel
 
+    function getLastSequenceNumber(device_id) {
+        python.call("glukometr.measurements. get_last_sequence_number",
+                    [device_id, ], function (result) {
+                        glukometr.lastSequenceNumber = result;
+                    })
+    }
+
     function getMeasurements() {
         python.loadListModel("glukometr.measurements.get", measurementsModel);
     }
@@ -14,7 +21,12 @@ Item {
     function addMeasurement(value, timestamp, device, sequence_number, meal) {
         python.call("glukometr.measurements.add", [
                         value, timestamp, device, sequence_number, meal, ],
-                    function () { getMeasurements(); })
+                    function () {
+                        getMeasurements();
+                        if (device) {
+                            glukometr.lastSequenceNumber = sequence_number;
+                        }
+                    })
     }
 
     function deleteMeasurement(id) {
@@ -27,11 +39,18 @@ Item {
                     function () { getMeasurements(); });
     }
 
+    Connections {
+        target: glukometr
+        onNewMeasurement: addMeasurement(value, timestamp, device,
+                                         sequence_number, undefined)
+    }
+
     Python {
         id: python
         Component.onCompleted: {
             addImportPath(Qt.resolvedUrl('../python'));
             importModule('glukometr', function () {});
+            getLastSequenceNumber(1);
         }
 
         function loadListModel(pythonMethod, model) {

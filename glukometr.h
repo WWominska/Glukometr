@@ -7,6 +7,7 @@
 #include <QString>
 #include <QDebug>
 #include <QDateTime>
+#include <QByteArray>
 #include <QVector>
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothDeviceInfo>
@@ -24,8 +25,9 @@ class Glukometr: public QObject
     Q_PROPERTY(QVariant nazwa READ nazwa NOTIFY nazwaChanged)
     Q_PROPERTY(QVariant pomiary READ pomiary NOTIFY pomiaryChanged)
     Q_PROPERTY(QString wiadomosc READ wiadomosc NOTIFY wiadomoscChanged)
-    Q_PROPERTY(int hr READ hR NOTIFY hrChanged)
-    Q_PROPERTY(int time READ time NOTIFY timeChanged)
+    Q_PROPERTY(int lastSequenceNumber READ getLastSequenceNumber
+               WRITE setLastSequenceNumber
+               NOTIFY lastSequenceNumberChanged)
 
 public:
     Glukometr();
@@ -35,8 +37,15 @@ public:
     QString wiadomosc() const;
     QVariant nazwa();
     QVariant pomiary();
-    int hR() const;
-    int time();
+
+    int getLastSequenceNumber() {
+        return lastSequenceNumber;
+    }
+
+    void setLastSequenceNumber(int _lastSequenceNumber) {
+        qDebug() << "last number" << _lastSequenceNumber;
+        lastSequenceNumber = _lastSequenceNumber;
+    }
 
     Historia* parseGlucoseMeasurementData(QByteArray data);
     QDateTime convertTime(QByteArray data, int offset);
@@ -50,7 +59,9 @@ public slots:
     void connectToService(const QString &adres);
     void disconnectService();
 
-    void obtainResults();
+    // Record Access Control Point
+    QByteArray requestRACPMeasurements(bool all=false, int last_sequence=0);
+
     int measurements(int index) const;
     int measurementsSize() const;
     QString urzadzenieAdres() const;
@@ -77,12 +88,14 @@ private slots:
                               const QByteArray &value);
     void serviceError(QLowEnergyService::ServiceError e);
 
-Q_SIGNALS:
+signals:
+    void newMeasurement(float value, QDateTime timestamp, int device, int sequence_number);
+    void mealChanged(int device, int sequence_number, int meal);
+
     void wiadomoscChanged();
     void nazwaChanged();
     void pomiaryChanged();
-    void hrChanged();
-    void timeChanged();
+    void lastSequenceNumberChanged();
 
 private:
     UrzadzenieInfo m_currentUrzadzenie;
@@ -94,10 +107,10 @@ private:
     bool foundGlukometrService;
     bool ostatni;
     QVector<quint16> m_measurements;
-    QDateTime m_start;
-    QDateTime m_stop;
     QLowEnergyController *m_control;
     QLowEnergyService *m_service;
+
+    int lastSequenceNumber;
 
     QByteArray enable_indication;
     QByteArray enable_notification;
