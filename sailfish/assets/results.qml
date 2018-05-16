@@ -103,7 +103,15 @@ Page
                 MenuItem
                 {
                     text: "Zmień pore posiłku"
-                    onClicked: pythonGlukometr.updateMeasurement(id, meal+1)
+                    onClicked:
+                    {
+                        var dialog = pageStack.push(Qt.resolvedUrl("ChangeMealDialog.qml"),
+                                                                         {"meal": meal})
+                        dialog.accepted.connect(function()
+                        {
+                            pythonGlukometr.updateMeasurement(id, dialog.meal)
+                        })
+                    }
                 }
                 MenuItem
                 {
@@ -119,7 +127,7 @@ Page
                 width: Theme.itemSizeExtraSmall
                 height: width
                 anchors.verticalCenter: sweet.verticalCenter
-                color: "green"
+                color: pythonGlukometr.evaluateMeasurement(value, meal)
             }
 
             Label
