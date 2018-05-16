@@ -1,113 +1,163 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-Rectangle
+Page
 {
     id: results
-    color: "#000000"
+    // color: "#000000"
 
 
     Component.onCompleted: pythonGlukometr.getMeasurements()
 
-    Rectangle
+
+    SilicaListView
     {
-        id: wyniki
-        width: parent.width
-        anchors.top: parent.top
-        height: 80
-        color: "#000000"
-        radius: 10
-        Label
+        header: Item
         {
-            id: restText
-            color: "#2dc4c4"
-            font.pixelSize: Theme.fontSizeHuge
-            anchors.centerIn: parent
-            text: "HISTORIA POMIARÓW"
-        }
-    }
+            width: parent.width
+            height: pageHeader.height + dit.height
+            PageHeader
+            {
+                id: pageHeader
+                title: "Pomiary"
+            }
 
-    Rectangle
-    {
-        id: dit
-        width: parent.width
-        anchors.top: wyniki.bottom
-        height: 80
-        color: "#000000"
-        radius: 10
-        Label
+            Rectangle
+            {
+                id: dit
+                width: parent.width
+                anchors
+                {
+                    left: parent.left
+                    right: parent.right
+                    leftMargin: Theme.horizontalPageMargin
+                    rightMargin: Theme.horizontalPageMargin
+                    top: pageHeader.bottom
+                }
+                height: 80
+                color: "transparent"
+                radius: 10
+                Label
+                {
+                    id: wartosccukrowa
+                    font.pixelSize: Theme.fontSizeMedium
+                    font.bold: true
+                    text: "Cukier"
+                    anchors.left: parent.left
+                    anchors.top: parent.top
+                    anchors.topMargin: 15
+                    color: Theme.primaryColor
+                }
+
+                Label
+                {
+                    id: dataiczas
+                    font.pixelSize: Theme.fontSizeMedium
+                    horizontalAlignment: Text.AlignRight
+                    font.bold: true
+                    text: "Data i Czas"
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.topMargin: 15
+                    color: Theme.primaryColor
+                    clip: true
+                }
+            }
+        }
+        PullDownMenu
         {
-            id: wartosccukrowa
-            font.pixelSize: Theme.fontSizeMedium
-            text: "Cukier [mg/dL]"
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.topMargin: 15
-            anchors.leftMargin: 15
-            color: "#2dc4c4"
+            MenuItem
+            {
+                text: "Bluetooth"
+                onClicked: pageStack.push("home.qml")
+            }
+            MenuItem
+            {
+                text: "Lol"
+                onClicked: pythonGlukometr.addMeasurement(120, 0, 0, 0, 2)
+            }
+            MenuItem
+            {
+                text: "Pobierz dane"
+                onClicked:
+                {
+                    glukometr.connectToService(glukometr.urzadzenieAdres());
+                    pageStack.push("monitor.qml")
+                }
+            }
+
         }
-
-        Label
-        {
-            id: dataiczas
-            font.pixelSize: Theme.fontSizeMedium
-            text: "Data i Czas"
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.topMargin: 15
-            anchors.rightMargin: 15
-            color: "#2dc4c4"
-            clip: true
-        }
-    }
+        VerticalScrollDecorator {}
 
 
-    ListView
-    {
         id: ksiazka
-        anchors
-        {
-            top: dit.bottom;
-            left: parent.left;
-            right: parent.right;
-            bottom: menuLast.top;
-        }
+        anchors.fill: parent
         model: pythonGlukometr.measurements  //glukometr.pomiary
-        delegate: Rectangle
+        delegate: ListItem
         {
             id: pomiar
-            height:60
-            width: parent.width
-            color: "#000000"
+            contentHeight: sweet.height + kiedyPomiar.height + Theme.paddingSmall*3
+            //height: Theme.itemSizeMedium
+            menu: ContextMenu
+            {
+                MenuItem
+                {
+                    text: "Zmień pore posiłku"
+                    onClicked: pythonGlukometr.updateMeasurement(id, meal+1)
+                }
+                MenuItem
+                {
+                    text: "Usuń"
+                    onClicked: pythonGlukometr.deleteMeasurement(id)
+                }
+            }
+
+            GlassItem
+            {
+                x: 0
+                id: dot
+                width: Theme.itemSizeExtraSmall
+                height: width
+                anchors.verticalCenter: sweet.verticalCenter
+                color: "green"
+            }
 
             Label
             {
                 id: sweet
                 font.pixelSize: Theme.fontSizeSmall
+                font.bold: true
                 text: value
-                anchors.left: parent.left
+                anchors.left: dot.right
                 anchors.top: parent.top
-                anchors.topMargin: 15
-                anchors.leftMargin: 15
-                color: "#2dc4c4"
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: pythonGlukometr.deleteMeasurement(id)
-                }
+                anchors.topMargin: Theme.paddingSmall
+                color: Theme.primaryColor
             }
 
             Label
             {
+                function changeToString(meal)
+                {
+                    switch(meal)
+                    {
+                        case 0: return "Na czczo"
+                        case 1: return "Przed posiłkiem"
+                        case 2: return "Po posiłku"
+                        case 3: return "Nocna"
+                        default: return "Nie określono"
+                    }
+                }
                 id: kiedyPomiar
                 font.pixelSize: Theme.fontSizeSmall
-                text: meal
-                anchors.top: parent.top
-                anchors.topMargin: 15
-                anchors.horizontalCenter: parent.horizontalCenter
-                color: "#2dc4c4"
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: pythonGlukometr.updateMeasurement(id, meal+1)
+                font.bold: true
+                text: changeToString(meal)
+                color: Theme.secondaryColor
+                anchors
+                {
+                    top: sweet.bottom
+                    topMargin: Theme.paddingSmall
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
                 }
             }
 
@@ -115,44 +165,16 @@ Rectangle
             {
                 id: data
                 font.pixelSize: Theme.fontSizeSmall
-                text: timestamp.toLocaleString()
+                horizontalAlignment: Text.AlignRight
+                font.bold: true
+                text: timestamp.toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
                 anchors.left: kiedyPomiar.right
                 anchors.right: parent.right
+                anchors.rightMargin: Theme.horizontalPageMargin
                 anchors.top: parent.top
-                anchors.topMargin: 15
-                anchors.rightMargin: 15
+                anchors.topMargin: Theme.paddingSmall
                 color: "#2dc4c4"
             }
         }
     }
-
-Button
-{
-    id:menuLast
-    color: "#209B9B"
-    highlightBackgroundColor: "#2DC4C4"
-    width: parent.width
-    height: 0.1*parent.height
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.bottom: start.top
-    text: "Menu"
-    onClicked: { pageLoader.source="main.qml"}
-}
-
-Button
-{
-    id:start
-    width: parent.width
-    height: 0.1*parent.height
-    color: "#209B9B"
-    highlightBackgroundColor: "#2DC4C4"
-    anchors.horizontalCenter: parent.horizontalCenter
-    anchors.bottom: parent.bottom
-    text: "Pobierz Dane"
-    onClicked:
-    {
-        glukometr.connectToService(glukometr.urzadzenieAdres());
-        pageLoader.source="monitor.qml";
-    }
-}
 }

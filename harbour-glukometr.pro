@@ -48,6 +48,7 @@ SOURCES += urzadzenie.cpp \
 
 OTHER_FILES += python/* \
                common/* \
+               common/assets/cover/*.qml \
                common/assets/*.qml \
                sailfish/* \
                sailfish/rpm/* \
