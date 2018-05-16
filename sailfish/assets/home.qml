@@ -1,10 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-Rectangle
-{
+Page {
     id: screen
-    color: "#000000"
     property string wiadomosc: glukometr.wiadomosc
 
     Connections {
@@ -15,26 +13,6 @@ Rectangle
         }
         onNazwaChanged: busyIndicator.running = false
 
-    }
-
-    Rectangle
-    {
-        id:select
-        width: parent.width
-        anchors.top: parent.top
-        height: 80
-        color: "#000000"
-        border.color: "#000000"
-        radius: 10
-
-        Label
-        {
-            id: selectText
-            color: "#2dc4c4"
-            font.pixelSize: Theme.fontSizeLarge
-            anchors.centerIn: parent
-            text: "WYBIERZ URZĄDZENIE"
-        }
     }
 
     Component.onCompleted: {
@@ -58,12 +36,15 @@ Rectangle
         }
     }
 
-    ListView {
+    SilicaListView {
         id: theListView
         width: parent.width
-        anchors.top: select.bottom
-        anchors.bottom: scanAgain.top
+        anchors.fill: parent
         model: glukometr.nazwa
+
+        header: PageHeader {
+            title: "Wybierz urządzenie"
+        }
 
         delegate: Rectangle {
             id: box
@@ -79,7 +60,7 @@ Rectangle
                 onPressed: { box.color= "#209b9b"; box.height=110}
                 onClicked: {
                     glukometr.connectToService(modelData.urzadzenieAdres);
-                    pageLoader.source="monitor.qml";
+                    pageStack.push("monitor.qml");
                 }
             }
 
@@ -103,17 +84,5 @@ Rectangle
                 color: "#000000"
             }
         }
-    }
-
-    Button {
-        id:scanAgain
-        width: parent.width
-        height: 0.1*parent.height
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        text: "Menu"
-        onClicked: pageLoader.source="main.qml"
-        color: "#209B9B"
-        highlightBackgroundColor: "#2DC4C4"
     }
 }

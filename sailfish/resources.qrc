@@ -10,9 +10,10 @@
         <file>assets/home.qml</file>
         <file>assets/main.qml</file>
         <file>assets/monitor.qml</file>
-        <file>assets/results.qml</file>
+        <file>assets/Results.qml</file>
         <file alias="assets/glucometr.png">../common/assets/glucometr.png</file>
         <file alias="assets/candy.png">../common/assets/candy.png</file>
         <file alias="assets/ladowanie.png">../common/assets/ladowanie.png</file>
+        <file>assets/cover/CoverPage.qml</file>
     </qresource>
 </RCC>

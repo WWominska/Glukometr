@@ -1,26 +1,9 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-Rectangle
+Page
 {
     id: screenMonitor
-    color: "#000000"
-
-    Button
-    {
-        id:menu
-        color: "#209B9B"
-        highlightBackgroundColor: "#2DC4C4"
-        width: parent.width
-        height: 0.1 * parent.height
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        text: "Menu"
-        onClicked: {
-            glukometr.disconnectService();
-            pageLoader.source="home.qml";
-        }
-    }
 
     Rectangle
     {
