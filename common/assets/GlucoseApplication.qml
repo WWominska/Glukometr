@@ -4,11 +4,31 @@ import io.thp.pyotherside 1.4
 
 Item {
     ListModel { id: measurementsModel }
+    ListModel { id: thresholdsModel }
 
     property alias measurements: measurementsModel
+    property alias thresholds: thresholdsModel
+
+
+    function evaluateMeasurement(value, meal) {
+        return python.call_sync("glukometr.thresholds.evaluate_measurement", [
+                                value, meal, ]);
+    }
+
+    function resetThresholds() {
+        return python.call("glukometr.thresholds.set_defaults", [], function ()
+        {
+            getThresholds();
+        })
+    }
+
+    function updateThreshold(meal, min, max) {
+        return python.call("glukometr.thresholds.update", [meal, min, max, ],
+                           function () { getThresholds(); })
+    }
 
     function getLastSequenceNumber(device_id) {
-        python.call("glukometr.measurements. get_last_sequence_number",
+        python.call("glukometr.measurements.get_last_sequence_number",
                     [device_id, ], function (result) {
                         glukometr.lastSequenceNumber = result;
                     })
@@ -16,6 +36,10 @@ Item {
 
     function getMeasurements() {
         python.loadListModel("glukometr.measurements.get", measurementsModel);
+    }
+
+    function getThresholds() {
+        python.loadListModel("glukometr.thresholds.get", thresholdsModel);
     }
 
     function addMeasurement(value, timestamp, device, sequence_number, meal) {

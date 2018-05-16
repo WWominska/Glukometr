@@ -15,5 +15,9 @@
         <file alias="assets/candy.png">../common/assets/candy.png</file>
         <file alias="assets/ladowanie.png">../common/assets/ladowanie.png</file>
         <file>assets/cover/CoverPage.qml</file>
+        <file>assets/ChangeMealDialog.qml</file>
+        <file>icons/icon-after-meal.svg</file>
+        <file>icons/icon-before-meal.svg</file>
+        <file>icons/icon-fasting.svg</file>
     </qresource>
 </RCC>
