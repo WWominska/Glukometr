@@ -24,5 +24,6 @@
         <file>icons/icon-fasting.svg</file>
         <file>assets/AddNewMeasurement.qml</file>
         <file>assets/ChangeNameDeviceDialog.qml</file>
+        <file>assets/Threshold.qml</file>
     </qresource>
 </RCC>

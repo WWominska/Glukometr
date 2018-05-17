@@ -68,14 +68,14 @@ Page
         {
             MenuItem
             {
-                text: "Bluetooth"
-                onClicked: pageStack.push("home.qml")
+                text: "Ustaw progi"
+                onClicked: pageStack.push("Threshold.qml")
             }
 
             MenuItem
             {
-                text: "Pobierz dane"
-                onClicked: pageStack.push("monitor.qml")
+                text: "Bluetooth"
+                onClicked: pageStack.push("home.qml")
             }
 
             MenuItem

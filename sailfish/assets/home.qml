@@ -25,7 +25,10 @@ Page
             width: screen.width
             spacing: Theme.paddingLarge
 
-            PageHeader { title: "Wybierz urządzenie" }
+            PageHeader
+            {
+                title: "Wybierz urządzenie"
+            }
 
             SectionHeader
             {
@@ -50,7 +53,7 @@ Page
                             text: "Zmień nazwę urządzenia"
                             onClicked:
                             {
-                                var dialog = pageStack.push(Qt.resolvedUrl("ChangeNameDeviceDialog.qml"))
+                                var dialog = pageStack.push(Qt.resolvedUrl("ChangeNameDeviceDialog.qml"), {"name": name})
                                 dialog.accepted.connect(function()
                                 {
                                     pythonGlukometr.renameDevice(id, dialog.name)
