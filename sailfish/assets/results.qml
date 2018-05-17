@@ -4,7 +4,7 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-    // color: "#000000"
+
 
 
     Component.onCompleted: pythonGlukometr.getMeasurements()
@@ -71,11 +71,7 @@ Page
                 text: "Bluetooth"
                 onClicked: pageStack.push("home.qml")
             }
-            MenuItem
-            {
-                text: "Lol"
-                onClicked: pythonGlukometr.addMeasurement(120, 0, 0, 0, 2)
-            }
+
             MenuItem
             {
                 text: "Pobierz dane"
@@ -83,6 +79,19 @@ Page
                 {
                     glukometr.connectToService(glukometr.urzadzenieAdres());
                     pageStack.push("monitor.qml")
+                }
+            }
+
+            MenuItem
+            {
+                text: "Dodaj pomiar"
+                onClicked:
+                {
+                    var dialog = pageStack.push(Qt.resolvedUrl("AddNewMeasurement.qml"))
+                    dialog.accepted.connect(function()
+                    {
+                        pythonGlukometr.addMeasurement(dialog.value, 0, 0, 0, dialog.meal)
+                    })
                 }
             }
 
@@ -96,8 +105,7 @@ Page
         delegate: ListItem
         {
             id: pomiar
-            contentHeight: sweet.height + kiedyPomiar.height + Theme.paddingSmall*3
-            //height: Theme.itemSizeMedium
+            contentHeight: sugar.height + kiedyPomiar.height + Theme.paddingSmall*3
             menu: ContextMenu
             {
                 MenuItem
@@ -126,13 +134,13 @@ Page
                 id: dot
                 width: Theme.itemSizeExtraSmall
                 height: width
-                anchors.verticalCenter: sweet.verticalCenter
+                anchors.verticalCenter: sugar.verticalCenter
                 color: pythonGlukometr.evaluateMeasurement(value, meal)
             }
 
             Label
             {
-                id: sweet
+                id: sugar
                 font.pixelSize: Theme.fontSizeSmall
                 font.bold: true
                 text: value
@@ -162,7 +170,7 @@ Page
                 color: Theme.secondaryColor
                 anchors
                 {
-                    top: sweet.bottom
+                    top: sugar.bottom
                     topMargin: Theme.paddingSmall
                     left: parent.left
                     leftMargin: Theme.horizontalPageMargin
@@ -181,7 +189,7 @@ Page
                 anchors.rightMargin: Theme.horizontalPageMargin
                 anchors.top: parent.top
                 anchors.topMargin: Theme.paddingSmall
-                color: "#2dc4c4"
+                color: Theme.highlightColor
             }
         }
     }
