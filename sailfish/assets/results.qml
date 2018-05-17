@@ -79,11 +79,7 @@ Page
             MenuItem
             {
                 text: "Pobierz dane"
-                onClicked:
-                {
-                    glukometr.connectToService("0"); // TODO: naprawic
-                    pageStack.push("monitor.qml")
-                }
+                onClicked: pageStack.push("monitor.qml")
             }
 
         }
