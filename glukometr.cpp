@@ -47,7 +47,7 @@ QDateTime Glukometr::convertTime(QByteArray data, int offset)
 }
 
 
-Historia* Glukometr::parseGlucoseMeasurementData(QByteArray data)
+void Glukometr::parseGlucoseMeasurementData(QByteArray data)
 {
     // zaczynamy od zerowego bajtu
     int offset = 0;
@@ -88,10 +88,7 @@ Historia* Glukometr::parseGlucoseMeasurementData(QByteArray data)
         glucoseConcentration = this->bytesToFloat(data[offset], data[offset+1]);
     }
 
-    Historia* pomiary = new Historia (glucoseConcentration, dataPomiaru);
     emit newMeasurement(glucoseConcentration, dataPomiaru, 1, sequenceNumber);
-
-    return pomiary;
 }
 
 void Glukometr::glukozaPomiarKontekst(QByteArray data)
@@ -192,15 +189,8 @@ void Glukometr::glukozaPomiarKontekst(QByteArray data)
 //QBluetoothDeviceInfo - Zbiera i dostarcza informację na temat urządzenia Bluetooth (nazwa, adres, klasa)
 //QBluetoothDeviceDiscoveryAgent - odszukuje pobliskie urządzenia Bluetooth
 Glukometr::Glukometr():
-    m_currentUrzadzenie(QBluetoothDeviceInfo()), foundGlukometrService(false),
-    m_control(0), m_service(0)
+    foundGlukometrService(false), m_control(0), m_service(0)
 {
-    m_urzadzenieDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);//klasa pozwalajaca wykrywac urzadzenia
-
-    connect(m_urzadzenieDiscoveryAgent, SIGNAL(deviceDiscovered(const QBluetoothDeviceInfo&)),
-            this, SLOT(addUrzadzenie(const QBluetoothDeviceInfo&)));//sygnał się włączy gdy znajdzie urządzenie
-    connect(m_urzadzenieDiscoveryAgent, SIGNAL(finished()), this, SLOT(scanFinished()));//włączy się funkcja gdy skończy szukać urzadzen
-
     enable_indication = QByteArray::fromHex("0200");
     enable_notification = QByteArray::fromHex("0100");//stałe zgapione ze specyfikacji
 
@@ -210,34 +200,7 @@ Glukometr::Glukometr():
 
 Glukometr::~Glukometr()
 {
-    qDeleteAll(m_urzadzenia);
-    m_urzadzenia.clear();
-}
 
-void Glukometr::urzadzenieSearch() //funkcja włączająca szukanie urządzeń
-{
-    qDeleteAll(m_urzadzenia); //usuwa urządzenia z listy jeśli są (czyści pamięć)
-    m_urzadzenia.clear(); //robi to samo co wyżej tylko z listy
-    emit nazwaChanged();
-    m_urzadzenieDiscoveryAgent->start(); //rozpoczyna szukanie nowego urządzenia
-    setWiadomosc("Skanowanie urządzeń");
-}
-
-void Glukometr::addUrzadzenie(const QBluetoothDeviceInfo &urzadzenie) //dla każdego znalezionego urządzenia wykona się ta funkcja
-{
-    if (urzadzenie.coreConfigurations() & QBluetoothDeviceInfo::LowEnergyCoreConfiguration) //sprawdza czy urządzenie żre mało prądu
-    {
-        UrzadzenieInfo *dev = new UrzadzenieInfo(urzadzenie); //tworzy wskaźnik na obiekt przymający informację o urządzeniu
-        m_urzadzenia.append(dev); //dodaje urządzenie do listy urządzeń
-        setWiadomosc("Znaleziono urządzenie");
-    }
-}
-
-void Glukometr::scanFinished()//włączy się jak skończy skanować
-{
-    if (m_urzadzenia.size() == 0)//sprawdza czy nie ma urządzeń
-        setWiadomosc("Nie znaleziono urządzeń");
-    Q_EMIT nazwaChanged(); // emituje sygnał że zmieniła się lista urządzeń
 }
 
 void Glukometr::setWiadomosc(QString wiadomosc) //funkcja do wyświetlania komunikatów
@@ -251,34 +214,11 @@ QString Glukometr::wiadomosc() const //funkcja zwracająca wiadomość
     return m_info;
 }
 
-QVariant Glukometr::nazwa()
-{
-    return QVariant::fromValue(m_urzadzenia); //lista urządzeń
-}
-
-QVariant Glukometr::pomiary()
-{
-    return QVariant::fromValue(m_pomiary); //lista urządzeń
-}
-
 //QBluetoothUuid - generuje adres Uuid dla każdej usługi Bluetooth
 //QLowEnergyController - daje dostęp do urządzeń w sieci Bluetooth i jest punktem wejścia do tworzenia sieci Buetooth
 
 void Glukometr::connectToService(const QString &adres) //łączy się z urządzeniem i przyjmuje jako parametr jego adres
 {
-    m_measurements.clear(); //czyści liste pomiarów
-    bool urzadzenieFound = false;
-    for (int i = 0; i < m_urzadzenia.size(); i++) //przechodzi po całej liście urządzeń
-    {
-        if (((UrzadzenieInfo*)m_urzadzenia.at(i))->getAdres() == adres ) //i wybiera tylko taki który ma taki sam adres jaki przyjmuje w parametrze ta funkcja
-        {
-            m_currentUrzadzenie.setUrzadzenie(((UrzadzenieInfo*)m_urzadzenia.at(i))->getUrzadzenie()); //jeśli tak to ustawia urządzenie na to szukanie
-            setWiadomosc("Trwa łączenie z urządzeniem");
-            urzadzenieFound = true; //zmienna jest tylko po to żeby program się nie wywalił
-            break;
-        }
-    }
-
     if (m_control)
     {
         m_control->disconnectFromDevice();// jeśli jest połączony to ma się z nim rozłączyć
@@ -286,7 +226,7 @@ void Glukometr::connectToService(const QString &adres) //łączy się z urządze
         m_control = 0;
     }
 
-    m_control = new QLowEnergyController(m_currentUrzadzenie.getUrzadzenie(), this); //tworzy obiekt pozwalający zrobić cokolwiek z urządzeniem
+    m_control = new QLowEnergyController(QBluetoothAddress(adres), this);
 
     connect(m_control, SIGNAL(serviceDiscovered(QBluetoothUuid)),
             this, SLOT(serviceDiscovered(QBluetoothUuid)));//odpali się gdy zostanie znaleziona usługa
@@ -299,6 +239,7 @@ void Glukometr::connectToService(const QString &adres) //łączy się z urządze
     connect(m_control, SIGNAL(disconnected()),
             this, SLOT(urzadzenieDisconnected()));//rozłączyło się z urządzeniem
 
+    setWiadomosc("Laczenie...");
     m_control->connectToDevice();//łączy się z urządzenim
 }
 
@@ -460,36 +401,16 @@ void Glukometr::updateGlukometrValue(const QLowEnergyCharacteristic &c,const QBy
     if (c.uuid() == QBluetoothUuid(QBluetoothUuid::RecordAccessControlPoint))
     {
         ostatni=false;
-        Historia *pomiar = (Historia*)m_pomiary.first();//wyświetlanie ostatniego pomiaru
-        setWiadomosc("Ostatni pomiar: " + QString::number(pomiar->getCukier()) + " mg/dL");
+        setWiadomosc("Pobrano wszystko");
     }
-
     if (c.uuid() == QBluetoothUuid(QBluetoothUuid::GlucoseMeasurementContext))
     {
         glukozaPomiarKontekst(value);
     }
 
-    if (c.uuid()== QBluetoothUuid(QBluetoothUuid::GlucoseMeasurement))
+    if (c.uuid() == QBluetoothUuid(QBluetoothUuid::GlucoseMeasurement))
     {
-        Historia* cukier = parseGlucoseMeasurementData(value); //jeśli dostał pomiar zapisuje do zmiennej cukier
-
-
-
-        if (cukier->getCukier() != 0)
-        {
-            if (m_pomiary.count() > 0)
-                if (((Historia*)m_pomiary.first())->getDataPomiaru() == cukier->getDataPomiaru())// po wybraniu "na czczo" itp nie pobiera dwukrotnie pomiaru
-                    return;
-            m_pomiary.prepend(cukier); //dodaje do listy pomiarów     prepend dodaje elementy na górze listy nie na dole
-        }
-
-
-        if(!ostatni)
-        {
-            setWiadomosc("Ostatni pomiar: " + QString::number(cukier->getCukier()) + " mg/dL");
-        }
-
-        Q_EMIT pomiaryChanged();//zmiana listy pomiarów
+        parseGlucoseMeasurementData(value); //jeśli dostał pomiar zapisuje do zmiennej cukier
     }
 }
 
@@ -528,27 +449,4 @@ void Glukometr::confirmedDescriptorWrite(const QLowEnergyDescriptor &d,const QBy
         delete m_service;
         m_service = 0;
     }
-}
-
-int Glukometr::measurements(int index) const
-{
-    if (index > m_measurements.size())
-        return 0;
-    else
-        return (int)m_measurements.value(index);
-}
-
-int Glukometr::measurementsSize() const
-{
-    return m_measurements.size();
-}
-
-QString Glukometr::urzadzenieAdres() const
-{
-    return m_currentUrzadzenie.getAdres();
-}
-
-int Glukometr::numUrzadzenia() const
-{
-    return m_urzadzenia.size();
 }

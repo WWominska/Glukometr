@@ -1,16 +1,11 @@
 #ifndef GLUKOMETR_H
 #define GLUKOMETR_H
 
-#include "urzadzenie.h"
-#include "historia.h"
-
 #include <QString>
 #include <QDebug>
 #include <QDateTime>
 #include <QByteArray>
 #include <QVector>
-#include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothDeviceInfo>
 #include <QLowEnergyController>
 #include <QLowEnergyService>
 #include <QLowEnergyDescriptor>
@@ -22,8 +17,6 @@ QT_USE_NAMESPACE
 class Glukometr: public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QVariant nazwa READ nazwa NOTIFY nazwaChanged)
-    Q_PROPERTY(QVariant pomiary READ pomiary NOTIFY pomiaryChanged)
     Q_PROPERTY(QString wiadomosc READ wiadomosc NOTIFY wiadomoscChanged)
     Q_PROPERTY(int lastSequenceNumber READ getLastSequenceNumber
                WRITE setLastSequenceNumber
@@ -35,8 +28,6 @@ public:
     void setWiadomosc(QString wiadomosc);
     void glukozaPomiarKontekst(QByteArray data);
     QString wiadomosc() const;
-    QVariant nazwa();
-    QVariant pomiary();
 
     int getLastSequenceNumber() {
         return lastSequenceNumber;
@@ -47,7 +38,7 @@ public:
         lastSequenceNumber = _lastSequenceNumber;
     }
 
-    Historia* parseGlucoseMeasurementData(QByteArray data);
+    void parseGlucoseMeasurementData(QByteArray data);
     QDateTime convertTime(QByteArray data, int offset);
 
     quint16 bytesToInt(quint8 b1, quint8 b2);
@@ -55,23 +46,13 @@ public:
     int unsignedToSigned(int b, int size);
 
 public slots:
-    void urzadzenieSearch();
     void connectToService(const QString &adres);
     void disconnectService();
 
     // Record Access Control Point
     QByteArray requestRACPMeasurements(bool all=false, int last_sequence=0);
 
-    int measurements(int index) const;
-    int measurementsSize() const;
-    QString urzadzenieAdres() const;
-    int numUrzadzenia() const;
-
 private slots:
-    //QBluetothDeviceDiscoveryAgent
-    void addUrzadzenie(const QBluetoothDeviceInfo&);
-    void scanFinished();
-
     //QLowEnergyController
     void serviceDiscovered(const QBluetoothUuid &);
     void serviceScanDone();
@@ -93,20 +74,13 @@ signals:
     void mealChanged(int device, int sequence_number, int meal);
 
     void wiadomoscChanged();
-    void nazwaChanged();
-    void pomiaryChanged();
     void lastSequenceNumberChanged();
 
 private:
-    UrzadzenieInfo m_currentUrzadzenie;
-    QBluetoothDeviceDiscoveryAgent *m_urzadzenieDiscoveryAgent;
     QLowEnergyDescriptor m_notificationDesc;
-    QList<QObject*> m_urzadzenia;
-    QList<QObject*> m_pomiary;
     QString m_info;
     bool foundGlukometrService;
     bool ostatni;
-    QVector<quint16> m_measurements;
     QLowEnergyController *m_control;
     QLowEnergyService *m_service;
 

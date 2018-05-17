@@ -4,6 +4,7 @@
 #include <QGuiApplication>
 #include <QQuickView>
 #include "glukometr.h"
+#include "BleDiscovery.h"
 
 #ifdef Q_OS_SAILFISH
 #include <sailfishapp.h>
@@ -16,6 +17,8 @@ int main(int argc, char *argv[])
 #else
     QScopedPointer<QGuiApplication> app(new QGuiApplication(argc, argv));
 #endif
+
+    qmlRegisterType<BleDiscovery>("glukometr", 1, 0, "BleDiscovery");
 
     Glukometr glukometr;
     QQuickView *view = new QQuickView;

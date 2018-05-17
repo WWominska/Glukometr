@@ -39,10 +39,9 @@ android {
 
 
 # Input
-HEADERS += urzadzenie.h \
-           glukometr.h \
-    historia.h
-SOURCES += urzadzenie.cpp \
+HEADERS += glukometr.h \
+           BleDiscovery.h
+SOURCES += BleDiscovery.cpp \
            glukometr.cpp \
            main.cpp
 

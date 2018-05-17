@@ -66,7 +66,7 @@ Rectangle
             right: parent.right;
             bottom: menuLast.top;
         }
-        model: glukometr.pomiary
+        model: glukometrPython.measurements
         delegate: Rectangle
         {
             id: pomiar

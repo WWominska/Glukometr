@@ -81,7 +81,7 @@ Page
                 text: "Pobierz dane"
                 onClicked:
                 {
-                    glukometr.connectToService(glukometr.urzadzenieAdres());
+                    glukometr.connectToService("0"); // TODO: naprawic
                     pageStack.push("monitor.qml")
                 }
             }
