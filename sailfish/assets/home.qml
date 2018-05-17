@@ -3,119 +3,175 @@ import Sailfish.Silica 1.0
 import glukometr 1.0
 
 
-Page {
+Page
+{
     id: screen
 
-    BleDiscovery {
+    BleDiscovery
+    {
         id: bleDiscovery
         onNewDevice: pythonGlukometr.addDevice(name, macAddress, false)
-        Component.onCompleted: startDiscovery()
+        // Component.onCompleted: startDiscovery()
     }
 
-    SilicaFlickable {
+    SilicaFlickable
+    {
         anchors.fill: parent
         contentHeight: column.height
 
-        Column {
+        Column
+        {
             id: column
             width: screen.width
             spacing: Theme.paddingLarge
 
             PageHeader { title: "Wybierz urządzenie" }
 
-            SectionHeader { text: "Zapamiętane urządzenia" }
-            Repeater {
+            SectionHeader
+            {
+                font.pixelSize: Theme.fontSizeLarge
+                text: "Zapamiętaj urządzenie"
+                font.bold: true
+            }
+
+            Repeater
+            {
                 width: parent.width
                 model: pythonGlukometr.rememberedDevices
 
-                delegate: Rectangle {
-                    id: box
-                    height:100
-                    width: parent.width
-                    color: "#2dc4c4"
-                    radius: 15
+                delegate: ListItem
+                {
+                    contentHeight: deviceAdd.height + whenMeasurmentAdd.height + Theme.paddingSmall*3
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onPressed: { box.color= "#209b9b"; box.height=110}
-                        onClicked: {
-                            glukometr.connectToService(mac_address);
-                            pageStack.push("monitor.qml");
+                    menu: ContextMenu
+                    {
+                        MenuItem
+                        {
+                            text: "Zmień nazwę urządzenia"
+                            onClicked:
+                            {
+                                var dialog = pageStack.push(Qt.resolvedUrl("ChangeNameDeviceDialog.qml"))
+                                dialog.accepted.connect(function()
+                                {
+                                    pythonGlukometr.renameDevice(id, dialog.name)
+                                })
+                            }
+                        }
+
+                        MenuItem
+                        {
+                            text: "Zapomnij urządzenie"
+                            onClicked: pythonGlukometr.forgetDevice(id)
                         }
                     }
 
-                    Label {
-                        font.pixelSize: Theme.fontSizeMedium
-                        text: name
-                        anchors.top: parent.top
-                        anchors.topMargin: 5
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: "#000000"
+                    onClicked:
+                    {
+                        glukometr.connectToService(mac_address)
+                        pageStack.push("monitor.qml")
                     }
 
-                    Label {
+                    Label
+                    {
+                        id:deviceAdd
+                        anchors
+                        {
+                           left: parent.left
+                           top: parent.top
+                           topMargin: Theme.paddingSmall
+                           leftMargin: Theme.horizontalPageMargin
+                        }
+                        font.pixelSize: Theme.fontSizeMedium
+                        color: "#ffffff"
+                        text: name
+                    }
+
+                   Label
+                   {
+                       id:whenMeasurmentAdd
+                       anchors
+                       {
+                           top: deviceAdd.bottom
+                           topMargin: Theme.paddingSmall
+                           left: parent.left
+                           leftMargin: Theme.horizontalPageMargin
+                       }
+
                         font.pixelSize: Theme.fontSizeTiny
                         text: mac_address
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: "#000000"
+                        color: Theme.secondaryHighlightColor
                     }
                 }
             }
 
-            SectionHeader { text: "Wykryte urządzenia" }
-            ProgressBar {
-                 visible: bleDiscovery.running
-                 label: "Szukanie urządzeń"
-                 indeterminate: true
-             }
 
-            Button {
-                visible: !bleDiscovery.running
-                text: "Szukaj bro"
-                onClicked: bleDiscovery.startDiscovery()
-            }
+        SectionHeader
+        {
+            font.pixelSize: Theme.fontSizeLarge
+            text: "Wykryte urządzenia"
+            font.bold: true
+        }
 
-            Repeater {
-                model: pythonGlukometr.discoveredDevices
+        ProgressBar
+        {
+             anchors { left: parent.left; right: parent.right }
+             visible: bleDiscovery.running
+             label: "Szukanie urządzeń"
+             indeterminate: true
+        }
 
-                delegate: Rectangle {
-                    id: dBox
-                    height:100
-                    width: parent.width
-                    color: "#2dc4c4"
-                    border.color: "#000000"
-                    border.width: 5
-                    radius: 15
+        Button
+        {
+            visible: !bleDiscovery.running
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Szukaj bro"
+            onClicked: bleDiscovery.startDiscovery()
+        }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onPressed: { dBox.color= "#209b9b"; dBox.height=110}
-                        onClicked: {
-                            glukometr.connectToService(mac_address);
-                            pythonGlukometr.addDevice(name, mac_address, true)
-                            pageStack.push("monitor.qml");
-                        }
+        Repeater
+        {
+            model: pythonGlukometr.discoveredDevices
+
+            delegate: ListItem
+            {
+                contentHeight: device.height + whenMeasurment.height + Theme.paddingSmall*3
+                onClicked:
+                {
+                    glukometr.connectToService(mac_address)
+                    pythonGlukometr.addDevice(name, mac_address, true)
+                    pageStack.push("monitor.qml")
+                }
+
+                Label
+                {
+                    id:device
+                    anchors
+                    {
+                       left: parent.left
+                       top: parent.top
+                       topMargin: Theme.paddingSmall
+                       leftMargin: Theme.horizontalPageMargin
                     }
+                    font.pixelSize: Theme.fontSizeMedium
+                    color: "#ffffff"
+                    text: name
+                }
 
-                    Label {
-                        font.pixelSize: Theme.fontSizeMedium
-                        text: name
-                        anchors.top: parent.top
-                        anchors.topMargin: 5
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: "#000000"
-                    }
+               Label
+               {
+                   id:whenMeasurment
+                   anchors
+                   {
+                       top: device.bottom
+                       topMargin: Theme.paddingSmall
+                       left: parent.left
+                       leftMargin: Theme.horizontalPageMargin
+                   }
 
-                    Label {
-                        font.pixelSize: Theme.fontSizeTiny
-                        text: mac_address
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        color: "#000000"
-                    }
+                    font.pixelSize: Theme.fontSizeTiny
+                    text: mac_address
+                    color: Theme.secondaryHighlightColor
+                }
                 }
             }
         }

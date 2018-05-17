@@ -23,5 +23,6 @@
         <file>icons/icon-before-meal.svg</file>
         <file>icons/icon-fasting.svg</file>
         <file>assets/AddNewMeasurement.qml</file>
+        <file>assets/ChangeNameDeviceDialog.qml</file>
     </qresource>
 </RCC>
