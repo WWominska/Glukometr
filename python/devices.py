@@ -43,6 +43,16 @@ class Devices:
         if returns:
             return self.devices
 
+    def rename(self, device_id, name, commit=True):
+        """
+        Renames device to given name
+        """
+        cursor.execute("UPDATE device SET name = ? " \
+                       "WHERE device_id = ?", (name, device_id, ))
+
+        if commit:
+            self.database.commit()
+
     def update_last_sync(self, device_id, timestamp=None, commit=True):
         """
         Updates last sync in DB after sync.
@@ -55,12 +65,7 @@ class Devices:
         timestamp = timestamp.replace(tzinfo=timezone.utc).timestamp()
 
         cursor.execute("UPDATE device SET last_sync = ? " \
-                       "WHERE device_id = ?", (device_id, ))
-
-        for device in self.devices:
-            if device["id"] == device_id:
-                device["last_sync"] = timestamp
-                break
+                       "WHERE device_id = ?", (timestamp, device_id, ))
 
         if commit:
             self.database.commit()
