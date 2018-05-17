@@ -88,8 +88,11 @@ class Measurements:
                               "WHERE device_id = ? ORDER BY sequence_number " \
                               "DESC LIMIT 1", (device_id, ))
 
-        for row in rows:
-            return row[0]
+        try:
+            for row in rows:
+                return row[0]
+        except:
+            pass
         return 0
 
     def remove(self, id, commit=True):

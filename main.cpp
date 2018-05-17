@@ -3,7 +3,7 @@
 #include <QQmlContext>
 #include <QGuiApplication>
 #include <QQuickView>
-#include "glukometr.h"
+#include "Glucometer.h"
 #include "BleDiscovery.h"
 
 #ifdef Q_OS_SAILFISH
@@ -19,10 +19,9 @@ int main(int argc, char *argv[])
 #endif
 
     qmlRegisterType<BleDiscovery>("glukometr", 1, 0, "BleDiscovery");
+    qmlRegisterType<Glucometer>("glukometr", 1, 0, "Glucometer");
 
-    Glukometr glukometr;
     QQuickView *view = new QQuickView;
-    view->rootContext()->setContextProperty("glukometr", &glukometr);
     view->setSource(QUrl("qrc:/assets/main.qml"));
     view->setResizeMode(QQuickView::SizeRootObjectToView);
     view->show();

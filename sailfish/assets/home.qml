@@ -38,10 +38,10 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onPressed: { box.color= "#209b9b"; box.height=110}
-                        onClicked: {
-                            glukometr.connectToService(mac_address);
-                            pageStack.push("monitor.qml");
-                        }
+                        onClicked: pageStack.push("monitor.qml", {
+                                       "deviceId": id,
+                                       "macAddress": mac_address
+                                    });
                     }
 
                     Label {
@@ -93,9 +93,11 @@ Page {
                         anchors.fill: parent
                         onPressed: { dBox.color= "#209b9b"; dBox.height=110}
                         onClicked: {
-                            glukometr.connectToService(mac_address);
                             pythonGlukometr.addDevice(name, mac_address, true)
-                            pageStack.push("monitor.qml");
+                            pageStack.push("monitor.qml", {
+                                "deviceId": -1,
+                                "macAddress": mac_address
+                            });
                         }
                     }
 

@@ -39,11 +39,13 @@ android {
 
 
 # Input
-HEADERS += glukometr.h \
-           BleDiscovery.h
+HEADERS += BleDiscovery.h \
+           BleParser.h \
+           Glucometer.h
 SOURCES += BleDiscovery.cpp \
-           glukometr.cpp \
-           main.cpp
+           main.cpp \
+           BleParser.cpp \
+           Glucometer.cpp
 
 OTHER_FILES += python/* \
                common/* \
