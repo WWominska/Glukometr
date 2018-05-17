@@ -13,21 +13,31 @@ Item {
     property alias rememberedDevices: rememberedDevicesModel
     property alias discoveredDevices: discoveredDevicesModel
 
-    function forgetDevice(device_id) {
-        python.call("glukometr.devices.delete", [device_id, ], function () {
-            loadListModel("glukometr.devices.get", rememberedDevices);
+    signal gotDeviceId(string macAddress, int deviceId);
+    signal gotLastSequenceNumber(int deviceId, int lastSequenceNumber);
+
+    function getDeviceId(macAddress) {
+        python.call("glukometr.devices.get_by_mac", [macAddress, ],
+                    function (result) {
+                        if (result !== -1) gotDeviceId(macAddress, result)
+                    })
+    }
+
+    function forgetDevice(deviceId) {
+        python.call("glukometr.devices.remove", [deviceId, ], function () {
+            python.loadListModel("glukometr.devices.get", rememberedDevices);
+            getMeasurements();
         })
     }
 
-    function renameDevice(device_id, name) {
-        python.call("glukometr.devices.rename", [device_id, name, ],
+    function renameDevice(deviceId, name) {
+        python.call("glukometr.devices.rename", [deviceId, name, ],
             function () {
-                loadListModel("glukometr.devices.get", rememberedDevices);
-        })
+                python.loadListModel("glukometr.devices.get", rememberedDevices);
+            })
     }
 
     function addDevice(name, mac_address, remember) {
-        console.log(name, mac_address, remember)
         python.call("glukometr.devices.add", [name, mac_address, remember, ]);
     }
 
@@ -48,10 +58,10 @@ Item {
                            function () { getThresholds(); })
     }
 
-    function getLastSequenceNumber(device_id) {
+    function getLastSequenceNumber(deviceId) {
         python.call("glukometr.measurements.get_last_sequence_number",
-                    [device_id, ], function (result) {
-                        glukometr.lastSequenceNumber = result;
+                    [deviceId, ], function (result) {
+                        gotLastSequenceNumber(deviceId, result)
                     })
     }
 
@@ -68,9 +78,6 @@ Item {
                         value, timestamp, device, sequence_number, meal, ],
                     function () {
                         getMeasurements();
-                        if (device) {
-                            glukometr.lastSequenceNumber = sequence_number;
-                        }
                     })
     }
 
@@ -84,18 +91,11 @@ Item {
                     function () { getMeasurements(); });
     }
 
-    Connections {
-        target: glukometr
-        onNewMeasurement: addMeasurement(value, timestamp, device,
-                                         sequence_number, undefined)
-    }
-
     Python {
         id: python
         Component.onCompleted: {
             addImportPath(Qt.resolvedUrl('../python'));
             importModule('glukometr', function () {});
-            getLastSequenceNumber(1);
 
             setHandler("rememberedDevicesChanged", function (devices) {
                 setListModel(devices, rememberedDevices);

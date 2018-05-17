@@ -1,9 +1,57 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import glukometr 1.0
 
 Page
 {
-    id: screenMonitor
+    id: page
+    property int deviceId
+    property string macAddress
+
+    Component.onCompleted: {
+        if (deviceId != -1)
+            pythonGlukometr.getLastSequenceNumber(deviceId)
+        else pythonGlukometr.getDeviceId(macAddress)
+    }
+
+    Connections {
+        target: pythonGlukometr
+        onGotDeviceId: {
+            if (page.macAddress == macAddress) {
+                page.deviceId = deviceId
+                pythonGlukometr.getLastSequenceNumber(deviceId)
+            }
+        }
+
+        onGotLastSequenceNumber: {
+            if (page.deviceId == deviceId)
+                glucometer.lastSequenceNumber = lastSequenceNumber;
+
+            // ready to connect
+            glucometer.connectToService(macAddress)
+        }
+    }
+
+    Glucometer {
+        id: glucometer
+        deviceId: page.deviceId
+
+        onError: logi.text = "Wystąpił błąd"
+        onInvalidService: logi.text = "Nie pobrano danych"
+        onConnecting: logi.text = "Łączenie..."
+        onConnected: logi.text = "Połączono"
+        onDisconnected: logi.text = "Rozłączono"
+        onNotAGlucometer: logi.text = "Urządzenie nie jest glukometrem"
+        onPairing: logi.text = "Parowanie..."
+        onRacpStarted: logi.text = "Pobieranie pomiarów"
+        onRacpFinished: logi.text = "Pobrano wszystko"
+
+        onNewMeasurement: {
+            pythonGlukometr.addMeasurement(value, timestamp, device,
+                                           sequence_number, -1)
+        }
+    }
+
 
     Rectangle
     {
@@ -15,7 +63,7 @@ Page
         Label
         {
             id: logi
-            text: glukometr.wiadomosc
+            text: "Oczekiwanie..."
             anchors.centerIn: updatei
             color: Theme.highlightColor
         }
@@ -40,9 +88,6 @@ Page
         text: "Stop"
         color: "#209B9B"
         highlightBackgroundColor: "#2DC4C4"
-        onClicked: {
-            glukometr.disconnectService();
-            pageLoader.source = "results.qml";
-        }
+        onClicked: pageStack.pop()
     }
 }

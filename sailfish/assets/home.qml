@@ -65,11 +65,7 @@ Page
                         }
                     }
 
-                    onClicked:
-                    {
-                        glukometr.connectToService(mac_address)
-                        pageStack.push("monitor.qml")
-                    }
+                    onClicked: pageStack.push("monitor.qml", {"deviceId": id, "macAddress": mac_address });
 
                     Label
                     {
@@ -104,7 +100,6 @@ Page
                 }
             }
 
-
         SectionHeader
         {
             font.pixelSize: Theme.fontSizeLarge
@@ -137,9 +132,8 @@ Page
                 contentHeight: device.height + whenMeasurment.height + Theme.paddingSmall*3
                 onClicked:
                 {
-                    glukometr.connectToService(mac_address)
                     pythonGlukometr.addDevice(name, mac_address, true)
-                    pageStack.push("monitor.qml")
+                    pageStack.push("monitor.qml", {"deviceId": -1, "macAddress": mac_address});
                 }
 
                 Label

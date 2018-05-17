@@ -43,10 +43,28 @@ class Devices:
         if returns:
             return self.devices
 
+    def get_by_mac(self, mac_address):
+        """
+        Returns device ID for given mac address
+        """
+        cursor = self.database.cursor
+
+        rows = cursor.execute("SELECT device_id FROM device WHERE " \
+                              "mac_address = ?", (mac_address, ))
+
+        try:
+            row = rows.fetchone()
+            return row[0]
+        except:
+            return -1
+
+
     def rename(self, device_id, name, commit=True):
         """
         Renames device to given name
         """
+        cursor = self.database.cursor
+
         cursor.execute("UPDATE device SET name = ? " \
                        "WHERE device_id = ?", (name, device_id, ))
 

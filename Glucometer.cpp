@@ -1,53 +1,11 @@
-#include "glukometr.h"
+#include "Glucometer.h"
 #include <QDataStream>
 
 #include <QtEndian>
 #include <QtMath>
 
-quint16 Glukometr::bytesToInt(quint8 b1, quint8 b2)
-{
-    return (b1 + (b2 << 8));
-}
 
-int Glukometr::unsignedToSigned(int b, int size)
-{
-    if ((b & (1 << size-1)) != 0)
-    {
-        b = -1 * ((1 << size-1) - (b & ((1 << size-1) - 1)));
-    }
-    return b;
-}
-
-float Glukometr::bytesToFloat(quint8 b1, quint8 b2)
-{
-    int mantissa = unsignedToSigned(b1 + ((b2 & 0x0F) << 8), 12);
-    return (float)(mantissa);
-}
-
-//QBiteArray - funkcj dostarczająca użytkownikowi szyk bajtów
-QDateTime Glukometr::convertTime(QByteArray data, int offset)
-{
-    // odczytaj 7 bajtów od podanego miejsca
-    int rok = bytesToInt(data[offset], data[offset+1]); // rok mieści się w dwóch
-    int miesiac = data[offset+2]; // miesiąc jest na trzecim
-    int dzien = data[offset+3]; // dzień jest na czwartym
-    int godziny = data[offset+4]; // godzina jest na piątym
-    int minuty = data[offset+5]; // minuty są na szóstym
-    int sekundy = data[offset+6]; // sekundy są na siódmym
-
-    // stwórz obiekt daty
-    QDateTime odczytanaData;
-
-    // ustaw odczytane dane
-    odczytanaData.setDate(QDate(rok, miesiac, dzien)); // ustaw datę
-    odczytanaData.setTime(QTime(godziny, minuty, sekundy)); // ustaw czas
-
-    // zwróć odczytaną datę
-    return odczytanaData;
-}
-
-
-void Glukometr::parseGlucoseMeasurementData(QByteArray data)
+void Glucometer::parseGlucoseMeasurementData(QByteArray data)
 {
     // zaczynamy od zerowego bajtu
     int offset = 0;
@@ -61,13 +19,13 @@ void Glukometr::parseGlucoseMeasurementData(QByteArray data)
     bool typeAndLocationPresent = (flags & 0x02) > 0;
     QString jednostka = (flags & 0x04) > 0 ? "mmol/l" : "mg/dl";
 
-    quint16 sequenceNumber = bytesToInt(data[offset], data[offset+1]); //przechowuje liczbe przez to że jest qu tzn że nie ma żadnego znaku a 16 to długość
+    quint16 sequenceNumber = BleParser::bytesToInt(data[offset], data[offset+1]); //przechowuje liczbe przez to że jest qu tzn że nie ma żadnego znaku a 16 to długość
     qDebug() << sequenceNumber;
 
     offset += 2;
 
     // odczytaj datę i przejdź o 7 bajtów dalej (tyle zajmuje)
-    QDateTime dataPomiaru = this->convertTime(data, offset);
+    QDateTime dataPomiaru = BleParser::convertTime(data, offset);
     offset += 7;
 
     // offset czasowy
@@ -76,7 +34,7 @@ void Glukometr::parseGlucoseMeasurementData(QByteArray data)
     // jeśli dano offset czasowy, odczytaj
     if (timeOffsetPresent)
     {
-        timeOffset = bytesToInt(data[offset], data[offset+1]); // offset zajmuje 2 bajty
+        timeOffset = BleParser::bytesToInt(data[offset], data[offset+1]); // offset zajmuje 2 bajty
         // przejdź o 2 bajty dalej
         offset += 2;
     }
@@ -85,13 +43,14 @@ void Glukometr::parseGlucoseMeasurementData(QByteArray data)
     // jeśli jest typ miejsce pomiaru
     if (typeAndLocationPresent)
     {
-        glucoseConcentration = this->bytesToFloat(data[offset], data[offset+1]);
+        glucoseConcentration = BleParser::bytesToFloat(data[offset], data[offset+1]);
     }
 
-    emit newMeasurement(glucoseConcentration, dataPomiaru, 1, sequenceNumber);
+    emit newMeasurement(glucoseConcentration, dataPomiaru, m_deviceId,
+                        sequenceNumber);
 }
 
-void Glukometr::glukozaPomiarKontekst(QByteArray data)
+void Glucometer::glukozaPomiarKontekst(QByteArray data)
 {
     // na podstawie https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.glucose_measurement_context.xml
 
@@ -116,7 +75,7 @@ void Glukometr::glukozaPomiarKontekst(QByteArray data)
     float carbohydrate_units, medicationQuantity, HbA1c;
 
     // numer sekwencji
-    quint16 sequenceNumber = bytesToInt(data[offset], data[offset+1]); //przechowuje liczbe przez to że jest qu tzn że nie ma żadnego znaku a 16 to długość
+    quint16 sequenceNumber = BleParser::bytesToInt(data[offset], data[offset+1]); //przechowuje liczbe przez to że jest qu tzn że nie ma żadnego znaku a 16 to długość
     offset += 2;
 
     if (moreFlagsPresent) // sprawdzamy flagi czy sa (może ich nie być)
@@ -133,7 +92,7 @@ void Glukometr::glukozaPomiarKontekst(QByteArray data)
         // 7 = brunch
         carbohydrate_id = data[offset];
         // ilosc weglowodanow do spozycia (?)
-        carbohydrate_units = this->bytesToFloat(data[offset+1], data[offset+2]);
+        carbohydrate_units = BleParser::bytesToFloat(data[offset+1], data[offset+2]);
         // przechodzimy o 3 bajty dalej
         offset += 3;
     }
@@ -161,7 +120,7 @@ void Glukometr::glukozaPomiarKontekst(QByteArray data)
 
     if (exercisePresent)
     {
-        exerciseDuration = bytesToInt(data[offset], data[offset+1]); // dlugosc cwiczen (?) zajmuje 2 bajty
+        exerciseDuration = BleParser::bytesToInt(data[offset], data[offset+1]); // dlugosc cwiczen (?) zajmuje 2 bajty
         exerciseIntensity = data[offset+2]; // intensywnosc cwiczen
         offset += 3;
     }
@@ -176,48 +135,56 @@ void Glukometr::glukozaPomiarKontekst(QByteArray data)
         // 5 - Pre-mixed insulin
         medicationId = data[offset];
         // ilosc lekow do wziecia (?)
-        medicationQuantity = bytesToFloat(data[offset+1], data[offset+2]);
+        medicationQuantity = BleParser::bytesToFloat(data[offset+1], data[offset+2]);
         offset += 3;
     }
 
     if (hbA1cPresent)
-        HbA1c = bytesToFloat(data[offset], data[offset+1]);
+        HbA1c = BleParser::bytesToFloat(data[offset], data[offset+1]);
 
-    emit mealChanged(1, sequenceNumber, meal);
+    emit mealChanged(m_deviceId, sequenceNumber, meal);
 }
 
 //QBluetoothDeviceInfo - Zbiera i dostarcza informację na temat urządzenia Bluetooth (nazwa, adres, klasa)
 //QBluetoothDeviceDiscoveryAgent - odszukuje pobliskie urządzenia Bluetooth
-Glukometr::Glukometr():
-    foundGlukometrService(false), m_control(0), m_service(0)
+Glucometer::Glucometer():
+    foundGlucometerService(false), m_control(0), m_service(0)
 {
     enable_indication = QByteArray::fromHex("0200");
     enable_notification = QByteArray::fromHex("0100");//stałe zgapione ze specyfikacji
 
     // assume there is nothing in DB until said otherwise
-    lastSequenceNumber = 0;
+    m_lastSequenceNumber = 0;
+    m_deviceId = 1; // default Device ID
 }
 
-Glukometr::~Glukometr()
+Glucometer::~Glucometer()
 {
+    // disconnect completely
+    if (m_control) {
+        foundGlucometerService = false;
 
-}
+        //disable notifications before disconnecting
+        if (m_notificationDesc.isValid() && m_service
+                && m_notificationDesc.value() == enable_notification) {
+            m_service->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0000"));
+        }
 
-void Glukometr::setWiadomosc(QString wiadomosc) //funkcja do wyświetlania komunikatów
-{
-    m_info = wiadomosc;
-    Q_EMIT wiadomoscChanged();
-}
+        // disconnect
+        m_control->disconnectFromDevice();
 
-QString Glukometr::wiadomosc() const //funkcja zwracająca wiadomość
-{
-    return m_info;
+        // remove from memory
+        if (m_service){
+            delete m_service;
+            m_service = 0;
+        }
+    }
 }
 
 //QBluetoothUuid - generuje adres Uuid dla każdej usługi Bluetooth
 //QLowEnergyController - daje dostęp do urządzeń w sieci Bluetooth i jest punktem wejścia do tworzenia sieci Buetooth
 
-void Glukometr::connectToService(const QString &adres) //łączy się z urządzeniem i przyjmuje jako parametr jego adres
+void Glucometer::connectToService(const QString &adres) //łączy się z urządzeniem i przyjmuje jako parametr jego adres
 {
     if (m_control)
     {
@@ -237,54 +204,50 @@ void Glukometr::connectToService(const QString &adres) //łączy się z urządze
     connect(m_control, SIGNAL(connected()),
             this, SLOT(urzadzenieConnected()));//połączyło się z urządzeniem
     connect(m_control, SIGNAL(disconnected()),
-            this, SLOT(urzadzenieDisconnected()));//rozłączyło się z urządzeniem
+            this, SIGNAL(disconnected()));//rozłączyło się z urządzeniem
 
-    setWiadomosc("Laczenie...");
+    emit connecting();
     m_control->connectToDevice();//łączy się z urządzenim
 }
 
-void Glukometr::urzadzenieConnected()
+void Glucometer::urzadzenieConnected()
 {
     m_control->discoverServices(); //szuka usług
+    emit connected();
 }
 
-void Glukometr::urzadzenieDisconnected()
-{
-    setWiadomosc("Rozłączono urządzenie");
-}
-
-void Glukometr::serviceDiscovered(const QBluetoothUuid &gatt)
+void Glucometer::serviceDiscovered(const QBluetoothUuid &gatt)
 {
     qDebug() << gatt;
     if (gatt == QBluetoothUuid(QBluetoothUuid::Glucose))
     {
-        foundGlukometrService = true; //funkcja sprawdzająca czy urządzenie jest glukometrem
+        foundGlucometerService = true; //funkcja sprawdzająca czy urządzenie jest Glucometerem
     }
 }
 
 //QLowEnergyCharacteristic - podaje informację o charakterystyce (nt nazwy, Uuid, wartość własności identyfikatory)
 //QLowEnergyDescriptor - dostarcza informację o charakterystycę
-void Glukometr::serviceScanDone() //konczy szukać usług
+void Glucometer::serviceScanDone() //konczy szukać usług
 {
     delete m_service; //usunwa usługę z pamięci (była połączona)
     m_service = 0; //zeruje wskaźnik żeby nie pokazywał na miejsce w pamięcii
-    if (foundGlukometrService) //znajduje glukometr
+    if (foundGlucometerService) //znajduje Glucometer
     {
-        setWiadomosc("Trwa parowanie");
+        emit pairing();
         m_service = m_control->createServiceObject(//łącze się do usługi, tworze wskaźnik na obiekt usługi
                     QBluetoothUuid(QBluetoothUuid::Glucose), this);
     }
 
-    if (!m_service) //kiedy nie znajdzie glukometru
+    if (!m_service) //kiedy nie znajdzie Glucometeru
     {
-        setWiadomosc("Nie znaleziono glukometru.");
+        emit notAGlucometer();
         return;
     }
 
     connect(m_service, SIGNAL(stateChanged(QLowEnergyService::ServiceState)),
             this, SLOT(serviceStateChanged(QLowEnergyService::ServiceState)));//włączy się jak znajdzie informację o usłudze
     connect(m_service, SIGNAL(characteristicChanged(QLowEnergyCharacteristic,QByteArray)),
-            this, SLOT(updateGlukometrValue(QLowEnergyCharacteristic,QByteArray)));//włączy się jak dostanie pomiar do tablicy bitów
+            this, SLOT(updateGlucometerValue(QLowEnergyCharacteristic,QByteArray)));//włączy się jak dostanie pomiar do tablicy bitów
     connect(m_service, SIGNAL(error(QLowEnergyService::ServiceError)),
             this, SLOT(serviceError(QLowEnergyService::ServiceError)));
     connect(m_service, SIGNAL(descriptorWritten(QLowEnergyDescriptor,QByteArray)), //sygnał został zapisany do skryptu (chce wiedzieć czy on wie że powinien coś wysłać)
@@ -293,32 +256,13 @@ void Glukometr::serviceScanDone() //konczy szukać usług
     m_service->discoverDetails();//każe mu znaleźć info o usłudze
 }
 
-void Glukometr::disconnectService()
+void Glucometer::controllerError(QLowEnergyController::Error error)
 {
-    foundGlukometrService = false;
-
-    //disable notifications before disconnecting
-    if (m_notificationDesc.isValid() && m_service
-            && m_notificationDesc.value() == enable_notification)
-    {
-        m_service->writeDescriptor(m_notificationDesc, QByteArray::fromHex("0000"));
-    }
-
-    else
-    {
-        m_control->disconnectFromDevice();
-        delete m_service;
-        m_service = 0;
-    }
-}
-
-void Glukometr::controllerError(QLowEnergyController::Error error)
-{
-    setWiadomosc("Nie można połączyć się z urządzeniem");
+    emit this->error();
     qWarning() << "Controller Error:" << error;
 }
 
-void Glukometr::serviceStateChanged(QLowEnergyService::ServiceState s)
+void Glucometer::serviceStateChanged(QLowEnergyService::ServiceState s)
 {
     switch (s)
     {
@@ -330,7 +274,7 @@ void Glukometr::serviceStateChanged(QLowEnergyService::ServiceState s)
         glChar = m_service->characteristic(QBluetoothUuid(QBluetoothUuid::GlucoseMeasurement)); //pobiera informację o charakterystyce pomiarów
         if (!glChar.isValid()) //jeśli nie może pobrać charakterystyki to wywarzuca komunikat
         {
-            setWiadomosc("Nie pobrano danych");
+            emit invalidService();
             break;
         }
 
@@ -344,7 +288,7 @@ void Glukometr::serviceStateChanged(QLowEnergyService::ServiceState s)
         glChar = m_service->characteristic(QBluetoothUuid(QBluetoothUuid::GlucoseMeasurementContext));//robi to samo tylko dla innego konteksu
         if (!glChar.isValid())
         {
-            setWiadomosc("Nie pobrano danych");
+            emit invalidService();
             break;
         }
 
@@ -358,7 +302,7 @@ void Glukometr::serviceStateChanged(QLowEnergyService::ServiceState s)
         glChar = m_service->characteristic(QBluetoothUuid(QBluetoothUuid::RecordAccessControlPoint));
         if (!glChar.isValid())
         {
-            setWiadomosc("Nie pobrano danych");
+            emit invalidService();
             break;
         }
 
@@ -367,13 +311,12 @@ void Glukometr::serviceStateChanged(QLowEnergyService::ServiceState s)
             // zasubskrybuj
             m_service->writeDescriptor(glChar.descriptor(QBluetoothUuid(QBluetoothUuid::ClientCharacteristicConfiguration)),enable_indication);//pozwala książce wysyłać dane
 
-            if (lastSequenceNumber == 0) {
-                setWiadomosc("Pobieranie wszystkich pomiarow");
+            if (m_lastSequenceNumber == 0) {
                 m_service->writeCharacteristic(glChar, requestRACPMeasurements(true));
             } else {
-                setWiadomosc("Pobieranie ostatnich pomiarow");
-                m_service->writeCharacteristic(glChar, requestRACPMeasurements(false, lastSequenceNumber));
+                m_service->writeCharacteristic(glChar, requestRACPMeasurements(false, m_lastSequenceNumber));
             }
+            emit racpStarted();
         }
 
         break;
@@ -383,25 +326,25 @@ void Glukometr::serviceStateChanged(QLowEnergyService::ServiceState s)
     }
 }
 
-void Glukometr::serviceError(QLowEnergyService::ServiceError e)
+void Glucometer::serviceError(QLowEnergyService::ServiceError e)
 {
     switch (e)
     {
     case QLowEnergyService::DescriptorWriteError:
-        setWiadomosc("...");
+        emit error();
         break;
     default:
         break;
     }
 }
 
-void Glukometr::updateGlukometrValue(const QLowEnergyCharacteristic &c,const QByteArray &value)//dostaje informację o np. pomiarach, książce
+void Glucometer::updateGlucometerValue(const QLowEnergyCharacteristic &c,const QByteArray &value)//dostaje informację o np. pomiarach, książce
 {
 
     if (c.uuid() == QBluetoothUuid(QBluetoothUuid::RecordAccessControlPoint))
     {
         ostatni=false;
-        setWiadomosc("Pobrano wszystko");
+        emit racpFinished();
     }
     if (c.uuid() == QBluetoothUuid(QBluetoothUuid::GlucoseMeasurementContext))
     {
@@ -414,7 +357,7 @@ void Glukometr::updateGlukometrValue(const QLowEnergyCharacteristic &c,const QBy
     }
 }
 
-QByteArray Glukometr::requestRACPMeasurements(bool all, int last_sequence) {
+QByteArray Glucometer::requestRACPMeasurements(bool all, int last_sequence) {
     QByteArray request = QByteArray::fromHex("01");
 
     if (all) {
@@ -441,7 +384,7 @@ QByteArray Glukometr::requestRACPMeasurements(bool all, int last_sequence) {
     return request;
 }
 
-void Glukometr::confirmedDescriptorWrite(const QLowEnergyDescriptor &d,const QByteArray &value)
+void Glucometer::confirmedDescriptorWrite(const QLowEnergyDescriptor &d,const QByteArray &value)
 {
     if (d.isValid() && d == m_notificationDesc && value == QByteArray::fromHex("0000")) //zapisały się informację w momencie kiedy funkcja się wyłączyła i sprawdzamy czy aby na pewno chcemy się rozłączyć z urządzeniem
     {
@@ -449,4 +392,22 @@ void Glukometr::confirmedDescriptorWrite(const QLowEnergyDescriptor &d,const QBy
         delete m_service;
         m_service = 0;
     }
+}
+
+int Glucometer::getLastSequenceNumber() {
+    return m_lastSequenceNumber;
+}
+
+void Glucometer::setLastSequenceNumber(int lastSequenceNumber) {
+    m_lastSequenceNumber = lastSequenceNumber;
+    emit lastSequenceNumberChanged();
+}
+
+int Glucometer::getDeviceId() {
+    return m_deviceId;
+}
+
+void Glucometer::setDeviceId(int deviceId) {
+    m_deviceId = deviceId;
+    emit deviceIdChanged();
 }
