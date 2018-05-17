@@ -59,16 +59,13 @@ Page
         width: parent.width
         height: 80
         anchors.bottom: stop.top
-        color: "#000000"
-        border.color: "#2dc4c4"
-        border.width: 2
 
         Label
         {
             id: logi
             text: "Oczekiwanie..."
             anchors.centerIn: updatei
-            color: "#2dc4c4"
+            color: Theme.highlightColor
         }
     }
 
