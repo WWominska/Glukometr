@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/python">
+        <file alias="__init__.py">../python/__init__.py</file>
+        <file alias="glukometr.py">../python/glukometr.py</file>
+        <file alias="storage.py">../python/storage.py</file>
+        <file alias="measurements.py">../python/measurements.py</file>
+        <file alias="thresholds.py">../python/thresholds.py</file>
+        <file alias="devices.py">../python/devices.py</file>
+    </qresource>
+    <qresource prefix="/">
+        <file alias="assets/GlucoseApplication.qml">../common/assets/GlucoseApplication.qml</file>
+        <file alias="assets/Button.qml">../common/assets/Button.qml</file>
+        <file>assets/home.qml</file>
+        <file>assets/main.qml</file>
+        <file>assets/monitor.qml</file>
+        <file>assets/Results.qml</file>
+        <file alias="assets/glucometr.png">../common/assets/glucometr.png</file>
+        <file alias="assets/candy.png">../common/assets/candy.png</file>
+        <file alias="assets/ladowanie.png">../common/assets/ladowanie.png</file>
+        <file>assets/cover/CoverPage.qml</file>
+        <file>assets/ChangeMealDialog.qml</file>
+        <file>icons/icon-after-meal.svg</file>
+        <file>icons/icon-before-meal.svg</file>
+        <file>icons/icon-fasting.svg</file>
+        <file>assets/AddNewMeasurement.qml</file>
+        <file>assets/ChangeNameDeviceDialog.qml</file>
+    </qresource>
+</RCC>
