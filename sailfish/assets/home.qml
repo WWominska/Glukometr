@@ -30,7 +30,7 @@ Page
             SectionHeader
             {
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Zapamiętaj urządzenie"
+                text: "Zapamiętane urządzenie"
                 font.bold: true
             }
 
@@ -41,7 +41,7 @@ Page
 
                 delegate: ListItem
                 {
-                    contentHeight: deviceAdd.height + whenMeasurmentAdd.height + Theme.paddingSmall*3
+                    contentHeight: deviceAdd.height + lastSyncDate.height + Theme.paddingSmall*3
 
                     menu: ContextMenu
                     {
@@ -67,105 +67,111 @@ Page
 
                     onClicked: pageStack.push("monitor.qml", {"deviceId": id, "macAddress": mac_address });
 
+                    Image {
+                        id: bluetoothIcon
+                        source: "image://Theme/icon-m-bluetooth-device"
+                        anchors {
+                            left: parent.left
+                            verticalCenter: parent.verticalCenter
+                            leftMargin: Theme.horizontalPageMargin
+                        }
+                        width: Theme.iconSizeMedium
+                        height: width
+                    }
+
                     Label
                     {
-                        id:deviceAdd
+                        id: deviceAdd
                         anchors
                         {
-                           left: parent.left
+                           left: bluetoothIcon.right
                            top: parent.top
                            topMargin: Theme.paddingSmall
-                           leftMargin: Theme.horizontalPageMargin
+                           leftMargin: Theme.paddingSmall
                         }
                         font.pixelSize: Theme.fontSizeMedium
-                        color: "#ffffff"
+                        color: Theme.primaryColor
                         text: name
                     }
 
-                   Label
-                   {
-                       id:whenMeasurmentAdd
-                       anchors
-                       {
-                           top: deviceAdd.bottom
-                           topMargin: Theme.paddingSmall
-                           left: parent.left
-                           leftMargin: Theme.horizontalPageMargin
-                       }
+                    Label
+                    {
+                        id: lastSyncDate
+                        anchors
+                        {
+                            top: deviceAdd.bottom
+                            left: bluetoothIcon.right
+                            leftMargin: Theme.paddingSmall
+                        }
 
                         font.pixelSize: Theme.fontSizeTiny
-                        text: mac_address
-                        color: Theme.secondaryHighlightColor
+                        text: last_sync.getTime() === 0 ? "Nigdy" : last_sync.toLocaleString()
+                        color: Theme.secondaryColor
                     }
                 }
             }
 
-        SectionHeader
-        {
-            font.pixelSize: Theme.fontSizeLarge
-            text: "Wykryte urządzenia"
-            font.bold: true
-        }
-
-        ProgressBar
-        {
-             anchors { left: parent.left; right: parent.right }
-             visible: bleDiscovery.running
-             label: "Szukanie urządzeń"
-             indeterminate: true
-        }
-
-        Button
-        {
-            visible: !bleDiscovery.running
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Szukaj bro"
-            onClicked: bleDiscovery.startDiscovery()
-        }
-
-        Repeater
-        {
-            model: pythonGlukometr.discoveredDevices
-
-            delegate: ListItem
+            SectionHeader
             {
-                contentHeight: device.height + whenMeasurment.height + Theme.paddingSmall*3
-                onClicked:
-                {
-                    pythonGlukometr.addDevice(name, mac_address, true)
-                    pageStack.push("monitor.qml", {"deviceId": -1, "macAddress": mac_address});
-                }
+                font.pixelSize: Theme.fontSizeLarge
+                text: "Wykryte urządzenia"
+                font.bold: true
+            }
 
-                Label
+            ProgressBar
+            {
+                 anchors { left: parent.left; right: parent.right }
+                 visible: bleDiscovery.running
+                 label: "Szukanie urządzeń"
+                 indeterminate: true
+            }
+
+            Button
+            {
+                visible: !bleDiscovery.running
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Szukaj bro"
+                onClicked: bleDiscovery.startDiscovery()
+            }
+
+            Repeater
+            {
+                model: pythonGlukometr.discoveredDevices
+
+                delegate: ListItem
                 {
-                    id:device
-                    anchors
+                    onClicked:
                     {
-                       left: parent.left
-                       top: parent.top
-                       topMargin: Theme.paddingSmall
-                       leftMargin: Theme.horizontalPageMargin
+                        pythonGlukometr.addDevice(name, mac_address, true)
+                        pageStack.push("monitor.qml", {"deviceId": -1, "macAddress": mac_address});
                     }
-                    font.pixelSize: Theme.fontSizeMedium
-                    color: "#ffffff"
-                    text: name
-                }
 
-               Label
-               {
-                   id:whenMeasurment
-                   anchors
-                   {
-                       top: device.bottom
-                       topMargin: Theme.paddingSmall
-                       left: parent.left
-                       leftMargin: Theme.horizontalPageMargin
-                   }
+                    Image {
+                        id: bluetoothIcon2
+                        source: "image://Theme/icon-m-bluetooth-device"
+                        anchors {
+                            left: parent.left
+                            top: parent.top
+                            topMargin: Theme.paddingSmall
+                            leftMargin: Theme.horizontalPageMargin
+                        }
+                        width: Theme.iconSizeMedium
+                        height: width
+                    }
 
-                    font.pixelSize: Theme.fontSizeTiny
-                    text: mac_address
-                    color: Theme.secondaryHighlightColor
-                }
+                    Label
+                    {
+                        id: device
+                        anchors
+                        {
+                           left: bluetoothIcon2.right
+                           verticalCenter: parent.verticalCenter
+                           leftMargin: Theme.paddingSmall
+                        }
+                        font.pixelSize: Theme.fontSizeMedium
+                        color: Theme.primaryColor
+                        text: name
+                    }
                 }
             }
         }
