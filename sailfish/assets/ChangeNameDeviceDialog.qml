@@ -32,6 +32,7 @@ Dialog
          {
              id: nameField
              width: parent.width
+             text: name
              placeholderText: "Np. Glukometr w domu"
              label: "Twoja nazwa"
          }

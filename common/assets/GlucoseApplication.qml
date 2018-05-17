@@ -62,7 +62,7 @@ Item {
 
     function updateThreshold(meal, min, max) {
         return python.call("glukometr.thresholds.update", [meal, min, max, ],
-                           function () { getThresholds(); })
+                           function () { }); //getThresholds(); })
     }
 
     function getLastSequenceNumber(deviceId) {
