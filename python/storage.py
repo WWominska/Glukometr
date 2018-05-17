@@ -24,6 +24,20 @@ class Database:
         """Commits local changes to the database"""
         self.connection.commit()
 
+    def check_if_table_exists(self, table_name):
+        """
+        Given table name, checks if it exists and returns True or False
+
+        :param table_name: name of table
+        """
+        # check if table exists
+        self.cursor.execute("SELECT name FROM sqlite_master WHERE " \
+                            "type='table' AND name=?", (table_name, ))
+        results = self.cursor.fetchall()
+
+        return len(results) > 0
+
+
     def close(self):
         self.connection.commit()
         self.connection.close()
