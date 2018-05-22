@@ -19,6 +19,16 @@ Page
         anchors.fill: parent
         contentHeight: column.height
 
+        PullDownMenu
+        {
+            MenuItem
+            {
+                visible: !bleDiscovery.running
+                text: "Szukaj urządzeń"
+                onClicked: bleDiscovery.startDiscovery()
+            }
+        }
+
         Column
         {
             id: column
@@ -44,6 +54,8 @@ Page
 
                 delegate: ListItem
                 {
+                    id:deviceSet
+                    RemorseItem { id: remorse }
                     contentHeight: deviceAdd.height + whenMeasurmentAdd.height + Theme.paddingSmall*3
 
                     menu: ContextMenu
@@ -64,7 +76,7 @@ Page
                         MenuItem
                         {
                             text: "Zapomnij urządzenie"
-                            onClicked: pythonGlukometr.forgetDevice(id)
+                            onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {pythonGlukometr.forgetDevice(id) } )
                         }
                     }
 
@@ -103,72 +115,68 @@ Page
                 }
             }
 
-        SectionHeader
-        {
-            font.pixelSize: Theme.fontSizeLarge
-            text: "Wykryte urządzenia"
-            font.bold: true
-        }
-
-        ProgressBar
-        {
-             anchors { left: parent.left; right: parent.right }
-             visible: bleDiscovery.running
-             label: "Szukanie urządzeń"
-             indeterminate: true
-        }
-
-        Button
-        {
-            visible: !bleDiscovery.running
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "Szukaj bro"
-            onClicked: bleDiscovery.startDiscovery()
-        }
-
-        Repeater
-        {
-            model: pythonGlukometr.discoveredDevices
-
-            delegate: ListItem
+            SectionHeader
             {
-                contentHeight: device.height + whenMeasurment.height + Theme.paddingSmall*3
-                onClicked:
-                {
-                    pythonGlukometr.addDevice(name, mac_address, true)
-                    pageStack.push("monitor.qml", {"deviceId": -1, "macAddress": mac_address});
-                }
+                font.pixelSize: Theme.fontSizeLarge
+                text: "Wykryte urządzenia"
+                font.bold: true
+            }
 
-                Label
+            ProgressBar
+            {
+                 anchors
+                 {
+                     left: parent.left
+                     right: parent.right
+                 }
+                 visible: bleDiscovery.running
+                 label: "Szukanie urządzeń"
+                 indeterminate: true
+            }
+
+            Repeater
+            {
+                model: pythonGlukometr.discoveredDevices
+
+                delegate: ListItem
                 {
-                    id:device
-                    anchors
+                    contentHeight: device.height + whenMeasurment.height + Theme.paddingSmall*3
+                    onClicked:
                     {
-                       left: parent.left
-                       top: parent.top
-                       topMargin: Theme.paddingSmall
-                       leftMargin: Theme.horizontalPageMargin
+                        pythonGlukometr.addDevice(name, mac_address, true)
+                        pageStack.push("monitor.qml", {"deviceId": -1, "macAddress": mac_address});
                     }
-                    font.pixelSize: Theme.fontSizeMedium
-                    color: "#ffffff"
-                    text: name
-                }
 
-               Label
-               {
-                   id:whenMeasurment
-                   anchors
+                    Label
+                    {
+                        id:device
+                        anchors
+                        {
+                           left: parent.left
+                           top: parent.top
+                           topMargin: Theme.paddingSmall
+                           leftMargin: Theme.horizontalPageMargin
+                        }
+                        font.pixelSize: Theme.fontSizeMedium
+                        color: "#ffffff"
+                        text: name
+                    }
+
+                   Label
                    {
-                       top: device.bottom
-                       topMargin: Theme.paddingSmall
-                       left: parent.left
-                       leftMargin: Theme.horizontalPageMargin
-                   }
+                       id:whenMeasurment
+                       anchors
+                       {
+                           top: device.bottom
+                           topMargin: Theme.paddingSmall
+                           left: parent.left
+                           leftMargin: Theme.horizontalPageMargin
+                       }
 
-                    font.pixelSize: Theme.fontSizeTiny
-                    text: mac_address
-                    color: Theme.secondaryHighlightColor
-                }
+                        font.pixelSize: Theme.fontSizeTiny
+                        text: mac_address
+                        color: Theme.secondaryHighlightColor
+                    }
                 }
             }
         }

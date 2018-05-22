@@ -1,21 +1,35 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-CoverBackground {
-    Label {
+CoverBackground
+{
+    Label
+    {
         id: label
         anchors.centerIn: parent
-        text: qsTr("My Cover")
+        text: "My Cover"
     }
 
-    CoverActionList {
+    CoverActionList
+    {
         id: coverAction
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-next"
+        CoverAction
+        {
+            iconSource: "image://theme/icon-cover-new"
+            onTriggered:
+            {
+                application.activate()
+                var dialog = application.pageStack.push(Qt.resolvedUrl("../AddNewMeasurement.qml"))
+                dialog.accepted.connect(function()
+                {
+                    pythonGlukometr.addMeasurement(dialog.value, 0, 0, 0, dialog.meal)
+                })
+            }
         }
 
-        CoverAction {
+        CoverAction
+        {
             iconSource: "image://theme/icon-cover-pause"
         }
     }
