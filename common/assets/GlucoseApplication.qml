@@ -3,15 +3,55 @@ import io.thp.pyotherside 1.4
 
 
 Item {
+    GlucoseListModel {
+        id: drugsModel
+        interpreter: python
+        pythonClass: "glukometr.drugs"
+        Component.onCompleted: get()
+    }
+
+    GlucoseListModel {
+        id: thresholdsModel
+        interpreter: python
+        pythonClass: "glukometr.thresholds"
+        Component.onCompleted: get()
+
+        function reset() {
+            return python.call("glukometr.thresholds.set_defaults", [],
+                               function () { get(); })
+        }
+    }
+
+    GlucoseListModel {
+        id: mealAnnotationsModel
+        interpreter: python
+        pythonClass: "glukometr.meal_annotations"
+    }
+
+    GlucoseListModel {
+        id: textAnnotationsModel
+        interpreter: python
+        pythonClass: "glukometr.text_annotations"
+    }
+
+    GlucoseListModel {
+        id: drugAnnotationsModel
+        interpreter: python
+        pythonClass: "glukometr.drug_annotations"
+    }
+
     ListModel { id: measurementsModel }
-    ListModel { id: thresholdsModel }
     ListModel { id: rememberedDevicesModel }
     ListModel { id: discoveredDevicesModel }
 
     property alias measurements: measurementsModel
-    property alias thresholds: thresholdsModel
     property alias rememberedDevices: rememberedDevicesModel
     property alias discoveredDevices: discoveredDevicesModel
+    property alias drugs: drugsModel
+    property alias thresholds: thresholdsModel
+    property alias mealAnnotations: mealAnnotationsModel
+    property alias textAnnotations: textAnnotationsModel
+    property alias drugAnnotations: drugAnnotationsModel
 
     signal gotDeviceId(string macAddress, int deviceId);
     signal gotLastSequenceNumber(int deviceId, int lastSequenceNumber);
@@ -53,18 +93,6 @@ Item {
                                 value, meal, ]);
     }
 
-    function resetThresholds() {
-        return python.call("glukometr.thresholds.set_defaults", [], function ()
-        {
-            getThresholds();
-        })
-    }
-
-    function updateThreshold(meal, min, max) {
-        return python.call("glukometr.thresholds.update", [meal, min, max, ],
-                           function () { }); //getThresholds(); })
-    }
-
     function getLastSequenceNumber(deviceId) {
         python.call("glukometr.measurements.get_last_sequence_number",
                     [deviceId, ], function (result) {
@@ -74,10 +102,6 @@ Item {
 
     function getMeasurements() {
         python.loadListModel("glukometr.measurements.get", measurementsModel);
-    }
-
-    function getThresholds() {
-        python.loadListModel("glukometr.thresholds.get", thresholdsModel);
     }
 
     function addMeasurement(value, timestamp, device, sequence_number, meal) {
@@ -126,8 +150,8 @@ Item {
             }
         }
 
-        function loadListModel(pythonMethod, model) {
-            call(pythonMethod, [], function(results) {
+        function loadListModel(pythonMethod, model, filters) {
+            call(pythonMethod, [filters, ], function(results) {
                 setListModel(results, model);
             });
         }

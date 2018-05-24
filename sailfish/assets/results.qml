@@ -63,6 +63,11 @@ Page
         }
         PullDownMenu
         {
+            MenuItem {
+                text: "Tajna skrytka"
+                onClicked: pageStack.push("DrugsPage.qml")
+            }
+
             MenuItem
             {
                 text: "Ustaw progi"
@@ -100,6 +105,12 @@ Page
             id: measurement
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
+            onClicked: pageStack.push(Qt.resolvedUrl("MeasurementDetailsPage.qml"), {
+                                          "measurement_id": id,
+                                          "value": value,
+                                          "meal": meal,
+                                          "timestamp": timestamp
+                                      })
             menu: ContextMenu
             {
                 MenuItem
