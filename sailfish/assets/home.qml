@@ -19,6 +19,16 @@ Page
         anchors.fill: parent
         contentHeight: column.height
 
+        PullDownMenu
+        {
+            MenuItem
+            {
+                visible: !bleDiscovery.running
+                text: "Szukaj urządzeń"
+                onClicked: bleDiscovery.startDiscovery()
+            }
+        }
+
         Column
         {
             id: column
@@ -44,8 +54,9 @@ Page
 
                 delegate: ListItem
                 {
+                    id:deviceSet
+                    RemorseItem { id: remorse }
                     contentHeight: deviceAdd.height + lastSyncDate.height + Theme.paddingSmall*3
-
                     menu: ContextMenu
                     {
                         MenuItem
@@ -64,7 +75,7 @@ Page
                         MenuItem
                         {
                             text: "Zapomnij urządzenie"
-                            onClicked: pythonGlukometr.forgetDevice(id)
+                            onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {pythonGlukometr.forgetDevice(id) } )
                         }
                     }
 
@@ -123,18 +134,14 @@ Page
 
             ProgressBar
             {
-                 anchors { left: parent.left; right: parent.right }
+                 anchors
+                 {
+                     left: parent.left
+                     right: parent.right
+                 }
                  visible: bleDiscovery.running
                  label: "Szukanie urządzeń"
                  indeterminate: true
-            }
-
-            Button
-            {
-                visible: !bleDiscovery.running
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "Szukaj bro"
-                onClicked: bleDiscovery.startDiscovery()
             }
 
             Repeater
@@ -148,7 +155,6 @@ Page
                         pythonGlukometr.addDevice(name, mac_address, true)
                         pageStack.push("monitor.qml", {"deviceId": -1, "macAddress": mac_address});
                     }
-
                     Image {
                         id: bluetoothIcon2
                         source: "image://Theme/icon-m-bluetooth-device"

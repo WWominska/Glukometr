@@ -10,6 +10,15 @@ Page
         anchors.fill: parent
         contentHeight: column.height
 
+//        PullDownMenu
+//        {
+//            MenuItem
+//            {
+//                text: "Przywróć ustawienia domyślne"
+//                onClicked: pythonGlukometr
+//            }
+//        }
+
         Column
         {
             id: column
@@ -35,16 +44,31 @@ Page
                         property int sectionIndex: model.index
                         title: changeToString(meal)
 
-                        Image {
+                        Image
+                        {
                             width: Theme.iconSizeMedium
                             height: width
+
                             x: !expanded ? Theme.horizontalPageMargin : parent.width - width - Theme.horizontalPageMargin
-                            anchors {
+                            Behavior on x
+                            {
+                                NumberAnimation
+                                {
+                                easing.type: Easing.InCubic
+                                easing.amplitude: 3.0
+                                easing.period: 2.0
+                                duration: 250
+                                }
+                            }
+                            anchors
+                            {
                                 top: parent.top
                                 topMargin: (Theme.itemSizeMedium - height)/2
                             }
 
                             source: changeToIcon(meal)
+
+
                         }
 
                         function changeToString(meal)

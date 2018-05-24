@@ -4,9 +4,6 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-
-
-
     Component.onCompleted: pythonGlukometr.getMeasurements()
 
 
@@ -39,7 +36,7 @@ Page
                 radius: 10
                 Label
                 {
-                    id: wartosccukrowa
+                    id: sweetValue
                     font.pixelSize: Theme.fontSizeMedium
                     font.bold: true
                     text: "Cukier"
@@ -51,7 +48,7 @@ Page
 
                 Label
                 {
-                    id: dataiczas
+                    id: dateAndTime
                     font.pixelSize: Theme.fontSizeMedium
                     horizontalAlignment: Text.AlignRight
                     font.bold: true
@@ -100,13 +97,14 @@ Page
         VerticalScrollDecorator {}
 
 
-        id: ksiazka
+        id: book
         anchors.fill: parent
         model: pythonGlukometr.measurements  //glukometr.pomiary
         delegate: ListItem
         {
-            id: pomiar
-            contentHeight: sugar.height + kiedyPomiar.height + Theme.paddingSmall*3
+            id: measurement
+            RemorseItem { id: remorse }
+            contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
             onClicked: pageStack.push(Qt.resolvedUrl("MeasurementDetailsPage.qml"), {
                                           "measurement_id": id,
                                           "value": value,
@@ -131,7 +129,7 @@ Page
                 MenuItem
                 {
                     text: "Usuń"
-                    onClicked: pythonGlukometr.deleteMeasurement(id)
+                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {pythonGlukometr.deleteMeasurement(id) } )
                 }
             }
 
@@ -170,7 +168,7 @@ Page
                         default: return "Nie określono"
                     }
                 }
-                id: kiedyPomiar
+                id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall
                 font.bold: true
                 text: changeToString(meal)
@@ -191,7 +189,7 @@ Page
                 horizontalAlignment: Text.AlignRight
                 font.bold: true
                 text: timestamp.toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
-                anchors.left: kiedyPomiar.right
+                anchors.left: whenMeasurement.right
                 anchors.right: parent.right
                 anchors.rightMargin: Theme.horizontalPageMargin
                 anchors.top: parent.top
