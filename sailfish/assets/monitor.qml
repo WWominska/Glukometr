@@ -44,8 +44,10 @@ Page
         onNotAGlucometer: logi.text = "Urządzenie nie jest glukometrem"
         onPairing: logi.text = "Parowanie..."
         onRacpStarted: logi.text = "Pobieranie pomiarów"
-        onRacpFinished: logi.text = "Pobrano wszystko"
-
+        onRacpFinished: {
+            pythonGlukometr.setLastUpdateDate(deviceId, 0)
+            logi.text = "Pobrano wszystko"
+        }
         onNewMeasurement: {
             pythonGlukometr.addMeasurement(value, timestamp, device,
                                            sequence_number, -1)

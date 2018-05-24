@@ -30,6 +30,13 @@ Item {
         })
     }
 
+    function setLastUpdateDate(deviceId, timestamp) {
+        python.call("glukometr.devices.update_last_sync", [deviceId, timestamp, ],
+            function () {
+                python.loadListModel("glukometr.devices.get", rememberedDevices);
+            })
+    }
+
     function renameDevice(deviceId, name) {
         python.call("glukometr.devices.rename", [deviceId, name, ],
             function () {

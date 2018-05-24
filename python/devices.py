@@ -35,7 +35,7 @@ class Devices:
                 "id": row[0],
                 "name": row[1],
                 "mac_address": row[2],
-                "last_sync": None if not row[3] \
+                "last_sync": datetime.fromtimestamp(0) if not row[3] \
                              else datetime.fromtimestamp(row[3])
             } for row in cursor.execute(
                 "SELECT * FROM device ORDER BY last_sync DESC")
@@ -81,6 +81,8 @@ class Devices:
             timestamp = datetime.now()
 
         timestamp = timestamp.replace(tzinfo=timezone.utc).timestamp()
+
+        console.log(timestamp, device_id)
 
         cursor.execute("UPDATE device SET last_sync = ? " \
                        "WHERE device_id = ?", (timestamp, device_id, ))
