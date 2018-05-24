@@ -6,6 +6,7 @@ import glukometr 1.0
 Page
 {
     id: screen
+    property int tutorialBluetooth: application.isTutorialEnabled
 
     BleDiscovery
     {
@@ -147,6 +148,9 @@ Page
                         pageStack.push("monitor.qml", {"deviceId": -1, "macAddress": mac_address});
                     }
 
+//                    opacity: tutorialBluetooth ? (sectionIndex == 0 ? 1.0 : 0.2) : 1.0
+//                    Behavior on opacity { FadeAnimation {} }
+
                     Label
                     {
                         id:device
@@ -181,4 +185,28 @@ Page
             }
         }
     }
+//    InteractionHintLabel
+//    {
+//        id:bluetooth
+//        text: "Tutaj możesz wybrać glukometr, do którego chcesz się połączyć, klikając na niego"
+//        color: Theme.secondaryColor
+//        anchors.bottom: parent.bottom
+//        opacity: tutorialBluetooth ? 1.0 : 0.0
+//        Behavior on opacity { FadeAnimation {} }
+//        invert: false
+//    }
+
+////    TouchInteractionHint
+////    {
+////        id: hint
+////        loops: Animation.Infinite
+////        interactionMode: TouchInteraction.Pull
+////        direction: TouchInteraction.Down
+////    }
+
+//    Connections
+//    {
+//        target: application
+//        onIsTutorialEnabledChanged: hint.start()
+//    }
 }

@@ -1,25 +1,25 @@
+
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtGraphicalEffects 1.0
 Page
 {
     id: screen
-
-    Component.onCompleted: pythonGlukometr.getThresholds()
+        Component.onCompleted: pythonGlukometr.getThresholds()
 
     SilicaFlickable
     {
         anchors.fill: parent
         contentHeight: column.height
 
-//        PullDownMenu
-//        {
-//            MenuItem
-//            {
-//                text: "Przywróć ustawienia domyślne"
-//                onClicked: pythonGlukometr
-//            }
-//        }
+        PullDownMenu
+        {
+            MenuItem
+            {
+                text: "Przywróć ustawienia domyślne"
+                //onClicked: pythonGlukometr
+            }
+        }
 
         Column
         {

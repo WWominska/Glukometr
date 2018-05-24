@@ -25,5 +25,6 @@
         <file>assets/AddNewMeasurement.qml</file>
         <file>assets/ChangeNameDeviceDialog.qml</file>
         <file>assets/Threshold.qml</file>
+        <file>assets/Tutorial.qml</file>
     </qresource>
 </RCC>

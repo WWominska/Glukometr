@@ -9,6 +9,8 @@ Page
 
     SilicaListView
     {
+        opacity: hint.running ? 0.5 : 1.0
+        Behavior on opacity { FadeAnimation {} }
         header: Item
         {
             width: parent.width
@@ -63,6 +65,7 @@ Page
         }
         PullDownMenu
         {
+            id: pullDownMenu
             MenuItem
             {
                 text: "Ustaw progi"
@@ -73,6 +76,12 @@ Page
             {
                 text: "Bluetooth"
                 onClicked: pageStack.push("home.qml")
+            }
+
+            MenuItem
+            {
+                text: "By sprawdzić tutorial"
+                onClicked: pageStack.push("Tutorial.qml")
             }
 
             MenuItem
@@ -186,5 +195,39 @@ Page
                 color: Theme.highlightColor
             }
         }
+    }
+
+    InteractionHintLabel
+    {
+        text: "Aby przejść dalej przesuń palcem w dół"
+        color: Theme.secondaryColor
+        anchors.top: parent.top
+        opacity: hint.running ? (pullDownMenu.active ? 0.0 : 1.0) : 0.0
+        Behavior on opacity { FadeAnimation {} }
+        invert: true
+    }
+
+    InteractionHintLabel
+    {
+        text: "Wybierz 'Dodaj pomiar'"
+        color: Theme.secondaryColor
+        anchors.bottom: parent.bottom
+        opacity: hint.running ? (pullDownMenu.active ? 1.0 : 0.0) : 0.0
+        Behavior on opacity { FadeAnimation {} }
+        invert: false
+    }
+
+    TouchInteractionHint
+    {
+        id: hint
+        loops: Animation.Infinite
+        interactionMode: TouchInteraction.Pull
+        direction: TouchInteraction.Down
+    }
+
+    Connections
+    {
+        target: application
+        onIsTutorialEnabledChanged: hint.start()
     }
 }
