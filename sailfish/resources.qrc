@@ -6,8 +6,10 @@
         <file alias="measurements.py">../python/measurements.py</file>
         <file alias="thresholds.py">../python/thresholds.py</file>
         <file alias="devices.py">../python/devices.py</file>
+        <file alias="annotations.py">../python/annotations.py</file>
     </qresource>
     <qresource prefix="/">
+        <file alias="assets/GlucoseListModel.qml">../common/assets/GlucoseListModel.qml</file>
         <file alias="assets/GlucoseApplication.qml">../common/assets/GlucoseApplication.qml</file>
         <file alias="assets/Button.qml">../common/assets/Button.qml</file>
         <file>assets/home.qml</file>
@@ -25,5 +27,7 @@
         <file>assets/AddNewMeasurement.qml</file>
         <file>assets/ChangeNameDeviceDialog.qml</file>
         <file>assets/Threshold.qml</file>
+        <file>assets/DrugsPage.qml</file>
+        <file>assets/MeasurementDetailsPage.qml</file>
     </qresource>
 </RCC>

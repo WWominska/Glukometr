@@ -28,7 +28,7 @@ class Devices:
             database.commit()
         self.get(returns=False)
 
-    def get(self, returns=True):
+    def get(self, filter={}, returns=True):
         cursor = self.database.cursor
         self.devices = [
             {
@@ -82,8 +82,6 @@ class Devices:
 
         timestamp = timestamp.replace(tzinfo=timezone.utc).timestamp()
 
-        console.log(timestamp, device_id)
-
         cursor.execute("UPDATE device SET last_sync = ? " \
                        "WHERE device_id = ?", (timestamp, device_id, ))
 
@@ -132,8 +130,6 @@ class Devices:
         cursor = self.database.cursor
 
         cursor.execute("DELETE FROM device WHERE device_id = ?",
-                       (device_id, ))
-        cursor.execute("DELETE FROM measurement WHERE device_id = ?",
                        (device_id, ))
 
         if commit:

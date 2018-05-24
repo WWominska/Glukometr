@@ -5,8 +5,6 @@ Page
 {
     id: screen
 
-    Component.onCompleted: pythonGlukometr.getThresholds()
-
     SilicaFlickable
     {
         anchors.fill: parent
@@ -28,7 +26,7 @@ Page
                 currentIndex: 0
                 Repeater
                 {
-                    model: pythonGlukometr.thresholds
+                    model: pythonGlukometr.thresholds.model
 
                     ExpandingSection
                     {
@@ -83,8 +81,11 @@ Page
                                 maximumValue: 180
                                 value: min
                                 valueText: value
-                                anchors.horizontalCenter: horizontalCenter
-                                onValueChanged: pythonGlukometr.updateThreshold(meal, minScroll.sliderValue, maxScroll.sliderValue)
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                onValueChanged: pythonGlukometr.thresholds.update(id, {
+                                    "min": minScroll.sliderValue,
+                                    "max": maxScroll.sliderValue
+                                }, true)
                             }
 
                             Slider
@@ -96,8 +97,11 @@ Page
                                 maximumValue: 260
                                 value: max
                                 valueText: value
-                                anchors.horizontalCenter: horizontalCenter
-                                onValueChanged: pythonGlukometr.updateThreshold(meal, minScroll.value, maxScroll.value)
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                onValueChanged: pythonGlukometr.thresholds.update(id, {
+                                    "min": minScroll.sliderValue,
+                                    "max": maxScroll.sliderValue
+                                }, true)
                             }
                         }
                     }
@@ -105,6 +109,9 @@ Page
             }
         }
     }
+
+    Component.onCompleted: pythonGlukometr.thresholds.get()
+    Component.onDestruction: pythonGlukometr.thresholds.get()
 }
 
 //pythonGlukometr.updateThreshold(meal, min, max)

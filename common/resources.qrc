@@ -8,5 +8,6 @@
         <file>assets/glucometr.png</file>
         <file>assets/candy.png</file>
         <file>assets/ladowanie.png</file>
+        <file>assets/GlucoseListModel.qml</file>
     </qresource>
 </RCC>

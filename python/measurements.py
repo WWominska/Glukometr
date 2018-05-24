@@ -20,12 +20,13 @@ class Measurements:
                            "autoincrement, " \
                            "value real not null, " \
                            "timestamp integer not null, " \
-                           "device_id integer, " \
+                           "device_id integer REFERENCES device(device_id) " \
+                           "ON DELETE CASCADE, " \
                            "sequence_number integer, meal integer)")
             # save changes
             database.commit()
 
-    def get(self):
+    def get(self, filter={}):
         cursor = self.database.cursor
         return [{
             "id": row[0],
