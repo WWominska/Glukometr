@@ -5,10 +5,11 @@ CoverBackground
 {
     Label
     {
-        id: label
+        id: lastMeasurement
         anchors.centerIn: parent
-        text: "My Cover"
+        text: "hlep"
     }
+
 
     CoverActionList
     {
@@ -30,7 +31,12 @@ CoverBackground
 
         CoverAction
         {
-            iconSource: "image://theme/icon-cover-pause"
+            iconSource: "image://theme/icon-s-bluetooth"
+            onTriggered:
+            {
+                application.activate()
+                application.pageStack.push("../home.qml")
+            }
         }
     }
 }
