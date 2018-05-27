@@ -2,7 +2,6 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtGraphicalEffects 1.0
 
-
 Dialog
 {
     id: dialog
@@ -179,28 +178,6 @@ Dialog
 //                 height: 200
 //             }
 
-             SectionHeader
-             {
-                font.pixelSize: Theme.fontSizeLarge
-                text: "Notatka"
-                font.bold: true
-             }
-
-             Label
-             {
-                 anchors
-                 {
-                     left: parent.left
-                     leftMargin: Theme.horizontalPageMargin
-                     right: parent.right
-                     rightMargin: Theme.horizontalPageMargin
-                 }
-                 text: "Tu możesz wpisać własną notatkę (np. co zjadłeś, jakie ćwiczenia zrobiłeś itp...)"
-                 font.pixelSize: Theme.fontSizeSmall
-                 wrapMode: Text.WordWrap
-                 color: Theme.secondaryHighlightColor
-                 font.bold: true
-             }
         }
     }
 }
