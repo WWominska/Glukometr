@@ -4,8 +4,12 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-    Component.onCompleted: pythonGlukometr.getMeasurements()
+    Component.onCompleted: pythonGlukometr.measurements.get()
 
+    Connections {
+        target: pythonGlukometr.thresholds
+        onModelUpdated: pythonGlukometr.measurements.get()
+    }
 
     SilicaListView
     {
@@ -88,7 +92,10 @@ Page
                     var dialog = pageStack.push(Qt.resolvedUrl("AddNewMeasurement.qml"))
                     dialog.accepted.connect(function()
                     {
-                        pythonGlukometr.addMeasurement(dialog.value, 0, 0, 0, dialog.meal)
+                        pythonGlukometr.measurements.add({
+                            "value": dialog.value,
+                            "meal": dialog.meal
+                        });
                     })
                 }
             }
@@ -99,7 +106,7 @@ Page
 
         id: book
         anchors.fill: parent
-        model: pythonGlukometr.measurements  //glukometr.pomiary
+        model: pythonGlukometr.measurements.model
         delegate: ListItem
         {
             id: measurement
@@ -122,14 +129,18 @@ Page
                                                                          {"meal": meal})
                         dialog.accepted.connect(function()
                         {
-                            pythonGlukometr.updateMeasurement(id, dialog.meal)
+                            pythonGlukometr.measurements.update(id, {
+                                "meal": dialog.meal
+                            })
                         })
                     }
                 }
                 MenuItem
                 {
                     text: "Usuń"
-                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {pythonGlukometr.deleteMeasurement(id) } )
+                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
+                        pythonGlukometr.measurements.remove(id)
+                    })
                 }
             }
 
@@ -188,7 +199,7 @@ Page
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
                 font.bold: true
-                text: timestamp.toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
                 anchors.left: whenMeasurement.right
                 anchors.right: parent.right
                 anchors.rightMargin: Theme.horizontalPageMargin

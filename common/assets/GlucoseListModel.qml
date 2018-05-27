@@ -10,12 +10,16 @@ Item {
     property alias model: listModel
     property var lastFilters
 
+    signal modelUpdated
+
 
     function get(filters) {
-        interpreter.loadListModel(pythonClass + ".get", listModel, filters);
+        interpreter.loadListModel(pythonClass + ".get", listModel, filters, function () {
+            modelUpdated();
+        });
         lastFilters = filters;
     }
-    function add(object) {
+    function add(object, callback) {
         interpreter.call(pythonClass + ".add", [object, ], function (result) {
             // update model only if call didn't fail
             if (result) {
@@ -26,6 +30,8 @@ Item {
                         listModel.append(result);
                     }
                 } else get(lastFilters);  // reload
+                if (callback)
+                    callback();
             }
         })
     }
@@ -40,12 +46,12 @@ Item {
         return -1;
     }
 
-    function update(object_id, changes, noRefresh) {
-        interpreter.call(pythonClass + ".update", [object_id, changes, ],
+    function update(where, changes, noRefresh, callback) {
+        interpreter.call(pythonClass + ".update", [where, changes, ],
             function (result) {
                 // update only if call didn't fail
                 if (result && !noRefresh) {
-                    if (!reload) {
+                    if (!reload && !(where instanceof Object)) {
                         var index = find(object_id);
                         if (index !== -1) {
                             var listItem = listModel.get(index);
@@ -56,11 +62,13 @@ Item {
                             }
                         }
                     } else get(lastFilters);
+                    if (callback)
+                        callback();
                 }
             })
     }
 
-    function remove(object_id, index) {
+    function remove(object_id, index, callback) {
         interpreter.call(pythonClass + ".delete", [object_id, ],
             function (result) {
                 // remove only if call didn't fail
@@ -71,6 +79,8 @@ Item {
                         if (index !== -1)
                             listModel.remove(index);
                     } else get(lastFilters);
+                    if (callback)
+                        callback();
                 }
             })
     }
