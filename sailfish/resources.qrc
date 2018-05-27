@@ -29,5 +29,7 @@
         <file>assets/Threshold.qml</file>
         <file>assets/DrugsPage.qml</file>
         <file>assets/MeasurementDetailsPage.qml</file>
+        <file>assets/NotesAddDialog.qml</file>
+        <file>assets/AddDrugs.qml</file>
     </qresource>
 </RCC>

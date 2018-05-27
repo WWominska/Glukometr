@@ -7,51 +7,73 @@ Page
 
     SilicaListView
     {
-        header: PageHeader {
+        header: PageHeader
+        {
             id: pageHeader
-            title: "Narkotyki"
+            title: "Leki"
         }
         PullDownMenu
         {
             MenuItem
             {
-                text: "Ćpaji"
-                onClicked: pythonGlukometr.drugs.add({"name": "hera koka hasz lsd"})
+                text: "Dodaj lek"
+                onClicked:
+                {
+                    var dialog = pageStack.push(Qt.resolvedUrl("AddDrugs.qml"))
+                    dialog.accepted.connect(function()
+                    {
+                        pythonGlukometr.drugs.add({"name": dialog.value})
+                    })
+                }
             }
         }
         VerticalScrollDecorator {}
 
 
-        id: ksiazka
+        id: drugsBook
         anchors.fill: parent
         model: pythonGlukometr.drugs.model
         delegate: ListItem
         {
-            id: pomiar
-            contentHeight: sugar.height + Theme.paddingSmall*2
+            id: drugItem
+            RemorseItem { id: remorseDrug }
+            contentHeight: drugLabel.height + Theme.paddingSmall*2
             menu: ContextMenu
             {
                 MenuItem
                 {
                     text: "Usuń"
-                    onClicked: pythonGlukometr.drugs.remove(id, index)
+                    onClicked: remorseDrug.execute(drugItem, "Usunięcie leku", function() {pythonGlukometr.drugs.remove(id, index) } )
                 }
 
                 MenuItem
                 {
-                    text: "Hehehe"
-                    onClicked: pythonGlukometr.drugs.update(id, {"name": "lol"})
+                    text: "Edytuj"
+                    onClicked:
+                    {
+                        var dialog = pageStack.push(Qt.resolvedUrl("AddDrugs.qml"), {
+                                                        "value": name,
+                                                        "isEdited": true,
+                                                    })
+                        dialog.accepted.connect(function()
+                        {
+                            pythonGlukometr.drugs.update(id, {"name": dialog.value})
+                        })
+                    }
                 }
             }
 
             Label
             {
-                id: sugar
-                font.pixelSize: Theme.fontSizeSmall
-                font.bold: true
+                id: drugLabel
+                font.pixelSize: Theme.fontSizeMedium
                 text: name
-                anchors.left: parent.left
-                anchors.top: parent.top
+                anchors
+                {
+                    left: parent.left
+                    margins: Theme.horizontalPageMargin
+                    verticalCenter: parent.verticalCenter
+                }
             }
         }
     }
