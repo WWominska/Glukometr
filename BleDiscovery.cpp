@@ -28,6 +28,12 @@ void BleDiscovery::startDiscovery() {
     emit runningChanged();
 }
 
+void BleDiscovery::stopDiscovery() {
+    m_discoveryAgent->stop();
+    m_running = false;
+    emit runningChanged();
+}
+
 
 void BleDiscovery::deviceDiscovered(const QBluetoothDeviceInfo &info) {
     emit newDevice(info.name(), info.address().toString());

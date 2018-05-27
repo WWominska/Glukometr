@@ -27,6 +27,7 @@ public slots:
     void deviceDiscovered(const QBluetoothDeviceInfo&);
     void discoveryFinished();
     Q_INVOKABLE void startDiscovery();
+    Q_INVOKABLE void stopDiscovery();
 
     bool getRunning();
 };
