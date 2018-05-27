@@ -23,7 +23,10 @@ CoverBackground
                 var dialog = application.pageStack.push(Qt.resolvedUrl("../AddNewMeasurement.qml"))
                 dialog.accepted.connect(function()
                 {
-                    pythonGlukometr.addMeasurement(dialog.value, 0, 0, 0, dialog.meal)
+                    pythonGlukometr.measurements.add({
+                        "value": dialog.value,
+                        "meal": dialog.meal
+                    });
                 })
             }
         }

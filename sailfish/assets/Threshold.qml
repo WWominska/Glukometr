@@ -10,14 +10,14 @@ Page
         anchors.fill: parent
         contentHeight: column.height
 
-//        PullDownMenu
-//        {
-//            MenuItem
-//            {
-//                text: "Przywróć ustawienia domyślne"
-//                onClicked: pythonGlukometr
-//            }
-//        }
+        PullDownMenu
+        {
+            MenuItem
+            {
+                text: "Przywróć ustawienia domyślne"
+                onClicked: pythonGlukometr.thresholds.result()
+            }
+        }
 
         Column
         {
@@ -95,6 +95,15 @@ Page
 
                         content.sourceComponent: Column
                         {
+                            function updateThreshold() {
+                                if (min != minScroll.value|| max != maxScroll.value) {
+                                    pythonGlukometr.thresholds.update(id, {
+                                        "min": minScroll.value,
+                                        "max": maxScroll.value
+                                    }, true)
+                                }
+                            }
+
                             width: section.width
                             Slider
                             {
@@ -106,10 +115,7 @@ Page
                                 value: min
                                 valueText: value
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                onValueChanged: pythonGlukometr.thresholds.update(id, {
-                                    "min": minScroll.sliderValue,
-                                    "max": maxScroll.sliderValue
-                                }, true)
+                                onDownChanged: updateThreshold()
                             }
 
                             Slider
@@ -122,10 +128,7 @@ Page
                                 value: max
                                 valueText: value
                                 anchors.horizontalCenter: parent.horizontalCenter
-                                onValueChanged: pythonGlukometr.thresholds.update(id, {
-                                    "min": minScroll.sliderValue,
-                                    "max": maxScroll.sliderValue
-                                }, true)
+                                onDownChanged: updateThreshold()
                             }
                         }
                     }

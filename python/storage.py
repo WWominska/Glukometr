@@ -17,6 +17,10 @@ class Database:
         self.connection = sqlite3.connect(path)
         self.cursor = self.connection.cursor()
 
+        # sqlite disables foreign key support by default
+        # but.... whyyyy???????????????????
+        self.cursor.execute("PRAGMA foreign_keys = ON;")
+
         # make sure db is closed at exit
         pyotherside.atexit(self.close)
 
@@ -63,6 +67,7 @@ class DatabaseModel:
     model_map = {
         "id": 0
     }
+    fallback = {}
     database = None
     data = []
 
@@ -100,18 +105,24 @@ class DatabaseModel:
     def delete(self, id, commit=True):
         return self.database.delete(self.table, self.id_field, id, commit)
 
-    def update(self, id, obj={}, commit=True):
-        if not obj or not id:
+    def update(self, where, obj={}, commit=True):
+        if not obj or not where:
             return
+
+        if not isinstance(where, dict):
+            where = {
+                self.id_field: where
+            }
 
         # generate args string
         query_args_str = ", ".join(["%s = ?" % key for key in obj.keys()])
+        where_args_str = " AND ".join(["%s = ?" % key for key in where.keys()])
 
         # generate query
-        query = "UPDATE %s SET %s WHERE %s = ?" % (
-            self.table, query_args_str, self.id_field)
+        query = "UPDATE %s SET %s WHERE %s" % (
+            self.table, query_args_str, where_args_str)
 
-        query_args = list(obj.values()) + [id, ]
+        query_args = list(obj.values()) + list(where.values())
 
         rows = self.database.execute(query, query_args, commit)
         return rows
@@ -131,7 +142,7 @@ class DatabaseModel:
         cursor = self.database.cursor
         self.data = [
             {
-                key: row[index]
+                key: row[index] if row[index] else self.fallback.get(key, 0)
                 for key, index in self.model_map.items()
             } for row in cursor.execute(query, query_args)
         ]
