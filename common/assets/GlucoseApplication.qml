@@ -65,6 +65,16 @@ Item {
         }
     }
 
+    GlucoseListModel {
+        id: remindersModel
+        interpreter: python
+        pythonClass: "glukometr.reminders"
+
+        function remind(title, when, callback) {
+            python.call(pythonClass + ".remind", [title, when, ], callback)
+        }
+    }
+
     property alias measurements: measurementsModel
     property alias devices: devicesModel
     property alias drugs: drugsModel
@@ -72,6 +82,7 @@ Item {
     property alias mealAnnotations: mealAnnotationsModel
     property alias textAnnotations: textAnnotationsModel
     property alias drugAnnotations: drugAnnotationsModel
+    property alias reminders: remindersModel
 
     function evaluateMeasurement(value, meal) {
         return python.call_sync("glukometr.thresholds.evaluate_measurement", [
