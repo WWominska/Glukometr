@@ -30,5 +30,6 @@
         <file>assets/Threshold.qml</file>
         <file>assets/DrugsPage.qml</file>
         <file>assets/MeasurementDetailsPage.qml</file>
+        <file>assets/RemindersPage.qml</file>
     </qresource>
 </RCC>

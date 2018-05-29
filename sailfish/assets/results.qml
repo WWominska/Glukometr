@@ -73,10 +73,8 @@ Page
             }
 
             MenuItem {
-                text: "Kaszl kaszl kaszl"
-                onClicked: pythonGlukometr.reminders.remind("Będę kaszlł", 0, function () {
-
-                })
+                text: "Przypomnienia"
+                onClicked: pageStack.push("RemindersPage.qml")
             }
 
             MenuItem

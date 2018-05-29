@@ -70,8 +70,13 @@ Item {
         interpreter: python
         pythonClass: "glukometr.reminders"
 
-        function remind(title, when, callback) {
-            python.call(pythonClass + ".remind", [title, when, ], callback)
+        function cancel(cookie, callback) {
+            python.call(pythonClass + ".cancel", [cookie, ], callback)
+        }
+
+        function remind(title, reminder_type, when, repeating, callback) {
+            python.call(pythonClass + ".remind",
+                        [title, reminder_type, when, repeating, ], callback)
         }
     }
 
