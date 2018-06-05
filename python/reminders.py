@@ -37,7 +37,7 @@ class Reminders(DatabaseModel):
         # debug
         pyotherside.send("Called", command)
         pyotherside.send("Debug", lines)
-        pyotherside.send("Errors", line_e)
+        pyotherside.send("Errors", lines_e)
 
         return lines, lines_e
 
@@ -74,7 +74,7 @@ class Reminders(DatabaseModel):
         for cookie in cookies:
             if cookie not in valid_cookies:
                 # cancel cookie
-                self.cancel(cookie)
+                self.cancel(int(cookie))
 
     def clear_expired_reminders(self):
         """
