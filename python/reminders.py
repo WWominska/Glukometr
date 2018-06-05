@@ -19,7 +19,13 @@ class Reminders(DatabaseModel):
         "reminder_type": 4
     }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.get(filter=None, returns=False)
+        self.cancel_invalid_events()
+
     def call_timedclient(self, args):
+        """Calls timedclient-qt5"""
         command = "timedclient-qt5 " + args
         with Popen([x.encode("utf-8") for x in shlex.split(command)],
                    stdout=PIPE, stderr=PIPE) as p:
@@ -28,8 +34,12 @@ class Reminders(DatabaseModel):
         lines = output.decode("utf-8").splitlines()
         lines_e = errors.decode("utf-8").splitlines()
 
-        return lines, lines_e
+        # debug
+        pyotherside.send("Called", command)
+        pyotherside.send("Debug", lines)
+        pyotherside.send("Errors", line_e)
 
+        return lines, lines_e
 
     def create(self, cursor):
         # create table
@@ -41,47 +51,85 @@ class Reminders(DatabaseModel):
                        "reminder_type integer DEFAULT 0)")
 
     def cancel(self, cookie):
+        """Cancels reminder in timed service"""
         output, errors = self.call_timedclient("-c%d" % cookie)
-        pyotherside.send("Debug", output)
-        pyotherside.send("Errors", output)
+
+    def cancel_invalid_events(self):
+        """
+        Removes items which are no longer valid, for example ones that should
+        be deleted but are still on the list.
+        """
+        # get cookies by app name
+        output, errors = self.call_timedclient(
+            "-s'APPLICATION=%s'" % self.application_name)
+        try:
+            cookies = output[0].split(" ")
+        except IndexError:
+            return
+
+        # make a list of valid cookies
+        valid_cookies = [x.get("cookie", 0) for x in self.data]
+
+        # check which are invalid
+        for cookie in cookies:
+            if cookie not in valid_cookies:
+                # cancel cookie
+                self.cancel(cookie)
 
     def clear_expired_reminders(self):
+        """
+        Removes expired reminders from the database
+        """
         now = datetime.now().timestamp()
         self.database.execute(
             "DELETE FROM reminder WHERE reminder_datetime < ? " \
             "AND repeating = 0", [now, ])
 
     def get(self, *args, **kwargs):
+        # remove expired reminders first
         self.clear_expired_reminders()
         return super().get(*args, **kwargs)
 
     def remind(self, title, reminder_type, when=None, repeating=0):
+        """
+        Adds reminder to timed service and database
+        """
+        # if date and time not provided, use current one
         if not when:
             when = datetime.now()
 
-        time_arg = when.strftime("%Y-%m-%d %H:%M:%S")
+        # format time of day
         time_of_day = when.hour * 60 + when.minute
-        args = "-b'TITLE=button0' "
-        args += "-e'APPLICATION=%s;TITLE=%s;type=event;event=reminder;time=%s;timeOfDay=%s'" % (
-            self.application_name, title, time_arg, time_of_day)
 
+        args = ""
         if repeating:
-            args += " -r'hour=%d;minute=%d;everyDayOfWeek;everyDayOfMonth;everyMonth'" % (
-                when.hour, when.minute
+            # if this event should be repeated, add recurrence args
+            flags = "everyDayOfWeek;everyDayOfMonth;everyMonth"
+            args = "-r'hour=%d;minute=%d;%s' " % (
+                flags, when.hour, when.minute
             )
-            pyotherside.send("Debug", args)
 
+        args += "-b'TITLE=button0' "
+        args += "-e'APPLICATION=%s;TITLE=%s;type=event;timeOfDay=%s" % (
+            self.application_name, title, time_of_day)
+        if not repeating:
+            # format time argument
+            time_arg = when.strftime("%Y-%m-%d %H:%M:%S")
+            # add to args
+            args += ";time=%s'" % (time_arg)
+        else:
+            args += "'"
+
+        # call timedclient
         output, errors = self.call_timedclient(args)
 
         if output and not errors:
-            # it didn't fail, yay
+            # it didn't fail, yay, add event to the DB
             cookie = output[0].split(" ")[-1]
             self.add({
                 "cookie_id": int(cookie),
                 "reminder_type": reminder_type,
-                "repeating": 0,
+                "repeating": int(repeating),
                 "reminder_datetime": when.timestamp()
             })
 
-        pyotherside.send("Debug", output)
-        pyotherside.send("Errors", errors)
