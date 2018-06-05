@@ -31,5 +31,6 @@
         <file>assets/MeasurementDetailsPage.qml</file>
         <file>assets/NotesAddDialog.qml</file>
         <file>assets/AddDrugs.qml</file>
+        <file>assets/emergency.qml</file>
     </qresource>
 </RCC>

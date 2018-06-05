@@ -16,6 +16,12 @@ Dialog
     property bool isEdited: false
 
 
+    canAccept: (selectId.currentIndex == 0 && nameOfFood.text != "" && unitFood.acceptableInput)
+               || (selectId.currentIndex == 1 && drugsName.text !== "" && unitDrugs.acceptableInput)
+               || (selectId.currentIndex == 2 && notesText.text !="")
+
+    //
+
     SilicaFlickable
     {
         VerticalScrollDecorator {}
@@ -85,6 +91,10 @@ Dialog
                 inputMethodHints: Qt.ImhDigitsOnly
                 placeholderText: "200"
                 label: "Ile zjadłeś?"
+                validator: IntValidator
+                {
+                    bottom: 1
+                }
             }
 
             ComboBox
@@ -93,7 +103,7 @@ Dialog
                 visible: selectId.currentIndex == 0
                 currentIndex: 0
                 label: "Jednostka: "
-                value: "Wybierz"
+                value: "g"
                 menu: ContextMenu
                 {
                     MenuItem
@@ -160,6 +170,10 @@ Dialog
                 visible: selectId.currentIndex == 1
                 width: parent.width
                 inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator
+                {
+                    bottom: 1
+                }
                 placeholderText: "6"
                 label: "Ile przyjąłeś?"
             }
@@ -168,33 +182,33 @@ Dialog
             {
                 id: drugsId
                 visible: selectId.currentIndex == 1
-                currentIndex: 1
+                currentIndex: 0
                 label: "Jednostka: "
-                value: "Wybierz"
+                value: "dm/L"
                 menu: ContextMenu
                 {
                     MenuItem
                     {
                         text: "dm/L"
-                        onClicked: unitId.value=text
+                        onClicked: drugsId.value=text
                     }
 
                     MenuItem
                     {
                         text: "g"
-                        onClicked: unitId.value=text
+                        onClicked: drugsId.value=text
                     }
 
                     MenuItem
                     {
                         text: "ml"
-                        onClicked: unitId.value=text
+                        onClicked: drugsId.value=text
                     }
 
                     MenuItem
                     {
                         text: "sztuk"
-                        onClicked: unitId.value=text
+                        onClicked: drugsId.value=text
                     }
                 }
             }

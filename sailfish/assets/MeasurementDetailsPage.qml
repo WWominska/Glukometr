@@ -10,19 +10,14 @@ Page
 
     SilicaFlickable
     {
+        VerticalScrollDecorator  {}
         anchors.fill: parent
+        contentWidth: parent.width
+        contentHeight: measurementHeader.height + measurementDetails.height + mealList.height + drugsList.height + textList.height + Theme.horizontalPageMargin*3
+
 
         PullDownMenu
         {
-            MenuItem
-            {
-                text: "Napisz mi coś miłego"
-                onClicked: pythonGlukometr.textAnnotations.add({
-                    "content": "koty liżą masło",
-                    "measurement_id": measurement_id,
-                })
-            }
-
             MenuItem
             {
                 text: "Dodaj notatkę"
@@ -93,6 +88,7 @@ Page
         ListView
         {
             id: mealList
+            interactive: false
             anchors
             {
                 top: measurementDetails.bottom
@@ -213,6 +209,7 @@ Page
             model: pythonGlukometr.drugAnnotations.model
             height: contentHeight
             width: parent.width
+            interactive: false
             Component.onCompleted:
             {
                 pythonGlukometr.drugAnnotations.get({
@@ -327,6 +324,7 @@ Page
 
             model: pythonGlukometr.textAnnotations.model
             height: contentHeight
+            interactive: false
             width: parent.width
             Component.onCompleted:
             {
