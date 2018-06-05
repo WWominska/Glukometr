@@ -74,7 +74,10 @@ class Reminders(DatabaseModel):
         for cookie in cookies:
             if cookie not in valid_cookies:
                 # cancel cookie
-                self.cancel(int(cookie))
+                try:
+                    self.cancel(int(cookie))
+                except:
+                    pass
 
     def clear_expired_reminders(self):
         """
