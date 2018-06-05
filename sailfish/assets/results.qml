@@ -35,18 +35,20 @@ Page
                     rightMargin: Theme.horizontalPageMargin
                     top: pageHeader.bottom
                 }
-                height: 80
+                height: sweetValue.paintedHeight + Theme.paddingMedium
                 color: "transparent"
-                radius: 10
+
                 Label
                 {
                     id: sweetValue
                     font.pixelSize: Theme.fontSizeMedium
                     font.bold: true
                     text: "Cukier"
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.topMargin: 15
+                    anchors
+                    {
+                        left: parent.left
+                        top: parent.top
+                    }
                     color: Theme.primaryColor
                 }
 
@@ -57,9 +59,13 @@ Page
                     horizontalAlignment: Text.AlignRight
                     font.bold: true
                     text: "Data i Czas"
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.topMargin: 15
+                    anchors
+                    {
+                        right: parent.right
+                        top: parent.top
+
+                        //verticalCenter: parent.verticalCenter
+                    }
                     color: Theme.primaryColor
                     clip: true
                 }
@@ -68,7 +74,7 @@ Page
         PullDownMenu
         {
             MenuItem {
-                text: "Tajna skrytka"
+                text: "Leki"
                 onClicked: pageStack.push("DrugsPage.qml")
             }
 
@@ -170,9 +176,12 @@ Page
                 font.pixelSize: Theme.fontSizeSmall
                 font.bold: true
                 text: value
-                anchors.left: dot.right
-                anchors.top: parent.top
-                anchors.topMargin: Theme.paddingSmall
+                anchors
+                {
+                    left: dot.right
+                    top: parent.top
+                    topMargin: Theme.paddingSmall
+                }
                 color: Theme.primaryColor
             }
 
@@ -210,11 +219,14 @@ Page
                 horizontalAlignment: Text.AlignRight
                 font.bold: true
                 text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
-                anchors.left: whenMeasurement.right
-                anchors.right: parent.right
-                anchors.rightMargin: Theme.horizontalPageMargin
-                anchors.top: parent.top
-                anchors.topMargin: Theme.paddingSmall
+                anchors
+                {
+                    left: whenMeasurement.right
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                    top: parent.top
+                    topMargin: Theme.paddingSmall
+                }
                 color: Theme.highlightColor
             }
         }
