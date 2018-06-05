@@ -73,7 +73,8 @@ Page
         }
         PullDownMenu
         {
-            MenuItem {
+            MenuItem
+            {
                 text: "Leki"
                 onClicked: pageStack.push("DrugsPage.qml")
             }
@@ -110,6 +111,12 @@ Page
                     })
                 }
             }
+            MenuItem
+            {
+                text: "Dodaj numer"
+                onClicked: pageStack.push("emergency.qml")
+            }
+
 
         }
         VerticalScrollDecorator {}

@@ -5,6 +5,8 @@ Dialog
 {
     id: dialogDevice
     property string name;
+
+    canAccept: nameField.text != ""
     onDone:
     {
         if (result == DialogResult.Accepted)

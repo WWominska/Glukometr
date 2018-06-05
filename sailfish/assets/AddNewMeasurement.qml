@@ -8,6 +8,8 @@ Dialog
     property int meal;
     property real value;
 
+    canAccept: nameField.acceptableInput
+
     onDone:
     {
         if (result == DialogResult.Accepted)
@@ -44,6 +46,12 @@ Dialog
                  width: parent.width
                  placeholderText: "120..."
                  label: "Wartość cukru"
+                 inputMethodHints: Qt.ImhDigitsOnly
+                 validator: IntValidator
+                 {
+                     bottom: 1
+                     top:700
+                 }
              }
 
              SectionHeader
