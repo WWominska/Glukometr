@@ -34,7 +34,6 @@ Dialog
             {
                 id: phoneNumberHead
                 font.pixelSize: Theme.fontSizeLarge
-                font.bold: true
                 text: "Podaj numer telefonu"
             }
 

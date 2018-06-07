@@ -7,6 +7,7 @@ Dialog
     id: dialog
     property int meal;
     property real value;
+    property alias remind: repeat.checked
 
     canAccept: nameField.acceptableInput
 
@@ -37,7 +38,6 @@ Dialog
              {
                 font.pixelSize: Theme.fontSizeLarge
                 text: "Podaj cukier"
-                font.bold: true
              }
 
              TextField
@@ -58,7 +58,6 @@ Dialog
              {
                 font.pixelSize: Theme.fontSizeLarge
                 text: "Pora posiłku"
-                font.bold: true
              }
 
              Label
@@ -72,7 +71,6 @@ Dialog
                 text: "Poniżej możesz ustawić pore w jakiej dokonałeś pomiaru"
                 wrapMode: Text.WordWrap
                 color: Theme.secondaryHighlightColor
-                font.bold: true
 
              }
 
@@ -178,6 +176,21 @@ Dialog
                      onClicked: { dialog.meal = meal; }
                  }
              }
+
+             TextSwitch
+             {
+                 id: repeat
+                 anchors
+                 {
+                     left: parent.left
+                     right: parent.right
+                 }
+                 checked: true
+                 text: "Przypomnij za 2 godziny"
+                 description: "Przypomnienie uaktywni się za 2 godziny"
+             }
+
+
 
 //             Rectangle
 //             {

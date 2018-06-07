@@ -26,7 +26,6 @@ Dialog
              {
                 font.pixelSize: Theme.fontSizeLarge
                 text: isEdited ? "Zmień nazwe leku" : "Dodaj nowy lek"
-                font.bold: true
              }
 
              TextField

@@ -29,6 +29,8 @@ CoverBackground
                         "value": dialog.value,
                         "meal": dialog.meal
                     });
+                    if (dialog.remind)
+                        pythonGlukometr.reminders.remindInTwoHours()
                 })
             }
         }

@@ -41,7 +41,6 @@ Dialog
             {
                 id: addNotesHeader
                 font.pixelSize: Theme.fontSizeLarge
-                font.bold: true
                 text: "Dodaj notatkę"
             }
 
