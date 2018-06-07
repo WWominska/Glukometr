@@ -72,7 +72,6 @@ Page
             }
             font.pixelSize: Theme.fontSizeLarge
             text: "Zapamiętane urządzenie"
-            font.bold: true
         }
 
         ListView
@@ -173,7 +172,6 @@ Page
             }
             font.pixelSize: Theme.fontSizeLarge
             text: "Wykryte urządzenia"
-            font.bold: true
         }
 
         ProgressBar

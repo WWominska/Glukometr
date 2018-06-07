@@ -42,7 +42,6 @@ Page
                 {
                     id: sweetValue
                     font.pixelSize: Theme.fontSizeMedium
-                    font.bold: true
                     text: "Cukier"
                     anchors
                     {
@@ -57,7 +56,6 @@ Page
                     id: dateAndTime
                     font.pixelSize: Theme.fontSizeMedium
                     horizontalAlignment: Text.AlignRight
-                    font.bold: true
                     text: "Data i Czas"
                     anchors
                     {
@@ -75,19 +73,8 @@ Page
         {
             MenuItem
             {
-                text: "Leki"
-                onClicked: pageStack.push("DrugsPage.qml")
-            }
-
-            MenuItem {
-                text: "Przypomnienia"
-                onClicked: pageStack.push("RemindersPage.qml")
-            }
-
-            MenuItem
-            {
-                text: "Ustaw progi"
-                onClicked: pageStack.push("Threshold.qml")
+                text: "Ustawienia"
+                onClicked: pageStack.push("Setting.qml")
             }
 
             MenuItem
@@ -108,16 +95,11 @@ Page
                             "value": dialog.value,
                             "meal": dialog.meal
                         });
+                        if (dialog.remind)
+                            pythonGlukometr.reminders.remindInTwoHours()
                     })
                 }
             }
-            MenuItem
-            {
-                text: "Dodaj numer"
-                onClicked: pageStack.push("emergency.qml")
-            }
-
-
         }
         VerticalScrollDecorator {}
 
@@ -176,7 +158,6 @@ Page
             {
                 id: sugar
                 font.pixelSize: Theme.fontSizeSmall
-                font.bold: true
                 text: value
                 anchors
                 {
@@ -202,7 +183,6 @@ Page
                 }
                 id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall
-                font.bold: true
                 text: changeToString(meal)
                 color: Theme.secondaryColor
                 anchors
@@ -219,7 +199,6 @@ Page
                 id: data
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                font.bold: true
                 text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
                 anchors
                 {

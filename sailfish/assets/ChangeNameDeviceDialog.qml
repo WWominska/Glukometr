@@ -27,7 +27,6 @@ Dialog
          {
             font.pixelSize: Theme.fontSizeLarge
             text: "Zmień nazwe"
-            font.bold: true
          }
 
          TextField

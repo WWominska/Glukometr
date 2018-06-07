@@ -31,6 +31,8 @@
         <file>assets/NotesAddDialog.qml</file>
         <file>assets/AddDrugs.qml</file>
         <file>assets/emergency.qml</file>
+        <file>assets/AddRemindersDialog.qml</file>
+        <file>assets/Setting.qml</file>
         <file>icons/icon-annotations-drug.svg</file>
         <file>icons/icon-annotations-meal.svg</file>
         <file>assets/cover/background.svg</file>

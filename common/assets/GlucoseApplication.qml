@@ -78,6 +78,22 @@ Item {
             python.call(pythonClass + ".remind",
                         [title, reminder_type, when, repeating, ], callback)
         }
+
+        function remindInTwoHours() {
+            var now = new Date().getTime();
+            var twoHoursLater = new Date(now + (1000*60)*60*2);
+            addReminder(0, twoHoursLater, 0);
+        }
+
+        function addReminder(reminder_type, when, repeating) {
+            var text = "";
+            switch (reminder_type) {
+            case 0: text = "Zmierz cukier"; break;
+            case 1: text = "Weź leki"; break;
+            case 2: text = "Zjedz coś"; break;
+            }
+            remind(text, reminder_type, when, repeating, function () { pythonGlukometr.reminders.get() });
+        }
     }
 
     property alias measurements: measurementsModel

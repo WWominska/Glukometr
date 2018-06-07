@@ -20,7 +20,7 @@ Rectangle {
     Text
     {
         id: label
-        font.pixelSize: 30; font.bold: true
+        font.pixelSize: 30
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         anchors.fill: parent
