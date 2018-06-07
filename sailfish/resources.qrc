@@ -7,6 +7,7 @@
         <file alias="thresholds.py">../python/thresholds.py</file>
         <file alias="devices.py">../python/devices.py</file>
         <file alias="annotations.py">../python/annotations.py</file>
+        <file alias="reminders.py">../python/reminders.py</file>
     </qresource>
     <qresource prefix="/">
         <file alias="assets/GlucoseListModel.qml">../common/assets/GlucoseListModel.qml</file>
@@ -29,6 +30,7 @@
         <file>assets/Threshold.qml</file>
         <file>assets/DrugsPage.qml</file>
         <file>assets/MeasurementDetailsPage.qml</file>
+        <file>assets/RemindersPage.qml</file>
         <file>assets/NotesAddDialog.qml</file>
         <file>assets/AddDrugs.qml</file>
         <file>assets/emergency.qml</file>

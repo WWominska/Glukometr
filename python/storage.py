@@ -134,7 +134,7 @@ class DatabaseModel:
         query = self.base_query()
         query_args = []
 
-        if isinstance(filter, dict):
+        if filter and isinstance(filter, dict):
             query += " WHERE %s" % (", ".join(
                 ["%s = ?" % key for key in filter.keys()]))
             query_args = list(filter.values())

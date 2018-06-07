@@ -79,6 +79,11 @@ Page
                 onClicked: pageStack.push("DrugsPage.qml")
             }
 
+            MenuItem {
+                text: "Przypomnienia"
+                onClicked: pageStack.push("RemindersPage.qml")
+            }
+
             MenuItem
             {
                 text: "Ustaw progi"
@@ -133,6 +138,11 @@ Page
                                       })
             menu: ContextMenu
             {
+                Repeater {
+                    model: pythonGlukometr.drugs.model
+                    MenuItem { text: name }
+                }
+
                 MenuItem
                 {
                     text: "Zmień pore posiłku"

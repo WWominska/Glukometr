@@ -65,6 +65,21 @@ Item {
         }
     }
 
+    GlucoseListModel {
+        id: remindersModel
+        interpreter: python
+        pythonClass: "glukometr.reminders"
+
+        function cancel(cookie, callback) {
+            python.call(pythonClass + ".cancel", [cookie, ], callback)
+        }
+
+        function remind(title, reminder_type, when, repeating, callback) {
+            python.call(pythonClass + ".remind",
+                        [title, reminder_type, when, repeating, ], callback)
+        }
+    }
+
     property alias measurements: measurementsModel
     property alias devices: devicesModel
     property alias drugs: drugsModel
@@ -72,6 +87,7 @@ Item {
     property alias mealAnnotations: mealAnnotationsModel
     property alias textAnnotations: textAnnotationsModel
     property alias drugAnnotations: drugAnnotationsModel
+    property alias reminders: remindersModel
 
     function evaluateMeasurement(value, meal) {
         return python.call_sync("glukometr.thresholds.evaluate_measurement", [
