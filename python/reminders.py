@@ -108,8 +108,8 @@ class Reminders(DatabaseModel):
         if repeating:
             # if this event should be repeated, add recurrence args
             flags = "everyDayOfWeek;everyDayOfMonth;everyMonth"
-            args = "-r'hour=%d;minute=%d;%s' " % (
-                flags, when.hour, when.minute
+            args = "-r'hour=%s;minute=%s;%s' " % (
+                when.hour, when.minute, flags,
             )
 
         args += "-b'TITLE=button0' "
