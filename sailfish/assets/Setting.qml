@@ -83,10 +83,12 @@ Page
                     verticalCenter: parent.verticalCenter
                 }
             }
-            Label {
+
+            Label
+            {
                 text:
                 {
-                    if (settingText == "Telefon")
+                    if (settingText == "Telefon: ")
                         return settings.phoneNumber;
                     return "";
                 }

@@ -4,11 +4,61 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-    Component.onCompleted: pythonGlukometr.measurements.get()
+    Component.onCompleted:
+    {
+        console.log()
+        pythonGlukometr.measurements.get()
+    }
 
-    Connections {
+    Connections
+    {
         target: pythonGlukometr.thresholds
         onModelUpdated: pythonGlukometr.measurements.get()
+    }
+
+    Item
+    {
+        z: 2
+        anchors.fill: book
+        visible: pythonGlukometr.measurements.model.count === 0
+        Column
+        {
+            anchors.centerIn: parent
+            spacing: Theme.paddingLarge
+            Label
+            {
+                text: "Nie masz pomiaru!"
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pixelSize: Theme.fontSizeLarge
+            }
+
+            Label
+            {
+                text: "Kliknij by dodać"
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pixelSize: Theme.fontSizeMedium
+                color: Theme.secondaryColor
+            }
+
+            Button
+            {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Dodaj pomiar"
+                onClicked:
+                {
+                    var dialog = pageStack.push(Qt.resolvedUrl("AddNewMeasurement.qml"))
+                    dialog.accepted.connect(function()
+                    {
+                        pythonGlukometr.measurements.add({
+                            "value": dialog.value,
+                            "meal": dialog.meal
+                        });
+                        if (dialog.remind)
+                            pythonGlukometr.reminders.remindInTwoHours()
+                    })
+                }
+            }
+        }
     }
 
     SilicaListView
@@ -26,6 +76,7 @@ Page
             Rectangle
             {
                 id: dit
+                visible: pythonGlukometr.measurements.model.count !== 0
                 width: parent.width
                 anchors
                 {
