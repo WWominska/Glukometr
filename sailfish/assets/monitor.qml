@@ -24,7 +24,8 @@ Page
         })
     }
 
-    Glucometer {
+    Glucometer
+    {
         id: glucometer
         deviceId: page.deviceId
 
@@ -41,7 +42,8 @@ Page
             pythonGlukometr.measurements.get()
             logi.text = "Pobrano wszystko"
         }
-        onMealChanged: {
+        onMealChanged:
+        {
             var newMeal = -1;
 
             // convert Bluetooth's meal to our meal
@@ -59,7 +61,8 @@ Page
             }, {"meal": newMeal}, true)
         }
 
-        onNewMeasurement: {
+        onNewMeasurement:
+        {
             pythonGlukometr.measurements.add({
                 "value": value,
                 "timestamp": timestamp,
@@ -71,12 +74,16 @@ Page
     }
 
 
-    Rectangle
+    Item
     {
         id: updatei
         width: parent.width
-        height: 80
-        anchors.bottom: stop.top
+        height: Theme.paddingLarge*10
+        anchors
+        {
+            bottom: parent.bottom
+            bottomMargin: Theme.horizontalPageMargin
+        }
 
         Label
         {
@@ -89,13 +96,15 @@ Page
 
     Item
     {
-        anchors {
+        anchors
+        {
             top: parent.top
             left: parent.left
             right: parent.right
             bottom: updatei.top
         }
-        Image {
+        Image
+        {
             id: background
             width: parent.width * (2/3)
             smooth: true
@@ -106,18 +115,5 @@ Page
             source: "qrc:/icons/icon-glucometer.svg"
             fillMode: Image.PreserveAspectFit
         }
-    }
-
-    Button
-    {
-        id:stop
-        width: parent.width
-        height: 0.1*parent.height
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        text: "Stop"
-        color: "#209B9B"
-        highlightBackgroundColor: "#2DC4C4"
-        onClicked: pageStack.pop()
     }
 }
