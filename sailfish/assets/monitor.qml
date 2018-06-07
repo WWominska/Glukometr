@@ -87,13 +87,25 @@ Page
         }
     }
 
-    Image {
-        id: background
-        width: 300
-        height: width
-        anchors.centerIn: parent
-        source: "glucometr.png"
-        fillMode: Image.PreserveAspectFit
+    Item
+    {
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: updatei.top
+        }
+        Image {
+            id: background
+            width: parent.width * (2/3)
+            smooth: true
+            height: width
+            sourceSize.width: width
+            sourceSize.height: width
+            anchors.centerIn: parent
+            source: "qrc:/icons/icon-glucometer.svg"
+            fillMode: Image.PreserveAspectFit
+        }
     }
 
     Button

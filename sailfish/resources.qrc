@@ -17,9 +17,6 @@
         <file>assets/main.qml</file>
         <file>assets/monitor.qml</file>
         <file>assets/Results.qml</file>
-        <file alias="assets/glucometr.png">../common/assets/glucometr.png</file>
-        <file alias="assets/candy.png">../common/assets/candy.png</file>
-        <file alias="assets/ladowanie.png">../common/assets/ladowanie.png</file>
         <file>assets/cover/CoverPage.qml</file>
         <file>assets/ChangeMealDialog.qml</file>
         <file>icons/icon-after-meal.svg</file>
@@ -36,5 +33,9 @@
         <file>assets/emergency.qml</file>
         <file>assets/AddRemindersDialog.qml</file>
         <file>assets/Setting.qml</file>
+        <file>icons/icon-annotations-drug.svg</file>
+        <file>icons/icon-annotations-meal.svg</file>
+        <file>assets/cover/background.svg</file>
+        <file>icons/icon-glucometer.svg</file>
     </qresource>
 </RCC>
