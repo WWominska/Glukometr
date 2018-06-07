@@ -1,8 +1,15 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Configuration 1.0
 
 Page
 {
+    ConfigurationGroup {
+        id: settings
+        path: "/apps/harbour-glukometr"
+        property string phoneNumber: ""
+    }
+
     ListModel
     {
         id: settingList
@@ -10,7 +17,7 @@ Page
         {
             settingText: "Progi"
             source: "Threshold.qml"
-            image: "image://Theme/icon-m-alarm"
+            image: "qrc:/icons/icon-settings-threshold.svg"
         }
 
         ListElement
@@ -22,16 +29,16 @@ Page
 
         ListElement
         {
-            settingText: "Telefon"
+            settingText: "Telefon: "
             source: "emergency.qml"
-            image: "image://Theme/icon-l-answer"
+            image: "image://Theme/icon-m-answer"
         }
 
         ListElement
         {
             settingText: "Leki"
             source: "DrugsPage.qml"
-            image: "image://Theme/icon-m-alarm"
+            image: "qrc:/icons/icon-annotations-drug.svg"
         }
     }
 
@@ -57,11 +64,17 @@ Page
                     left: parent.left
                     leftMargin: Theme.horizontalPageMargin
                 }
+                width: Theme.iconSizeMedium
+                height: Theme.iconSizeMedium
+                sourceSize.width: width
+                sourceSize.height: height
+                smooth: true
                 source: image
             }
 
             Label
             {
+                id: label
                 text: settingText
                 anchors
                 {
@@ -70,6 +83,23 @@ Page
                     verticalCenter: parent.verticalCenter
                 }
             }
+            Label {
+                text:
+                {
+                    if (settingText == "Telefon")
+                        return settings.phoneNumber;
+                    return "";
+                }
+                color: Theme.highlightColor
+
+                anchors
+                {
+                    left: label.right
+                    leftMargin: Theme.paddingMedium
+                    verticalCenter: parent.verticalCenter
+                }
+            }
+
             onClicked: pageStack.push(Qt.resolvedUrl(source))
         }
     }

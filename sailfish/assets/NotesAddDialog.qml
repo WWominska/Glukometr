@@ -148,18 +148,6 @@ Dialog
                             }
                         }
                     }
-                    MenuItem
-                    {
-                        text: "Dodaj własny lek"
-                        onClicked:
-                        {
-                            var dialog = pageStack.push(Qt.resolvedUrl("AddDrugs.qml"))
-                            dialog.accepted.connect(function()
-                            {
-                                pythonGlukometr.drugs.add({"name": dialog.value})
-                            })
-                        }
-                    }
                 }
             }
 

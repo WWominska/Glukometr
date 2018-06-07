@@ -37,7 +37,6 @@ Page
         {
             id: drugItem
             RemorseItem { id: remorseDrug }
-            contentHeight: drugLabel.height + Theme.paddingSmall*2
             menu: ContextMenu
             {
                 MenuItem

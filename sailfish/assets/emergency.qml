@@ -1,18 +1,25 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Configuration 1.0
 
 
 Dialog
 {
-    id:iDontKnow
+    ConfigurationGroup
+    {
+        id: settings
+        path: "/apps/harbour-glukometr"
+        property string phoneNumber: ""
+    }
 
+    id:iDontKnow
     canAccept: unitFood.acceptableInput
 
     onDone:
     {
         if (result == DialogResult.Accepted)
         {
-            value = nameField.text
+            settings.phoneNumber = unitFood.text
         }
     }
 
@@ -39,6 +46,7 @@ Dialog
 
             TextField
             {
+                text: settings.phoneNumber
                 id: unitFood
                 focus: true
                 width: parent.width
@@ -48,21 +56,6 @@ Dialog
                 validator: RegExpValidator { regExp: /^\(?[0-9]{1,3}\)? ?-?[0-9]{1,3} ?-?[0-9]{3,5} ?-?[0-9]{4}( ?-?[0-9]{3})? ?(\w{1,9}\s?\d{1,6})?$/ }
                 maximumLength: 9
             }
-
-//            Label
-//            {
-//                text: "Powyże numer telefonu w razie nieszczęśliwego wypadku"
-//                anchors
-//                {
-//                    verticalCenter: parent.verticalCenter
-//                    left: parent.left
-//                    right: parenyt.right
-//                    margins: Theme.paddingMedium
-//                }
-//                wrapMode: Text.WordWrap
-//                font.pixelSize: Theme.fontSizeMedium
-//                color: Theme.secondaryColor
-//            }
         }
     }
 }
