@@ -5,7 +5,6 @@ import QtGraphicalEffects 1.0
 Page
 {
     id: screen
-        Component.onCompleted: pythonGlukometr.getThresholds()
 
     SilicaFlickable
     {
@@ -17,7 +16,7 @@ Page
             MenuItem
             {
                 text: "Przywróć ustawienia domyślne"
-                //onClicked: pythonGlukometr
+                onClicked: pythonGlukometr.thresholds.result()
             }
         }
 
@@ -37,7 +36,7 @@ Page
                 currentIndex: 0
                 Repeater
                 {
-                    model: pythonGlukometr.thresholds
+                    model: pythonGlukometr.thresholds.model
 
                     ExpandingSection
                     {
@@ -97,6 +96,15 @@ Page
 
                         content.sourceComponent: Column
                         {
+                            function updateThreshold() {
+                                if (min != minScroll.value|| max != maxScroll.value) {
+                                    pythonGlukometr.thresholds.update(id, {
+                                        "min": minScroll.value,
+                                        "max": maxScroll.value
+                                    }, true)
+                                }
+                            }
+
                             width: section.width
                             Slider
                             {
@@ -107,8 +115,8 @@ Page
                                 maximumValue: 180
                                 value: min
                                 valueText: value
-                                anchors.horizontalCenter: horizontalCenter
-                                onValueChanged: pythonGlukometr.updateThreshold(meal, minScroll.sliderValue, maxScroll.sliderValue)
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                onDownChanged: updateThreshold()
                             }
 
                             Slider
@@ -120,8 +128,8 @@ Page
                                 maximumValue: 260
                                 value: max
                                 valueText: value
-                                anchors.horizontalCenter: horizontalCenter
-                                onValueChanged: pythonGlukometr.updateThreshold(meal, minScroll.value, maxScroll.value)
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                onDownChanged: updateThreshold()
                             }
                         }
                     }
@@ -129,6 +137,9 @@ Page
             }
         }
     }
+
+    Component.onCompleted: pythonGlukometr.thresholds.get()
+    Component.onDestruction: pythonGlukometr.thresholds.get()
 }
 
 //pythonGlukometr.updateThreshold(meal, min, max)

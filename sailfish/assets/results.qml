@@ -4,8 +4,12 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-    Component.onCompleted: pythonGlukometr.getMeasurements()
+    Component.onCompleted: pythonGlukometr.measurements.get()
 
+    Connections {
+        target: pythonGlukometr.thresholds
+        onModelUpdated: pythonGlukometr.measurements.get()
+    }
 
     SilicaListView
     {
@@ -33,18 +37,19 @@ Page
                     rightMargin: Theme.horizontalPageMargin
                     top: pageHeader.bottom
                 }
-                height: 80
+                height: sweetValue.paintedHeight + Theme.paddingMedium
                 color: "transparent"
-                radius: 10
+
                 Label
                 {
                     id: sweetValue
                     font.pixelSize: Theme.fontSizeMedium
-                    font.bold: true
                     text: "Cukier"
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    anchors.topMargin: 15
+                    anchors
+                    {
+                        left: parent.left
+                        top: parent.top
+                    }
                     color: Theme.primaryColor
                 }
 
@@ -53,11 +58,14 @@ Page
                     id: dateAndTime
                     font.pixelSize: Theme.fontSizeMedium
                     horizontalAlignment: Text.AlignRight
-                    font.bold: true
                     text: "Data i Czas"
-                    anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.topMargin: 15
+                    anchors
+                    {
+                        right: parent.right
+                        top: parent.top
+
+                        //verticalCenter: parent.verticalCenter
+                    }
                     color: Theme.primaryColor
                     clip: true
                 }
@@ -68,8 +76,8 @@ Page
             id: pullDownMenu
             MenuItem
             {
-                text: "Ustaw progi"
-                onClicked: pageStack.push("Threshold.qml")
+                text: "Ustawienia"
+                onClicked: pageStack.push("Setting.qml")
             }
 
             MenuItem
@@ -92,23 +100,33 @@ Page
                     var dialog = pageStack.push(Qt.resolvedUrl("AddNewMeasurement.qml"))
                     dialog.accepted.connect(function()
                     {
-                        pythonGlukometr.addMeasurement(dialog.value, 0, 0, 0, dialog.meal)
+                        pythonGlukometr.measurements.add({
+                            "value": dialog.value,
+                            "meal": dialog.meal
+                        });
+                        if (dialog.remind)
+                            pythonGlukometr.reminders.remindInTwoHours()
                     })
                 }
             }
-
         }
         VerticalScrollDecorator {}
 
 
         id: book
         anchors.fill: parent
-        model: pythonGlukometr.measurements  //glukometr.pomiary
+        model: pythonGlukometr.measurements.model
         delegate: ListItem
         {
             id: measurement
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
+            onClicked: pageStack.push(Qt.resolvedUrl("MeasurementDetailsPage.qml"), {
+                                          "measurement_id": id,
+                                          "value": value,
+                                          "meal": meal,
+                                          "timestamp": timestamp
+                                      })
             menu: ContextMenu
             {
                 MenuItem
@@ -120,14 +138,18 @@ Page
                                                                          {"meal": meal})
                         dialog.accepted.connect(function()
                         {
-                            pythonGlukometr.updateMeasurement(id, dialog.meal)
+                            pythonGlukometr.measurements.update(id, {
+                                "meal": dialog.meal
+                            })
                         })
                     }
                 }
                 MenuItem
                 {
                     text: "Usuń"
-                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {pythonGlukometr.deleteMeasurement(id) } )
+                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
+                        pythonGlukometr.measurements.remove(id)
+                    })
                 }
             }
 
@@ -145,11 +167,13 @@ Page
             {
                 id: sugar
                 font.pixelSize: Theme.fontSizeSmall
-                font.bold: true
                 text: value
-                anchors.left: dot.right
-                anchors.top: parent.top
-                anchors.topMargin: Theme.paddingSmall
+                anchors
+                {
+                    left: dot.right
+                    top: parent.top
+                    topMargin: Theme.paddingSmall
+                }
                 color: Theme.primaryColor
             }
 
@@ -168,7 +192,6 @@ Page
                 }
                 id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall
-                font.bold: true
                 text: changeToString(meal)
                 color: Theme.secondaryColor
                 anchors
@@ -185,13 +208,15 @@ Page
                 id: data
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                font.bold: true
-                text: timestamp.toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
-                anchors.left: whenMeasurement.right
-                anchors.right: parent.right
-                anchors.rightMargin: Theme.horizontalPageMargin
-                anchors.top: parent.top
-                anchors.topMargin: Theme.paddingSmall
+                text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                anchors
+                {
+                    left: whenMeasurement.right
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                    top: parent.top
+                    topMargin: Theme.paddingSmall
+                }
                 color: Theme.highlightColor
             }
         }

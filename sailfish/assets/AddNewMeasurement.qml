@@ -2,12 +2,17 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import QtGraphicalEffects 1.0
 
-
 Dialog
 {
     id: dialog
     property int meal;
     property real value;
+    property alias remind: repeat.checked
+
+    canAccept: nameField.acceptableInput
+
+    Component.onCompleted: application.measurementPageOpen = true
+    Component.onDestruction: application.measurementPageOpen = false
 
     onDone:
     {
@@ -36,7 +41,6 @@ Dialog
              {
                 font.pixelSize: Theme.fontSizeLarge
                 text: "Podaj cukier"
-                font.bold: true
              }
 
              TextField
@@ -45,13 +49,18 @@ Dialog
                  width: parent.width
                  placeholderText: "120..."
                  label: "Wartość cukru"
+                 inputMethodHints: Qt.ImhDigitsOnly
+                 validator: IntValidator
+                 {
+                     bottom: 1
+                     top:700
+                 }
              }
 
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
                 text: "Pora posiłku"
-                font.bold: true
              }
 
              Label
@@ -65,7 +74,6 @@ Dialog
                 text: "Poniżej możesz ustawić pore w jakiej dokonałeś pomiaru"
                 wrapMode: Text.WordWrap
                 color: Theme.secondaryHighlightColor
-                font.bold: true
 
              }
 
@@ -172,6 +180,21 @@ Dialog
                  }
              }
 
+             TextSwitch
+             {
+                 id: repeat
+                 anchors
+                 {
+                     left: parent.left
+                     right: parent.right
+                 }
+                 checked: true
+                 text: "Przypomnij za 2 godziny"
+                 description: "Przypomnienie uaktywni się za 2 godziny"
+             }
+
+
+
 //             Rectangle
 //             {
 //                 color: "transparent"
@@ -179,28 +202,6 @@ Dialog
 //                 height: 200
 //             }
 
-             SectionHeader
-             {
-                font.pixelSize: Theme.fontSizeLarge
-                text: "Notatka"
-                font.bold: true
-             }
-
-             Label
-             {
-                 anchors
-                 {
-                     left: parent.left
-                     leftMargin: Theme.horizontalPageMargin
-                     right: parent.right
-                     rightMargin: Theme.horizontalPageMargin
-                 }
-                 text: "Tu możesz wpisać własną notatkę (np. co zjadłeś, jakie ćwiczenia zrobiłeś itp...)"
-                 font.pixelSize: Theme.fontSizeSmall
-                 wrapMode: Text.WordWrap
-                 color: Theme.secondaryHighlightColor
-                 font.bold: true
-             }
         }
     }
 }

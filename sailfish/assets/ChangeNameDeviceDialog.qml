@@ -5,6 +5,8 @@ Dialog
 {
     id: dialogDevice
     property string name;
+
+    canAccept: nameField.text != ""
     onDone:
     {
         if (result == DialogResult.Accepted)
@@ -25,7 +27,6 @@ Dialog
          {
             font.pixelSize: Theme.fontSizeLarge
             text: "Zmień nazwe"
-            font.bold: true
          }
 
          TextField

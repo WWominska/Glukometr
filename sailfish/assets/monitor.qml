@@ -8,28 +8,20 @@ Page
     property int deviceId
     property string macAddress
 
-    Component.onCompleted: {
-        if (deviceId != -1)
-            pythonGlukometr.getLastSequenceNumber(deviceId)
-        else pythonGlukometr.getDeviceId(macAddress)
+    function getLastSequenceNumber() {
+        pythonGlukometr.measurements.getLastSequenceNumber(deviceId, function (lastSequenceNumber) {
+            glucometer.lastSequenceNumber = lastSequenceNumber;
+            glucometer.connectToService(macAddress)
+        })
     }
 
-    Connections {
-        target: pythonGlukometr
-        onGotDeviceId: {
-            if (page.macAddress == macAddress) {
-                page.deviceId = deviceId
-                pythonGlukometr.getLastSequenceNumber(deviceId)
-            }
-        }
-
-        onGotLastSequenceNumber: {
-            if (page.deviceId == deviceId)
-                glucometer.lastSequenceNumber = lastSequenceNumber;
-
-            // ready to connect
-            glucometer.connectToService(macAddress)
-        }
+    Component.onCompleted: {
+        if (deviceId != -1)
+            getLastSequenceNumber()
+        else pythonGlukometr.devices.getDeviceId(macAddress, function (deviceId) {
+            page.deviceId = deviceId
+            getLastSequenceNumber()
+        })
     }
 
     Glucometer {
@@ -44,11 +36,37 @@ Page
         onNotAGlucometer: logi.text = "Urządzenie nie jest glukometrem"
         onPairing: logi.text = "Parowanie..."
         onRacpStarted: logi.text = "Pobieranie pomiarów"
-        onRacpFinished: logi.text = "Pobrano wszystko"
+        onRacpFinished: {
+            pythonGlukometr.devices.update(page.deviceId, {"last_sync": -1})
+            pythonGlukometr.measurements.get()
+            logi.text = "Pobrano wszystko"
+        }
+        onMealChanged: {
+            var newMeal = -1;
+
+            // convert Bluetooth's meal to our meal
+            switch (meal) {
+                case 1: newMeal = 1; break;   // przed posiłkiem
+                case 2: newMeal = 2; break;   // po posiłku
+                case 3: newMeal = 0; break;   // na czczo
+                case 5: newMeal = 3; break;   // nocna
+                default: newMeal = -1; break; // nie okreslono
+            }
+
+            pythonGlukometr.measurements.update({
+                "sequence_number": sequence_number,
+                "device_id": device
+            }, {"meal": newMeal}, true)
+        }
 
         onNewMeasurement: {
-            pythonGlukometr.addMeasurement(value, timestamp, device,
-                                           sequence_number, -1)
+            pythonGlukometr.measurements.add({
+                "value": value,
+                "timestamp": timestamp,
+                "device_id": device,
+                "sequence_number": sequence_number,
+                "meal": -1
+            })
         }
     }
 
@@ -69,13 +87,25 @@ Page
         }
     }
 
-    Image {
-        id: background
-        width: 300
-        height: width
-        anchors.centerIn: parent
-        source: "glucometr.png"
-        fillMode: Image.PreserveAspectFit
+    Item
+    {
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: updatei.top
+        }
+        Image {
+            id: background
+            width: parent.width * (2/3)
+            smooth: true
+            height: width
+            sourceSize.width: width
+            sourceSize.height: width
+            anchors.centerIn: parent
+            source: "qrc:/icons/icon-glucometer.svg"
+            fillMode: Image.PreserveAspectFit
+        }
     }
 
     Button
