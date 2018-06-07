@@ -30,8 +30,13 @@ Page
     Component.onCompleted: {
         bleDiscovery.startDiscovery()
         pythonGlukometr.devices.get()
+        application.bluetoothPageOpen = true
+
     }
-    Component.onDestruction: bleDiscovery.stopDiscovery()
+    Component.onDestruction: {
+        application.bluetoothPageOpen = false
+        bleDiscovery.stopDiscovery()
+    }
 
     SilicaFlickable
     {

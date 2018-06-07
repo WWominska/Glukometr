@@ -11,6 +11,9 @@ Dialog
 
     canAccept: nameField.acceptableInput
 
+    Component.onCompleted: application.measurementPageOpen = true
+    Component.onDestruction: application.measurementPageOpen = false
+
     onDone:
     {
         if (result == DialogResult.Accepted)

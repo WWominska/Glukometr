@@ -98,16 +98,18 @@ CoverBackground
             onTriggered:
             {
                 application.activate()
-                var dialog = application.pageStack.push(Qt.resolvedUrl("../AddNewMeasurement.qml"))
-                dialog.accepted.connect(function()
-                {
-                    pythonGlukometr.measurements.add({
-                        "value": dialog.value,
-                        "meal": dialog.meal
-                    });
-                    if (dialog.remind)
-                        pythonGlukometr.reminders.remindInTwoHours()
-                })
+                if (!application.measurementPageOpen) {
+                    var dialog = application.pageStack.push(Qt.resolvedUrl("../AddNewMeasurement.qml"))
+                    dialog.accepted.connect(function()
+                    {
+                        pythonGlukometr.measurements.add({
+                            "value": dialog.value,
+                            "meal": dialog.meal
+                        });
+                        if (dialog.remind)
+                          pythonGlukometr.reminders.remindInTwoHours()
+                    })
+                }
             }
         }
 
@@ -115,9 +117,10 @@ CoverBackground
         {
             iconSource: "image://theme/icon-s-bluetooth"
             onTriggered:
-            {
+            { 
                 application.activate()
-                application.pageStack.push("../home.qml")
+                if (!application.bluetoothPageOpen)
+                    application.pageStack.push("../home.qml")
             }
         }
     }
