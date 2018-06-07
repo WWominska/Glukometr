@@ -7,7 +7,8 @@ CoverBackground
     {
         id: lastMeasurement
         anchors.centerIn: parent
-        text: "hlep"
+        font.pixelSize: Theme.fontSizeHuge
+        text: pythonGlukometr.measurements.model.get(0).value
     }
 
 

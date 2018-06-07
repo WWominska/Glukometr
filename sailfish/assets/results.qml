@@ -138,11 +138,6 @@ Page
                                       })
             menu: ContextMenu
             {
-                Repeater {
-                    model: pythonGlukometr.drugs.model
-                    MenuItem { text: name }
-                }
-
                 MenuItem
                 {
                     text: "Zmień pore posiłku"
