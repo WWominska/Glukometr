@@ -1,13 +1,12 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Nemo.Configuration 1.0
 
 Page
 {
-    ConfigurationGroup {
-        id: settings
-        path: "/apps/harbour-glukometr"
-        property string phoneNumber: ""
+    Item {
+        id: consts
+        property int noText: 0
+        property int phoneNumber: 1
     }
 
     ListModel
@@ -16,6 +15,8 @@ Page
         ListElement
         {
             settingText: "Progi"
+            secondaryText: 0
+            replace: false
             source: "Threshold.qml"
             image: "qrc:/icons/icon-settings-threshold.svg"
         }
@@ -23,6 +24,8 @@ Page
         ListElement
         {
             settingText: "Przypomnienia"
+            secondaryText: 0
+            replace: false
             source: "RemindersPage.qml"
             image: "image://Theme/icon-m-alarm"
         }
@@ -30,6 +33,8 @@ Page
         ListElement
         {
             settingText: "Telefon: "
+            secondaryText: 1
+            replace: false
             source: "emergency.qml"
             image: "image://Theme/icon-m-answer"
         }
@@ -37,8 +42,19 @@ Page
         ListElement
         {
             settingText: "Leki"
+            secondaryText: 0
+            replace: false
             source: "DrugsPage.qml"
             image: "qrc:/icons/icon-annotations-drug.svg"
+        }
+        ListElement
+        {
+            secondaryText: 0
+            settingText: "Rozpocznij tutorial"
+            source: "Tutorial.qml"
+            replace: true
+            image: "image://Theme/icon-m-question"
+
         }
     }
 
@@ -86,9 +102,11 @@ Page
             Label {
                 text:
                 {
-                    if (settingText == "Telefon")
-                        return settings.phoneNumber;
-                    return "";
+                    switch (secondaryText) {
+                    case consts.phoneNumber:
+                        return settings.phoneNumber ? settings.phoneNumber : "Naciśnij aby ustawić";
+                    default: return "";
+                    }
                 }
                 color: Theme.highlightColor
 
@@ -100,7 +118,11 @@ Page
                 }
             }
 
-            onClicked: pageStack.push(Qt.resolvedUrl(source))
+            onClicked: {
+                if (replace)
+                    pageStack.replace(Qt.resolvedUrl(source))
+                else pageStack.push(Qt.resolvedUrl(source))
+            }
         }
     }
 }

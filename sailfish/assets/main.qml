@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Configuration 1.0
 
 ApplicationWindow {
     id: application
@@ -11,9 +12,23 @@ ApplicationWindow {
     initialPage: Component { Results {} }
     allowedOrientations: defaultAllowedOrientations
 
-    Component.onCompleted: pageStack.push(Qt.resolvedUrl("Tutorial.qml"), {}, PageStackAction.Immediate)
+    Component.onCompleted:
+    {
+        if (settings.isFirstRun)
+        {
+            settings.isFirstRun = false
+            pageStack.push(Qt.resolvedUrl("Tutorial.qml"), {}, PageStackAction.Immediate)
+        }
+    }
 
     GlucoseApplication {
         id: pythonGlukometr
+    }
+
+    ConfigurationGroup {
+        id: settings
+        path: "/apps/harbour-glukometr"
+        property bool isFirstRun: true
+        property string phoneNumber: ""
     }
 }

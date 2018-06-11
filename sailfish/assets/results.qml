@@ -88,12 +88,6 @@ Page
 
             MenuItem
             {
-                text: "By sprawdzić tutorial"
-                onClicked: pageStack.push("Tutorial.qml")
-            }
-
-            MenuItem
-            {
                 text: "Dodaj pomiar"
                 onClicked:
                 {

@@ -1,17 +1,9 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Nemo.Configuration 1.0
 
 
 Dialog
 {
-    ConfigurationGroup
-    {
-        id: settings
-        path: "/apps/harbour-glukometr"
-        property string phoneNumber: ""
-    }
-
     id:iDontKnow
     canAccept: unitFood.acceptableInput
 
