@@ -13,7 +13,7 @@ Page
 
     SilicaListView
     {
-        opacity: hint.running ? 0.5 : 1.0
+        opacity: hint.running ? disabledOpacity : 1.0
         Behavior on opacity { FadeAnimation {} }
         header: Item
         {
@@ -63,8 +63,6 @@ Page
                     {
                         right: parent.right
                         top: parent.top
-
-                        //verticalCenter: parent.verticalCenter
                     }
                     color: Theme.primaryColor
                     clip: true
@@ -77,13 +75,13 @@ Page
             MenuItem
             {
                 text: "Ustawienia"
-                onClicked: pageStack.push("qrc:/assets/pages/Settings.qml")
+                onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/Settings.qml")
             }
 
             MenuItem
             {
                 text: "Bluetooth"
-                onClicked: pageStack.push("qrc:/assets/pages/DeviceList.qml")
+                onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
 
             MenuItem
@@ -100,6 +98,7 @@ Page
         model: pythonGlukometr.measurements.model
         delegate: ListItem
         {
+            enabled: !isTutorialEnabled
             id: measurement
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
@@ -230,11 +229,14 @@ Page
         loops: Animation.Infinite
         interactionMode: TouchInteraction.Pull
         direction: TouchInteraction.Down
-    }
-
-    Connections
-    {
-        target: application
-        onIsTutorialEnabledChanged: hint.start()
+        Connections {
+            target: application
+            onIsTutorialEnabledChanged:
+            {
+                if (application.isTutorialEnabled)
+                    hint.start()
+                else hint.stop();
+            }
+        }
     }
 }

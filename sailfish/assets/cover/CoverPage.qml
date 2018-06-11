@@ -109,7 +109,7 @@ CoverBackground
             onTriggered:
             { 
                 application.activate()
-                if (!application.bluetoothPageOpen)
+                if (!application.bluetoothPageOpen && !application.isTutorialEnabled)
                     application.pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
         }

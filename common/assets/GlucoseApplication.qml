@@ -92,7 +92,7 @@ Item {
             case 1: text = "Weź leki"; break;
             case 2: text = "Zjedz coś"; break;
             }
-            remind(text, reminder_type, when, repeating, function () { pythonGlukometr.reminders.get() });
+            remind(text, reminder_type, when, repeating, function () { get() });
         }
     }
 
