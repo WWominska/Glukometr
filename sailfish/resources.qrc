@@ -38,5 +38,6 @@
         <file>icons/icon-annotations-meal.svg</file>
         <file>assets/cover/background.svg</file>
         <file>icons/icon-glucometer.svg</file>
+        <file>icons/icon-settings-threshold.svg</file>
     </qresource>
 </RCC>
