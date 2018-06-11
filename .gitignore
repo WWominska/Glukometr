@@ -45,3 +45,6 @@ CMakeLists.txt.user*
 # WinRT
 .vs
 .qmake.winrt_uuid_*
+
+# Sailfish
+rpm/*.spec
