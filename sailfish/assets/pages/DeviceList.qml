@@ -98,7 +98,7 @@ Page
                         text: "Zmień nazwę urządzenia"
                         onClicked:
                         {
-                            var dialog = pageStack.push(Qt.resolvedUrl("ChangeNameDeviceDialog.qml"), {"name": name})
+                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
                             dialog.accepted.connect(function()
                             {
                                 pythonGlukometr.devices.update(
@@ -118,7 +118,7 @@ Page
                     }
                 }
 
-                onClicked: pageStack.push("monitor.qml", {"deviceId": id, "macAddress": mac_address });
+                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": id, "macAddress": mac_address });
 
                 Image {
                     id: bluetoothIcon
@@ -206,7 +206,7 @@ Page
                         "name": name,
                         "mac_address": macAddress
                     })
-                    pageStack.push("monitor.qml", {
+                    pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {
                                        "deviceId": -1,
                                        "macAddress": macAddress});
                 }

@@ -12,32 +12,31 @@
     <qresource prefix="/">
         <file alias="assets/GlucoseListModel.qml">../common/assets/GlucoseListModel.qml</file>
         <file alias="assets/GlucoseApplication.qml">../common/assets/GlucoseApplication.qml</file>
-        <file alias="assets/Button.qml">../common/assets/Button.qml</file>
-        <file>assets/home.qml</file>
         <file>assets/main.qml</file>
-        <file>assets/monitor.qml</file>
-        <file>assets/Results.qml</file>
         <file>assets/cover/CoverPage.qml</file>
-        <file>assets/ChangeMealDialog.qml</file>
         <file>icons/icon-after-meal.svg</file>
         <file>icons/icon-before-meal.svg</file>
         <file>icons/icon-fasting.svg</file>
-        <file>assets/AddNewMeasurement.qml</file>
-        <file>assets/ChangeNameDeviceDialog.qml</file>
-        <file>assets/Threshold.qml</file>
-        <file>assets/Tutorial.qml</file>
-        <file>assets/DrugsPage.qml</file>
-        <file>assets/MeasurementDetailsPage.qml</file>
-        <file>assets/RemindersPage.qml</file>
-        <file>assets/NotesAddDialog.qml</file>
-        <file>assets/AddDrugs.qml</file>
-        <file>assets/emergency.qml</file>
-        <file>assets/AddRemindersDialog.qml</file>
-        <file>assets/Setting.qml</file>
         <file>icons/icon-annotations-drug.svg</file>
         <file>icons/icon-annotations-meal.svg</file>
         <file>assets/cover/background.svg</file>
         <file>icons/icon-glucometer.svg</file>
         <file>icons/icon-settings-threshold.svg</file>
+        <file>assets/dialogs/AddAnnotation.qml</file>
+        <file>assets/dialogs/AddDrug.qml</file>
+        <file>assets/dialogs/AddMeasurement.qml</file>
+        <file>assets/dialogs/AddReminder.qml</file>
+        <file>assets/dialogs/ChangeMeal.qml</file>
+        <file>assets/dialogs/ChangePhoneNumber.qml</file>
+        <file>assets/dialogs/RenameDevice.qml</file>
+        <file>assets/pages/DeviceConnection.qml</file>
+        <file>assets/pages/DeviceList.qml</file>
+        <file>assets/pages/DrugList.qml</file>
+        <file>assets/pages/MeasurementDetails.qml</file>
+        <file>assets/pages/MeasurementList.qml</file>
+        <file>assets/pages/ReminderList.qml</file>
+        <file>assets/pages/Settings.qml</file>
+        <file>assets/pages/Thresholds.qml</file>
+        <file>assets/pages/Tutorial.qml</file>
     </qresource>
 </RCC>

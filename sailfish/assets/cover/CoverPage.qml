@@ -98,18 +98,8 @@ CoverBackground
             onTriggered:
             {
                 application.activate()
-                if (!application.measurementPageOpen) {
-                    var dialog = application.pageStack.push(Qt.resolvedUrl("../AddNewMeasurement.qml"))
-                    dialog.accepted.connect(function()
-                    {
-                        pythonGlukometr.measurements.add({
-                            "value": dialog.value,
-                            "meal": dialog.meal
-                        });
-                        if (dialog.remind)
-                          pythonGlukometr.reminders.remindInTwoHours()
-                    })
-                }
+                if (!application.measurementPageOpen)
+                    application.openAddMeasurementDialog()
             }
         }
 
@@ -120,7 +110,7 @@ CoverBackground
             { 
                 application.activate()
                 if (!application.bluetoothPageOpen)
-                    application.pageStack.push("../home.qml")
+                    application.pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
         }
     }

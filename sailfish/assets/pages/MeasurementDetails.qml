@@ -22,7 +22,7 @@ Page
             {
                 text: "Dodaj notatkę"
                 onClicked: {
-                    var dialog = pageStack.push(Qt.resolvedUrl("NotesAddDialog.qml"))
+                    var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"))
                     dialog.accepted.connect(function()
                     {
                         switch (dialog.noteType) {
@@ -172,7 +172,7 @@ Page
                        text: "Edytuj"
                        onClicked:
                        {
-                           var dialog = pageStack.push(Qt.resolvedUrl("NotesAddDialog.qml"), {
+                           var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
                                "isEdited": true,
                                "noteType": 0,
                                "foodName": name,
@@ -286,7 +286,7 @@ Page
                        text: "Edytuj"
                        onClicked:
                        {
-                           var dialog = pageStack.push(Qt.resolvedUrl("NotesAddDialog.qml"), {
+                           var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
                                "isEdited": true,
                                "noteType": 1,
                                "drugId": drug_id,
@@ -358,7 +358,7 @@ Page
                        text: "Edytuj"
                        onClicked:
                        {
-                           var dialog = pageStack.push(Qt.resolvedUrl("NotesAddDialog.qml"), {
+                           var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
                                "isEdited": true,
                                "noteType": 2,
                                "textNotes": content

@@ -17,7 +17,7 @@ Page
             settingText: "Progi"
             secondaryText: 0
             replace: false
-            source: "Threshold.qml"
+            source: "qrc:/assets/pages/Thresholds.qml"
             image: "qrc:/icons/icon-settings-threshold.svg"
         }
 
@@ -26,7 +26,7 @@ Page
             settingText: "Przypomnienia"
             secondaryText: 0
             replace: false
-            source: "RemindersPage.qml"
+            source: "qrc:/assets/pages/ReminderList.qml"
             image: "image://Theme/icon-m-alarm"
         }
 
@@ -35,7 +35,7 @@ Page
             settingText: "Telefon: "
             secondaryText: 1
             replace: false
-            source: "emergency.qml"
+            source: "qrc:/assets/dialogs/ChangePhoneNumber.qml"
             image: "image://Theme/icon-m-answer"
         }
 
@@ -44,14 +44,14 @@ Page
             settingText: "Leki"
             secondaryText: 0
             replace: false
-            source: "DrugsPage.qml"
+            source: "qrc:/assets/pages/DrugList.qml"
             image: "qrc:/icons/icon-annotations-drug.svg"
         }
         ListElement
         {
             secondaryText: 0
             settingText: "Rozpocznij tutorial"
-            source: "Tutorial.qml"
+            source: "qrc:/assets/pages/Tutorial.qml"
             replace: true
             image: "image://Theme/icon-m-question"
 

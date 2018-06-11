@@ -16,7 +16,7 @@ Page
             MenuItem
             {
                 text: "Przywróć ustawienia domyślne"
-                onClicked: pythonGlukometr.thresholds.result()
+                onClicked: pythonGlukometr.thresholds.reset()
             }
         }
 

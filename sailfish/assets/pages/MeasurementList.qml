@@ -77,31 +77,19 @@ Page
             MenuItem
             {
                 text: "Ustawienia"
-                onClicked: pageStack.push("Setting.qml")
+                onClicked: pageStack.push("qrc:/assets/pages/Settings.qml")
             }
 
             MenuItem
             {
                 text: "Bluetooth"
-                onClicked: pageStack.push("home.qml")
+                onClicked: pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
 
             MenuItem
             {
                 text: "Dodaj pomiar"
-                onClicked:
-                {
-                    var dialog = pageStack.push(Qt.resolvedUrl("AddNewMeasurement.qml"))
-                    dialog.accepted.connect(function()
-                    {
-                        pythonGlukometr.measurements.add({
-                            "value": dialog.value,
-                            "meal": dialog.meal
-                        });
-                        if (dialog.remind)
-                            pythonGlukometr.reminders.remindInTwoHours()
-                    })
-                }
+                onClicked: openAddMeasurementDialog()
             }
         }
         VerticalScrollDecorator {}
@@ -115,7 +103,7 @@ Page
             id: measurement
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
-            onClicked: pageStack.push(Qt.resolvedUrl("MeasurementDetailsPage.qml"), {
+            onClicked: pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/MeasurementDetails.qml"), {
                                           "measurement_id": id,
                                           "value": value,
                                           "meal": meal,
@@ -128,7 +116,7 @@ Page
                     text: "Zmień pore posiłku"
                     onClicked:
                     {
-                        var dialog = pageStack.push(Qt.resolvedUrl("ChangeMealDialog.qml"),
+                        var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
                                                                          {"meal": meal})
                         dialog.accepted.connect(function()
                         {

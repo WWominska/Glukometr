@@ -54,6 +54,8 @@ OTHER_FILES += python/* \
                sailfish/* \
                sailfish/rpm/* \
                sailfish/assets/*.qml \
+               sailfish/assets/pages/*.qml \
+               sailfish/assets/dialogs/*.qml \
                sailfish/assets/cover/*.qml \
                android/AndroidManifest.xml android/res/* \
                winrt/*
