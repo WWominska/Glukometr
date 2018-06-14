@@ -62,7 +62,7 @@ Page
             {
                 text: "Dodaj przypomnienie"
                 onClicked: {
-                    var dialog = pageStack.push(Qt.resolvedUrl("AddRemindersDialog.qml"))
+                    var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddReminder.qml"))
                     dialog.accepted.connect(function()
                     {
                         var date = new Date();

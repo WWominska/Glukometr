@@ -19,7 +19,7 @@ Page
                 text: "Dodaj lek"
                 onClicked:
                 {
-                    var dialog = pageStack.push(Qt.resolvedUrl("AddDrugs.qml"))
+                    var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
                     dialog.accepted.connect(function()
                     {
                         pythonGlukometr.drugs.add({"name": dialog.value})
@@ -50,7 +50,7 @@ Page
                     text: "Edytuj"
                     onClicked:
                     {
-                        var dialog = pageStack.push(Qt.resolvedUrl("AddDrugs.qml"), {
+                        var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"), {
                                                         "value": name,
                                                         "isEdited": true,
                                                     })

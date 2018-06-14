@@ -9,6 +9,7 @@ Dialog
     property alias foodAmount: unitFood.text
     property alias foodUnit: unitId.value
     property alias drugId: drugsName.drugId
+    property alias drugName: drugsName.value
     property alias drugsUnit: unitDrugs.text
     property alias idDrugs: drugsId.value
     property alias textNotes: notesText.text

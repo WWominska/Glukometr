@@ -13,6 +13,8 @@ Page
 
     SilicaListView
     {
+        opacity: hint.running ? disabledOpacity : 1.0
+        Behavior on opacity { FadeAnimation {} }
         header: Item
         {
             width: parent.width
@@ -61,8 +63,6 @@ Page
                     {
                         right: parent.right
                         top: parent.top
-
-                        //verticalCenter: parent.verticalCenter
                     }
                     color: Theme.primaryColor
                     clip: true
@@ -71,34 +71,23 @@ Page
         }
         PullDownMenu
         {
+            id: pullDownMenu
             MenuItem
             {
                 text: "Ustawienia"
-                onClicked: pageStack.push("Setting.qml")
+                onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/Settings.qml")
             }
 
             MenuItem
             {
                 text: "Bluetooth"
-                onClicked: pageStack.push("home.qml")
+                onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
 
             MenuItem
             {
                 text: "Dodaj pomiar"
-                onClicked:
-                {
-                    var dialog = pageStack.push(Qt.resolvedUrl("AddNewMeasurement.qml"))
-                    dialog.accepted.connect(function()
-                    {
-                        pythonGlukometr.measurements.add({
-                            "value": dialog.value,
-                            "meal": dialog.meal
-                        });
-                        if (dialog.remind)
-                            pythonGlukometr.reminders.remindInTwoHours()
-                    })
-                }
+                onClicked: openAddMeasurementDialog()
             }
         }
         VerticalScrollDecorator {}
@@ -109,10 +98,11 @@ Page
         model: pythonGlukometr.measurements.model
         delegate: ListItem
         {
+            enabled: !isTutorialEnabled
             id: measurement
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
-            onClicked: pageStack.push(Qt.resolvedUrl("MeasurementDetailsPage.qml"), {
+            onClicked: pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/MeasurementDetails.qml"), {
                                           "measurement_id": id,
                                           "value": value,
                                           "meal": meal,
@@ -125,7 +115,7 @@ Page
                     text: "Zmień pore posiłku"
                     onClicked:
                     {
-                        var dialog = pageStack.push(Qt.resolvedUrl("ChangeMealDialog.qml"),
+                        var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
                                                                          {"meal": meal})
                         dialog.accepted.connect(function()
                         {
@@ -209,6 +199,43 @@ Page
                     topMargin: Theme.paddingSmall
                 }
                 color: Theme.highlightColor
+            }
+        }
+    }
+
+    InteractionHintLabel
+    {
+        text: "Aby przejść dalej przesuń palcem w dół"
+        color: Theme.secondaryColor
+        anchors.top: parent.top
+        opacity: hint.running ? (pullDownMenu.active ? 0.0 : 1.0) : 0.0
+        Behavior on opacity { FadeAnimation {} }
+        invert: true
+    }
+
+    InteractionHintLabel
+    {
+        text: "Wybierz 'Dodaj pomiar'"
+        color: Theme.secondaryColor
+        anchors.bottom: parent.bottom
+        opacity: hint.running ? (pullDownMenu.active ? 1.0 : 0.0) : 0.0
+        Behavior on opacity { FadeAnimation {} }
+        invert: false
+    }
+
+    TouchInteractionHint
+    {
+        id: hint
+        loops: Animation.Infinite
+        interactionMode: TouchInteraction.Pull
+        direction: TouchInteraction.Down
+        Connections {
+            target: application
+            onIsTutorialEnabledChanged:
+            {
+                if (application.isTutorialEnabled)
+                    hint.start()
+                else hint.stop();
             }
         }
     }

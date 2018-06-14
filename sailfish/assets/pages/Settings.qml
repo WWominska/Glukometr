@@ -1,13 +1,12 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Nemo.Configuration 1.0
 
 Page
 {
-    ConfigurationGroup {
-        id: settings
-        path: "/apps/harbour-glukometr"
-        property string phoneNumber: ""
+    Item {
+        id: consts
+        property int noText: 0
+        property int phoneNumber: 1
     }
 
     ListModel
@@ -16,29 +15,46 @@ Page
         ListElement
         {
             settingText: "Progi"
-            source: "Threshold.qml"
+            secondaryText: 0
+            replace: false
+            source: "qrc:/assets/pages/Thresholds.qml"
             image: "qrc:/icons/icon-settings-threshold.svg"
         }
 
         ListElement
         {
             settingText: "Przypomnienia"
-            source: "RemindersPage.qml"
+            secondaryText: 0
+            replace: false
+            source: "qrc:/assets/pages/ReminderList.qml"
             image: "image://Theme/icon-m-alarm"
         }
 
         ListElement
         {
             settingText: "Telefon: "
-            source: "emergency.qml"
+            secondaryText: 1
+            replace: false
+            source: "qrc:/assets/dialogs/ChangePhoneNumber.qml"
             image: "image://Theme/icon-m-answer"
         }
 
         ListElement
         {
             settingText: "Leki"
-            source: "DrugsPage.qml"
+            secondaryText: 0
+            replace: false
+            source: "qrc:/assets/pages/DrugList.qml"
             image: "qrc:/icons/icon-annotations-drug.svg"
+        }
+        ListElement
+        {
+            secondaryText: 0
+            settingText: "Rozpocznij tutorial"
+            source: "qrc:/assets/pages/Tutorial.qml"
+            replace: true
+            image: "image://Theme/icon-m-question"
+
         }
     }
 
@@ -86,9 +102,11 @@ Page
             Label {
                 text:
                 {
-                    if (settingText == "Telefon")
-                        return settings.phoneNumber;
-                    return "";
+                    switch (secondaryText) {
+                    case consts.phoneNumber:
+                        return settings.phoneNumber ? settings.phoneNumber : "Naciśnij aby ustawić";
+                    default: return "";
+                    }
                 }
                 color: Theme.highlightColor
 
@@ -100,7 +118,22 @@ Page
                 }
             }
 
-            onClicked: pageStack.push(Qt.resolvedUrl(source))
+            menu: secondaryText == consts.phoneNumber ? contextMenu : undefined
+
+            ContextMenu {
+                id: contextMenu
+                MenuItem {
+                    enabled: settings.phoneNumber
+                    text: "Dzwoń"
+                    onClicked: Qt.openUrlExternally("tel:+48" + settings.phoneNumber)
+                }
+            }
+
+            onClicked: {
+                if (replace)
+                    pageStack.replace(Qt.resolvedUrl(source))
+                else pageStack.push(Qt.resolvedUrl(source))
+            }
         }
     }
 }

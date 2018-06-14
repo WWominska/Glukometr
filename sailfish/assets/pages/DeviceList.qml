@@ -6,6 +6,7 @@ import glukometr 1.0
 Page
 {
     id: screen
+    property int tutorialBluetooth: application.isTutorialEnabled
 
     ListModel {
         id: discoveredDevices
@@ -97,7 +98,7 @@ Page
                         text: "Zmień nazwę urządzenia"
                         onClicked:
                         {
-                            var dialog = pageStack.push(Qt.resolvedUrl("ChangeNameDeviceDialog.qml"), {"name": name})
+                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
                             dialog.accepted.connect(function()
                             {
                                 pythonGlukometr.devices.update(
@@ -117,7 +118,7 @@ Page
                     }
                 }
 
-                onClicked: pageStack.push("monitor.qml", {"deviceId": id, "macAddress": mac_address });
+                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": id, "macAddress": mac_address });
 
                 Image {
                     id: bluetoothIcon
@@ -205,7 +206,7 @@ Page
                         "name": name,
                         "mac_address": macAddress
                     })
-                    pageStack.push("monitor.qml", {
+                    pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {
                                        "deviceId": -1,
                                        "macAddress": macAddress});
                 }
@@ -238,4 +239,28 @@ Page
             }
         }
     }
+//    InteractionHintLabel
+//    {
+//        id:bluetooth
+//        text: "Tutaj możesz wybrać glukometr, do którego chcesz się połączyć, klikając na niego"
+//        color: Theme.secondaryColor
+//        anchors.bottom: parent.bottom
+//        opacity: tutorialBluetooth ? 1.0 : 0.0
+//        Behavior on opacity { FadeAnimation {} }
+//        invert: false
+//    }
+
+////    TouchInteractionHint
+////    {
+////        id: hint
+////        loops: Animation.Infinite
+////        interactionMode: TouchInteraction.Pull
+////        direction: TouchInteraction.Down
+////    }
+
+//    Connections
+//    {
+//        target: application
+//        onIsTutorialEnabledChanged: hint.start()
+//    }
 }
