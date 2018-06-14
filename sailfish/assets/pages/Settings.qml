@@ -118,6 +118,17 @@ Page
                 }
             }
 
+            menu: secondaryText == consts.phoneNumber ? contextMenu : undefined
+
+            ContextMenu {
+                id: contextMenu
+                MenuItem {
+                    enabled: settings.phoneNumber
+                    text: "Dzwoń"
+                    onClicked: Qt.openUrlExternally("tel:+48" + settings.phoneNumber)
+                }
+            }
+
             onClicked: {
                 if (replace)
                     pageStack.replace(Qt.resolvedUrl(source))

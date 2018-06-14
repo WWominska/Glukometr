@@ -48,7 +48,7 @@ CoverBackground
 
         delegate: BackgroundItem {
             id: delegate
-            visible: index < 4
+            visible: index < 3
             contentHeight: measurementColumn.height
 
             GlassItem
@@ -71,7 +71,7 @@ CoverBackground
                 Label {
                     id: itemLabel
                     width: parent.width
-                    color: Theme.highlightColor
+                    color: Theme.primaryColor
                     font.pixelSize: Theme.fontSizeSmall
                     truncationMode: TruncationMode.Fade
                     text: value

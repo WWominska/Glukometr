@@ -314,7 +314,7 @@ void Glucometer::serviceStateChanged(QLowEnergyService::ServiceState s)
             if (m_lastSequenceNumber == 0) {
                 m_service->writeCharacteristic(glChar, requestRACPMeasurements(true));
             } else {
-                m_service->writeCharacteristic(glChar, requestRACPMeasurements(false, m_lastSequenceNumber));
+                m_service->writeCharacteristic(glChar, requestRACPMeasurements(false, m_lastSequenceNumber+1));
             }
             emit racpStarted();
         }

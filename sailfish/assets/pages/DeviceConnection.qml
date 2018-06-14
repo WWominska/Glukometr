@@ -31,9 +31,15 @@ Page
 
         onError: logi.text = "Wystąpił błąd"
         onInvalidService: logi.text = "Nie pobrano danych"
-        onConnecting: logi.text = "Łączenie..."
+        onConnecting: {
+            reconnectBtn.visible = false
+            logi.text = "Łączenie..."
+        }
         onConnected: logi.text = "Połączono"
-        onDisconnected: logi.text = "Rozłączono"
+        onDisconnected: {
+            reconnectBtn.visible = true
+            logi.text = "Rozłączono"
+        }
         onNotAGlucometer: logi.text = "Urządzenie nie jest glukometrem"
         onPairing: logi.text = "Parowanie..."
         onRacpStarted: logi.text = "Pobieranie pomiarów"
@@ -41,6 +47,7 @@ Page
             pythonGlukometr.devices.update(page.deviceId, {"last_sync": -1})
             pythonGlukometr.measurements.get()
             logi.text = "Pobrano wszystko"
+            pageStack.pop(0)
         }
         onMealChanged:
         {
@@ -91,6 +98,18 @@ Page
             text: "Oczekiwanie..."
             anchors.centerIn: updatei
             color: Theme.highlightColor
+        }
+
+        Button {
+            id: reconnectBtn
+            anchors {
+                top: logi.bottom
+                topMargin: Theme.paddingMedium
+                horizontalCenter: logi.horizontalCenter
+            }
+            text: "Spróbuj ponownie"
+            onClicked: getLastSequenceNumber()
+            visible: false
         }
     }
 

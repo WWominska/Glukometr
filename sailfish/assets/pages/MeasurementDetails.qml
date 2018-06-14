@@ -80,7 +80,7 @@ Page
                 id: masurementVslue
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                text: value + "[dm/L]"
+                text: value + " [dm/L]"
                 font.pixelSize: Theme.fontSizeLarge
             }
         }
@@ -290,6 +290,7 @@ Page
                                "isEdited": true,
                                "noteType": 1,
                                "drugId": drug_id,
+                               "drugName": drug_name,
                                "drugsUnit": dose,
                                "idDrugs": unit
                            })
