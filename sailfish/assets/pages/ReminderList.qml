@@ -15,9 +15,9 @@ Page
     {
         switch (type)
         {
-        case 0: return "Przypomnienie za 2h";
-        case 1: return "Przypomnienie o 22";
-        case 2: return "Przypomnienie o 3 w nocy";
+        case 0: return "Przypomnienie o pomiarze";
+        case 1: return "Przypomnienie o lekach";
+        case 2: return "Przypomnienie o jedzeniu";
         }
     }
 
@@ -25,39 +25,7 @@ Page
     {
         anchors.fill: parent
         PullDownMenu
-        {
-
-            MenuItem
-            {
-                text: "Przypomnienie za 2h"
-                onClicked:
-                {
-                    var now = new Date().getTime();
-                    var minuteLater = new Date(now + (1000*7200))
-                    makeReminder("Zmierz cukier!", 0, minuteLater, 0)
-                }
-            }
-
-            MenuItem
-            {
-                text: "Przypomnienie o 22"
-                onClicked:
-                {
-                    var now = new Date().getTime();
-                    var minuteLater = new Date(now + (1000*60))  // 1000*60 bo 60 sekund (1000ms)
-                    makeReminder("Zaraz 22 zmierz cukier!", 1, minuteLater, 1)
-                }
-            }
-            MenuItem
-            {
-                text: "Przypomnienie o 3 w nocy"
-                onClicked:
-                {
-                    var now = new Date().getTime();
-                    var twoMinutesLater = new Date(now + (1000*60)*2)
-                    makeReminder("Zaraz 3 zmierz cukier!", 2, twoMinutesLater, 1)
-                }
-            }
+        {         
             MenuItem
             {
                 text: "Dodaj przypomnienie"
