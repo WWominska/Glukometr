@@ -112,7 +112,7 @@ Page
                         text: "Zapomnij urządzenie"
                         onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {
                             pythonGlukometr.devices.remove(id, undefined, function () {
-                                pythonGlukometr.measurements.get()
+                                measurements.getFromDB()
                             })
                         })
                     }

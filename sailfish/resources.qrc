@@ -10,6 +10,7 @@
         <file alias="reminders.py">../common/python/reminders.py</file>
     </qresource>
     <qresource prefix="/">
+        <file alias="assets/ApplicationSettings.qml">../common/assets/ApplicationSettings.qml</file>
         <file alias="assets/GlucoseListModel.qml">../common/assets/GlucoseListModel.qml</file>
         <file alias="assets/GlucoseApplication.qml">../common/assets/GlucoseApplication.qml</file>
         <file>assets/main.qml</file>

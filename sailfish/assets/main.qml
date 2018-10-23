@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Nemo.Configuration 1.0
 import "pages";
 
 ApplicationWindow {
@@ -11,14 +10,14 @@ ApplicationWindow {
     property real disabledOpacity: 0.2
 
     cover: Qt.resolvedUrl("qrc:/assets/cover/CoverPage.qml")
-    initialPage: Component { MeasurementList {} }
+    initialPage: MeasurementList {}
     allowedOrientations: defaultAllowedOrientations
 
     Component.onCompleted:
     {
-        if (settings.isFirstRun)
+        if (!settings.notFirstRun)
         {
-            settings.isFirstRun = false
+            settings.notFirstRun = true
             pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/Tutorial.qml"), {}, PageStackAction.Immediate)
         }
     }
@@ -28,7 +27,7 @@ ApplicationWindow {
         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddMeasurement.qml"))
         dialog.accepted.connect(function()
         {
-            pythonGlukometr.measurements.add({
+            measurements.add({
                 "value": dialog.value,
                 "meal": dialog.meal
             });
@@ -37,14 +36,6 @@ ApplicationWindow {
         })
     }
 
-    GlucoseApplication {
-        id: pythonGlukometr
-    }
-
-    ConfigurationGroup {
-        id: settings
-        path: "/apps/harbour-glukometr"
-        property bool isFirstRun: true
-        property string phoneNumber: ""
-    }
+    GlucoseApplication { id: pythonGlukometr }
+    ApplicationSettings { id: settings }
 }

@@ -40,6 +40,19 @@ Item
             text: "Szukaj Urządzeń"
             onButtonClick: pageLoader.source="home.qml"
         }
+
+        Button {
+            anchors {
+                top: call.bottom
+                topMargin: 32
+            }
+
+            text: "pomiary"
+            onButtonClick: {
+                measurements.getFromDB();
+                pageLoader.source="results.qml"
+            }
+        }
     }
 
     Loader

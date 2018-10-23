@@ -9,5 +9,6 @@
         <file>assets/candy.png</file>
         <file>assets/ladowanie.png</file>
         <file>assets/GlucoseListModel.qml</file>
+        <file>assets/ApplicationSettings.qml</file>
     </qresource>
 </RCC>

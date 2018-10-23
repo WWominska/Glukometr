@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="assets/ApplicationSettings.qml">../common/assets/ApplicationSettings.qml</file>
+        <file>assets/main.qml</file>
+        <file>icons/icon-after-meal.svg</file>
+        <file>icons/icon-before-meal.svg</file>
+        <file>icons/icon-fasting.svg</file>
+        <file>icons/icon-annotations-drug.svg</file>
+        <file>icons/icon-annotations-meal.svg</file>
+        <file>icons/icon-glucometer.svg</file>
+        <file>icons/icon-settings-threshold.svg</file>
+        <file>icons/icon-m-acknowledge.svg</file>
+        <file>icons/icon-m-night.svg</file>
+        <file>icons/icon-m-question.svg</file>
+        <file>assets/dialogs/AddAnnotation.qml</file>
+        <file>assets/dialogs/AddDrug.qml</file>
+        <file>assets/dialogs/AddMeasurement.qml</file>
+        <file>assets/dialogs/AddReminder.qml</file>
+        <file>assets/dialogs/ChangeMeal.qml</file>
+        <file>assets/dialogs/ChangePhoneNumber.qml</file>
+        <file>assets/dialogs/RenameDevice.qml</file>
+        <file>assets/pages/DeviceConnection.qml</file>
+        <file>assets/pages/DeviceList.qml</file>
+        <file>assets/pages/DrugList.qml</file>
+        <file>assets/pages/MeasurementDetails.qml</file>
+        <file>assets/pages/MeasurementList.qml</file>
+        <file>assets/pages/ReminderList.qml</file>
+        <file>assets/pages/Settings.qml</file>
+        <file>assets/pages/Thresholds.qml</file>
+        <file>assets/pages/Tutorial.qml</file>
+        <file>assets/Theme.qml</file>
+        <file>assets/qmldir</file>
+        <file>assets/components/PageHeader.qml</file>
+        <file>icons/icon-m-add.svg</file>
+        <file>icons/icon-m-bluetooth.svg</file>
+        <file>icons/icon-m-developer-mode.svg</file>
+        <file>icons/icon-m-alarm.svg</file>
+        <file>icons/icon-l-answer.svg</file>
+        <file>assets/components/SectionHeader.qml</file>
+        <file>assets/components/DialogHeader.qml</file>
+        <file>assets/components/DialogPage.qml</file>
+        <file>assets/components/ListItem.qml</file>
+    </qresource>
+</RCC>

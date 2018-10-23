@@ -27,7 +27,7 @@ class Measurements(DatabaseModel):
                        "sequence_number integer, meal integer)")
 
     def base_query(self):
-        return "SELECT * FROM measurement ORDER BY timestamp DESC"
+        return "SELECT * FROM measurement "
 
     def add(self, obj={}, commit=True):
         """

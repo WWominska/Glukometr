@@ -1,0 +1,32 @@
+#ifndef MEASUREMENTSLISTMANAGER_H
+#define MEASUREMENTSLISTMANAGER_H
+
+#include <QObject>
+#include <QDebug>
+#include <QDateTime>
+#include "BaseListManager.h"
+
+class MeasurementsListManager: public BaseListManager
+{
+    Q_OBJECT
+public:
+    explicit MeasurementsListManager(DatabaseWorker* db, QObject *parent = 0);
+
+    QString getTableName() const override {
+        return "measurement";
+    }
+    QString getCreateQuery() const override;
+    QString baseQuery() override {
+        return "SELECT * FROM measurement ORDER BY timestamp DESC";
+    }
+
+    QVariantMap getDefaults() override;
+    Q_INVOKABLE void getLastSequenceNumber(int deviceId);
+
+    // void initializeList();
+
+signals:
+    void lastSequenceNumber(int deviceId, int sequenceNumber);
+};
+
+#endif // MEASUREMENTSLISTMANAGER_H

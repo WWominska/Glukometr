@@ -4,11 +4,10 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-    Component.onCompleted: pythonGlukometr.measurements.get()
 
     Connections {
         target: pythonGlukometr.thresholds
-        onModelUpdated: pythonGlukometr.measurements.get()
+        onModelUpdated: measurements.getFromDB()
     }
 
     SilicaListView
@@ -95,7 +94,7 @@ Page
 
         id: book
         anchors.fill: parent
-        model: pythonGlukometr.measurements.model
+        model: measurements.query
         delegate: ListItem
         {
             enabled: !isTutorialEnabled
@@ -103,10 +102,10 @@ Page
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
             onClicked: pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/MeasurementDetails.qml"), {
-                                          "measurement_id": id,
-                                          "value": value,
-                                          "meal": meal,
-                                          "timestamp": timestamp
+                                          "measurement_id": model.measurement_id,
+                                          "value": model.value,
+                                          "meal": model.meal,
+                                          "timestamp": model.timestamp
                                       })
             menu: ContextMenu
             {
@@ -116,12 +115,12 @@ Page
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
-                                                                         {"meal": meal})
+                                                                         {"meal": model.meal})
                         dialog.accepted.connect(function()
                         {
-                            pythonGlukometr.measurements.update(id, {
-                                "meal": dialog.meal
-                            })
+                            measurements.update({
+                                "measurement_id": model.measurement_id
+                            }, {"meal": dialog.meal}, true);
                         })
                     }
                 }
@@ -129,7 +128,7 @@ Page
                 {
                     text: "Usuń"
                     onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
-                        pythonGlukometr.measurements.remove(id)
+                        measurements.remove(model.measurement_id)
                     })
                 }
             }
@@ -141,14 +140,14 @@ Page
                 width: Theme.itemSizeExtraSmall
                 height: width
                 anchors.verticalCenter: sugar.verticalCenter
-                color: pythonGlukometr.evaluateMeasurement(value, meal)
+                color: pythonGlukometr.evaluateMeasurement(model.value, model.meal)
             }
 
             Label
             {
                 id: sugar
                 font.pixelSize: Theme.fontSizeSmall
-                text: value
+                text: model.value
                 anchors
                 {
                     left: dot.right
@@ -173,7 +172,7 @@ Page
                 }
                 id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall
-                text: changeToString(meal)
+                text: changeToString(model.meal)
                 color: Theme.secondaryColor
                 anchors
                 {
@@ -186,10 +185,10 @@ Page
 
             Label
             {
-                id: data
+                id: dateLabel
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
                 anchors
                 {
                     left: whenMeasurement.right

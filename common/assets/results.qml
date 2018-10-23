@@ -66,7 +66,7 @@ Rectangle
             right: parent.right;
             bottom: menuLast.top;
         }
-        model: glukometrPython.measurements
+        model: measurements.query
         delegate: Rectangle
         {
             id: pomiar
@@ -78,7 +78,7 @@ Rectangle
             {
                 id: sweet
                 font.pixelSize: 15
-                text: modelData.cukier
+                text: model.value
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.topMargin: 15
@@ -88,9 +88,20 @@ Rectangle
 
             Text
             {
+                function changeToString(meal)
+                {
+                    switch(meal)
+                    {
+                        case 0: return "Na czczo"
+                        case 1: return "Przed posiłkiem"
+                        case 2: return "Po posiłku"
+                        case 3: return "Nocna"
+                        default: return "Nie określono"
+                    }
+                }
                 id: kiedyPomiar
                 font.pixelSize: 15
-                text: modelData.kiedy
+                text: changeToString(model.meal)
                 anchors.top: parent.top
                 anchors.topMargin: 15
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -101,7 +112,7 @@ Rectangle
             {
                 id: data
                 font.pixelSize: 15
-                text: modelData.dataPomiaru
+                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
                 anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.topMargin: 15
