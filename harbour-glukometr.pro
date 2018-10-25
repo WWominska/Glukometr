@@ -74,9 +74,3 @@ OTHER_FILES += common/* \
                android/assets/components/*.qml \
                android/AndroidManifest.xml android/res/* \
                winrt/*
-
-RESOURCES += \
-    android/resources.qrc
-
-DISTFILES += \
-    android/assets/qmldir
