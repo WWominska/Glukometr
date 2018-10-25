@@ -10,7 +10,7 @@ ApplicationWindow {
     property real disabledOpacity: 0.2
 
     cover: Qt.resolvedUrl("qrc:/assets/cover/CoverPage.qml")
-    initialPage: MeasurementList {}
+    initialPage: Component { MeasurementList {} }
     allowedOrientations: defaultAllowedOrientations
 
     Component.onCompleted:

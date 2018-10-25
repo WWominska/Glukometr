@@ -11,18 +11,6 @@ Item {
     }
 
     GlucoseListModel {
-        id: thresholdsModel
-        interpreter: python
-        pythonClass: "glukometr.thresholds"
-        Component.onCompleted: get()
-
-        function reset() {
-            return python.call(pythonClass + ".set_defaults", [],
-                               function () { get(); })
-        }
-    }
-
-    GlucoseListModel {
         id: mealAnnotationsModel
         interpreter: python
         pythonClass: "glukometr.meal_annotations"
@@ -38,17 +26,6 @@ Item {
         id: drugAnnotationsModel
         interpreter: python
         pythonClass: "glukometr.drug_annotations"
-    }
-
-    GlucoseListModel {
-        id: measurementsModel
-        interpreter: python
-        pythonClass: "glukometr.measurements"
-
-        function getLastSequenceNumber(deviceId, callback) {
-            python.call(pythonClass + ".get_last_sequence_number",
-                [deviceId, ], callback)
-        }
     }
 
     GlucoseListModel {
@@ -96,19 +73,12 @@ Item {
         }
     }
 
-    property alias measurements: measurementsModel
     property alias devices: devicesModel
     property alias drugs: drugsModel
-    property alias thresholds: thresholdsModel
     property alias mealAnnotations: mealAnnotationsModel
     property alias textAnnotations: textAnnotationsModel
     property alias drugAnnotations: drugAnnotationsModel
     property alias reminders: remindersModel
-
-    function evaluateMeasurement(value, meal) {
-        return python.call_sync("glukometr.thresholds.evaluate_measurement", [
-                                value, meal, ]);
-    }
 
     Python {
         id: python
