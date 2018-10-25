@@ -17,7 +17,7 @@ void BaseListManager::initializeTable() {
     if (m_db) {
         DbFuture *f = new DbFuture();
         connect(f, &DbFuture::finished, this, &BaseListManager::slotTableCreated);
-        connect(f, &DbFuture::canceled, this, &BaseListManager::slotTableCreated);
+        connect(f, &DbFuture::canceled, this, &BaseListManager::slotTableFailed);
         m_db->executeSQL(getCreateQuery(), QVariantMap(), f);
     }
 }
@@ -25,6 +25,13 @@ void BaseListManager::initializeTable() {
 void BaseListManager::slotTableCreated() {
     m_tableCreated = true;
     emit tableCreated();
+    get();
+}
+
+void BaseListManager::slotTableFailed() {
+    // assume it's created for now
+    // TODO: actually check what happened
+    m_tableCreated = true;
     get();
 }
 

@@ -39,6 +39,7 @@ signals:
 
 public slots:
     void slotTableCreated();
+    void slotTableFailed();
 
 protected:
     SqlQueryModel* m_model;
