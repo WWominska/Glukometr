@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 
     // quit worker thread
     worker->exit();
+    worker->wait();
 
     // delete everything
     delete measurements;
