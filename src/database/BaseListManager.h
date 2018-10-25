@@ -31,7 +31,9 @@ public:
 
     Q_INVOKABLE void add(QVariantMap data);
     Q_INVOKABLE void remove(int id);
-    Q_INVOKABLE void remove(QVariantMap where);
+    Q_INVOKABLE void remove(QVariantMap where=QVariantMap());
+
+    bool m_tableCreated = false;
 
 signals:
     void modelChanged();
@@ -46,9 +48,11 @@ protected:
     DatabaseWorker* m_db;
 
 private:
-    bool m_tableCreated = false;
     SqlQueryModel* getModel();
-    // QString keysToBindings(QVariantMap params);
+    QString keysToBindings(const QVariantMap &fields,
+            QVariantMap *params=nullptr,
+            const QString &prefix="",
+            const QString &separator=" AND ");
 };
 
 #endif // BASELISTMANAGER_H

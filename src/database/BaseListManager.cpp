@@ -4,6 +4,9 @@
 BaseListManager::BaseListManager(DatabaseWorker *db, QObject *) : m_db(db)
 {
     m_model = new SqlQueryModel();
+    connect(m_model, &SqlQueryModel::modelReset, this, [=](){
+        emit modelChanged();
+    });
 }
 
 QString BaseListManager::getTableName() const {
@@ -67,22 +70,12 @@ void BaseListManager::update(
         bool refresh)
 {
     QVariantMap params;
-    QString query = QString("UPDATE %1 SET ").arg(getTableName());
+    QString query = QString("UPDATE %1 SET %2%3").arg(
+        getTableName(),
+        keysToBindings(fields, &params, "f_", ", "),
+        where.isEmpty() ? "" : " WHERE " + keysToBindings(where, &params, "w_")
+    );
 
-    for (QVariantMap::const_iterator iter = fields.begin(); iter != fields.end(); ++iter) {
-        query += QString("%1 = :f_%1").arg(iter.key());
-        params["f_" + iter.key()] = iter.value();
-        if (iter != fields.end() - 1)
-            query += " AND ";
-    }
-
-    query += " WHERE ";
-    for (QVariantMap::const_iterator iter = where.begin(); iter != where.end(); ++iter) {
-        query += QString("%1 = :w_%1").arg(iter.key());
-        params["w_" + iter.key()] = iter.value();
-        if (iter != where.end() - 1)
-            query += " AND ";
-    }
     this->executeQuery(query, [=](QSqlQuery) {
         if (refresh)
             get();
@@ -100,25 +93,18 @@ void BaseListManager::add(QVariantMap data) {
             data[iter.key()] = iter.value();
     }
 
-    QVariantMap params;
-    QString query = QString("INSERT INTO %1 ").arg(getTableName());
-    QString keys = "(", values = "(";
-    for (QVariantMap::const_iterator iter = data.begin(); iter != data.end(); ++iter) {
-        keys += iter.key();
-        values += ":p_" + iter.key();
-        params["p_" + iter.key()] = iter.value();
-        if (iter != data.end() - 1) {
-            keys += ", ";
-            values += ", ";
-        }
+    QStringList bindings;
+    for (auto i: data.keys()) {
+        bindings.push_back(":" + i);
     }
-    keys += ")";
-    values += ")";
-    query += keys + " VALUES " + values;
-
+    QString query = QString("INSERT INTO %1 (%2) VALUES (%3)").arg(
+        getTableName(),
+        data.keys().join(", "),
+        bindings.join(", ")
+    );
     this->executeQuery(query, [=](QSqlQuery) {
         get();
-    }, params);
+    }, data);
 }
 
 void BaseListManager::remove(int id) {
@@ -126,19 +112,14 @@ void BaseListManager::remove(int id) {
 }
 
 void BaseListManager::remove(QVariantMap where) {
-    QVariantMap params;
-    QString query = QString("DELETE FROM %1 WHERE ").arg(getTableName());
-
-    for (QVariantMap::const_iterator iter = where.begin(); iter != where.end(); ++iter) {
-        query += QString("%1 = :%1").arg(iter.key());
-        params[iter.key()] = iter.value();
-        if (iter != where.end() - 1)
-            query += " AND ";
-    }
+    QString query = QString("DELETE FROM %1%2").arg(
+        getTableName(),
+        where.isEmpty() ? "" : " WHERE " + keysToBindings(where)
+    );
 
     this->executeQuery(query, [=](QSqlQuery) {
         get();
-    }, params);
+    }, where);
 }
 
 SqlQueryModel* BaseListManager::getModel() {
@@ -149,4 +130,20 @@ SqlQueryModel* BaseListManager::getModel() {
 
     // return a pointer to model
     return m_model;
+}
+
+QString BaseListManager::keysToBindings(
+        const QVariantMap &fields,
+        QVariantMap *params,
+        const QString &prefix,
+        const QString &separator)
+{
+    QStringList query;
+    for (QVariantMap::const_iterator iter = fields.begin(); iter != fields.end(); ++iter) {
+        QString binding = QString("%1%2").arg(prefix, iter.key());
+        query.push_back(QString("%1 = :%2").arg(iter.key(), binding));
+        if (params)
+            params->operator [](binding) = iter.value();
+    }
+    return query.join(separator);
 }
