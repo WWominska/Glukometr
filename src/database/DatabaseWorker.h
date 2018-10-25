@@ -25,28 +25,54 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef DATABASEWORKER_H
 #define DATABASEWORKER_H
 
+#include <QThread>
 #include <QObject>
 #include <QStringList>
-#include <QFuture>
 #include <QDebug>
 #include <QSqlQuery>
-#include <QSqlRecord>
-#include <QtConcurrent/QtConcurrent>
 #include "SqlQueryModel.h"
 
-class DatabaseWorker : public QObject
+
+class DbFuture : public QObject {
+    Q_OBJECT
+public:
+    DbFuture() {}
+
+    const QSqlQuery& result() {
+        return m_result;
+    }
+
+    void finish() {
+        emit finished();
+        deleteLater();
+    }
+
+    void setResult(const QSqlQuery& result) {
+        m_result = result;
+        finish();
+    }
+
+signals:
+    void finished();
+    void canceled();
+
+private:
+    QSqlQuery m_result;
+};
+
+class DatabaseWorker : public QThread
 {
     Q_OBJECT
 public:
-    explicit DatabaseWorker(QObject *parent = 0);
+    DatabaseWorker();
     
 public slots:
-    QFuture<QSqlQuery> executeSQL(const QString &query);
-    void executeSQL(const QString &query, SqlQueryModel* results);
+    void setupDb();
+    void executeSQL(const QString &query, DbFuture *f=nullptr);
+    void executeSQL(const QString &query, SqlQueryModel* model, DbFuture *f=nullptr);
 
 private:
     QSqlDatabase db;
-
 };
 
 #endif // DATABASEWORKER_H

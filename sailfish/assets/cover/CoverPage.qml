@@ -44,7 +44,7 @@ CoverBackground
             bottom: coverActionArea.top
         }
         width: parent.width
-        model: measurements.query
+        model: measurements.model
 
         delegate: BackgroundItem {
             id: delegate

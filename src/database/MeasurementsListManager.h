@@ -10,7 +10,7 @@ class MeasurementsListManager: public BaseListManager
 {
     Q_OBJECT
 public:
-    explicit MeasurementsListManager(DatabaseWorker* db, QObject *parent = 0);
+    explicit MeasurementsListManager(DatabaseWorker* db, QObject *parent = nullptr);
 
     QString getTableName() const override {
         return "measurement";
@@ -22,8 +22,6 @@ public:
 
     QVariantMap getDefaults() override;
     Q_INVOKABLE void getLastSequenceNumber(int deviceId);
-
-    // void initializeList();
 
 signals:
     void lastSequenceNumber(int deviceId, int sequenceNumber);

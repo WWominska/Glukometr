@@ -49,7 +49,7 @@ Item
 
             text: "pomiary"
             onButtonClick: {
-                measurements.getFromDB();
+                measurements.get();
                 pageLoader.source="results.qml"
             }
         }

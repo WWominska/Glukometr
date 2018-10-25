@@ -40,7 +40,7 @@ class SqlQueryModel : public QSqlQueryModel
     void generateRoleNames();
 
 public:
-    explicit SqlQueryModel(QObject *parent = 0);
+    explicit SqlQueryModel(QObject *parent = nullptr);
 
     void setQuery(const QString &query, const QSqlDatabase &db = QSqlDatabase());
     void setQuery(const QSqlQuery &query);

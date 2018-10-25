@@ -55,7 +55,8 @@ SOURCES += src/BleDiscovery.cpp \
            src/database/SqlQueryModel.cpp \
            src/database/DatabaseWorker.cpp \
            src/database/Settings.cpp \
-           src/database/MeasurementsListManager.cpp
+           src/database/MeasurementsListManager.cpp \
+           src/database/BaseListManager.cpp
 
 OTHER_FILES += common/* \
                common/python/* \

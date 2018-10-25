@@ -66,7 +66,7 @@ Rectangle
             right: parent.right;
             bottom: menuLast.top;
         }
-        model: measurements.query
+        model: measurements.model
         delegate: Rectangle
         {
             id: pomiar

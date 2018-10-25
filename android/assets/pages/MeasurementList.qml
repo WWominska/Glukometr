@@ -11,11 +11,8 @@ Page
     id: results
     /*Connections {
         target: pythonGlukometr.thresholds
-        onModelUpdated: measurements.getFromDB()
+        onModelUpdated: measurements.get()
     }*/
-
-    // TODO: fix this
-    Component.onCompleted: measurements.getFromDB()
 
     ListView
     {
@@ -88,7 +85,7 @@ Page
             bottom: toolBar.top
         }
 
-        model: measurements.query
+        model: measurements.model
         delegate: ListItem
         {
             enabled: !isTutorialEnabled

@@ -24,35 +24,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "DatabaseWorker.h"
 
-DatabaseWorker::DatabaseWorker(QObject *parent) :
-    QObject(parent)
-{
-    db = QSqlDatabase::database("Database");
+DatabaseWorker::DatabaseWorker() {}
+
+void DatabaseWorker::executeSQL(const QString &query, DbFuture *f) {
+    setupDb();
+    QSqlQuery q(db);
+    q.prepare(query);
+    bool ret = q.exec();
+    if (!ret) {
+        qDebug() << "DB Error: " << q.lastError();
+        qDebug() << "while executing query: " << q.executedQuery();
+    }
+    q.finish();
+    if (f)
+        f->setResult(q);
 }
 
-QFuture<QSqlQuery> DatabaseWorker::executeSQL(const QString &query) {
-    if (!db.isOpen())
-        db.open();
-
-    auto execute = [=](const QString &query) {
-        QSqlQuery q(db);
-        q.prepare(query);
-        qDebug() << q.lastQuery();
-        bool ret = q.exec();
-        qDebug() << q.executedQuery();
-        qDebug() << ret;
-        qDebug() << q.lastError();
-        q.finish();
-        return q;
-    };
-    return QtConcurrent::run(execute, query);
+void DatabaseWorker::executeSQL(const QString &query, SqlQueryModel *model, DbFuture *f) {
+    setupDb();
+    qDebug() << "called executeSQL" << query;
+    if (f) {
+        connect(model, &SqlQueryModel::modelReset, [=]() {
+            f->finish();
+        });
+    }
+    model->setQuery(query, db);
 }
 
-void DatabaseWorker::executeSQL(const QString &query, SqlQueryModel *results=0) {
+void DatabaseWorker::setupDb() {
+    if (db.databaseName().isEmpty()) {
+        db = QSqlDatabase::addDatabase("QSQLITE", "Database");
+        db.setDatabaseName("com.glukometr.db");
+    }
+
     if (!db.isOpen())
         db.open();
-
-    qDebug() << query;
-    results->setQuery(query, QSqlDatabase::database("Database"));
-    qDebug() << results->rowCount();
 }

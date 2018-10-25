@@ -53,7 +53,7 @@ Page
         onRacpStarted: logi.text = "Pobieranie pomiarów"
         onRacpFinished: {
             pythonGlukometr.devices.update(page.deviceId, {"last_sync": -1})
-            measurements.getFromDB()
+            measurements.get()
             logi.text = "Pobrano wszystko"
             pageStack.pop(0)
         }

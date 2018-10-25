@@ -2,10 +2,7 @@
 
 
 MeasurementsListManager::MeasurementsListManager(
-        DatabaseWorker *db, QObject *parent) : BaseListManager(db, parent) {
-    initializeTable();
-    getFromDB();
-}
+        DatabaseWorker *db, QObject *parent) : BaseListManager(db, parent) {}
 
 QString MeasurementsListManager::getCreateQuery() const {
     return "CREATE TABLE measurement (" \
@@ -23,7 +20,7 @@ QVariantMap MeasurementsListManager::getDefaults() {
     QDateTime now = QDateTime::currentDateTime();
     defaults["value"] = 0;
     defaults["timestamp"] = now.toTime_t();
-    defaults["meal"] = -1;
+    defaults["meal"] = 4;
     return defaults;
 }
 

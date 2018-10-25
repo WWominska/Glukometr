@@ -7,7 +7,7 @@ Page
 
     Connections {
         target: pythonGlukometr.thresholds
-        onModelUpdated: measurements.getFromDB()
+        onModelUpdated: measurements.get()
     }
 
     SilicaListView
@@ -94,7 +94,7 @@ Page
 
         id: book
         anchors.fill: parent
-        model: measurements.query
+        model: measurements.model
         delegate: ListItem
         {
             enabled: !isTutorialEnabled
