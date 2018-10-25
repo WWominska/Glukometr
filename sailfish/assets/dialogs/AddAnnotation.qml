@@ -138,7 +138,7 @@ Dialog
                 {
                     Repeater
                     {
-                        model: pythonGlukometr.drugs.model
+                        model: drugs.model
                         MenuItem
                         {
                             text: name

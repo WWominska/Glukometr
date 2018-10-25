@@ -10,6 +10,7 @@
 #include "database/Settings.h"
 #include "database/MeasurementsListManager.h"
 #include "database/Thresholds.h"
+#include "database/Drugs.h"
 
 #ifdef Q_OS_SAILFISH
 #include <sailfishapp.h>
@@ -46,11 +47,13 @@ int main(int argc, char *argv[])
     // Initialize and register managers
     MeasurementsListManager *measurements = new MeasurementsListManager(worker);
     Thresholds *thresholds = new Thresholds(worker);
+    Drugs *drugs = new Drugs(worker);
 
     // register context properties
     view->rootContext()->setContextProperty("appSettings", settings);
     view->rootContext()->setContextProperty("measurements", measurements);
     view->rootContext()->setContextProperty("thresholds", thresholds);
+    view->rootContext()->setContextProperty("drugs", drugs);
 
     // load QML file and start the app
     view->setSource(QUrl("qrc:/assets/main.qml"));
@@ -65,6 +68,8 @@ int main(int argc, char *argv[])
     worker->wait();
 
     // delete everything
+    delete thresholds;
+    delete drugs;
     delete measurements;
     delete settings;
     delete worker;

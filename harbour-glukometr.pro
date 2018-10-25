@@ -48,7 +48,8 @@ HEADERS += src/BleDiscovery.h \
            src/database/Settings.h \
            src/database/MeasurementsListManager.h \
            src/database/BaseListManager.h \
-           src/database/Thresholds.h
+           src/database/Thresholds.h \
+           src/database/Drugs.h
 SOURCES += src/BleDiscovery.cpp \
            src/main.cpp \
            src/BleParser.cpp \
@@ -58,7 +59,8 @@ SOURCES += src/BleDiscovery.cpp \
            src/database/Settings.cpp \
            src/database/MeasurementsListManager.cpp \
            src/database/BaseListManager.cpp \
-           src/database/Thresholds.cpp
+           src/database/Thresholds.cpp \
+           src/database/Drugs.cpp
 
 OTHER_FILES += common/* \
                common/python/* \

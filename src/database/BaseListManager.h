@@ -26,7 +26,7 @@ public:
     virtual QString baseQuery();
     Q_INVOKABLE void get();
 
-    Q_INVOKABLE void update(QVariantMap where, QVariantMap fields, bool refresh);
+    Q_INVOKABLE void update(QVariantMap where, QVariantMap fields, bool refresh=true);
     virtual QVariantMap getDefaults();
 
     Q_INVOKABLE void add(QVariantMap data);

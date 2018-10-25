@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 
 Page
 {
-    id: drugs
+    id: drugsPage
 
     SilicaListView
     {
@@ -22,7 +22,7 @@ Page
                     var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
                     dialog.accepted.connect(function()
                     {
-                        pythonGlukometr.drugs.add({"name": dialog.value})
+                        drugs.add({"name": dialog.value})
                     })
                 }
             }
@@ -32,7 +32,7 @@ Page
 
         id: drugsBook
         anchors.fill: parent
-        model: pythonGlukometr.drugs.model
+        model: drugs.model
         delegate: ListItem
         {
             id: drugItem
@@ -42,7 +42,7 @@ Page
                 MenuItem
                 {
                     text: "Usuń"
-                    onClicked: remorseDrug.execute(drugItem, "Usunięcie leku", function() {pythonGlukometr.drugs.remove(id, index) } )
+                    onClicked: remorseDrug.execute(drugItem, "Usunięcie leku", function() {drugs.remove(drug_id) } )
                 }
 
                 MenuItem
@@ -56,7 +56,7 @@ Page
                                                     })
                         dialog.accepted.connect(function()
                         {
-                            pythonGlukometr.drugs.update(id, {"name": dialog.value})
+                            drugs.update({"drug_id": drug_id}, {"name": dialog.value})
                         })
                     }
                 }

@@ -4,13 +4,6 @@ import io.thp.pyotherside 1.4
 
 Item {
     GlucoseListModel {
-        id: drugsModel
-        interpreter: python
-        pythonClass: "glukometr.drugs"
-        Component.onCompleted: get()
-    }
-
-    GlucoseListModel {
         id: mealAnnotationsModel
         interpreter: python
         pythonClass: "glukometr.meal_annotations"
@@ -74,7 +67,6 @@ Item {
     }
 
     property alias devices: devicesModel
-    property alias drugs: drugsModel
     property alias mealAnnotations: mealAnnotationsModel
     property alias textAnnotations: textAnnotationsModel
     property alias drugAnnotations: drugAnnotationsModel

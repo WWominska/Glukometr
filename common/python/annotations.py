@@ -3,27 +3,6 @@ import pyotherside
 from storage import DatabaseModel
 
 
-class Drugs(DatabaseModel):
-    table = "drug"
-    id_field = "drug_id"
-
-    model_map = {
-        "id": 0,
-        "name": 1
-    }
-
-    def create(self, cursor):
-        # create table
-        cursor.execute("CREATE TABLE drug (" \
-                       "drug_id integer primary key autoincrement, " \
-                       "name text)")
-
-        for drug_name in ["Diaprel MR", "Metformax", "Eperzan",
-                          "Emagliflozyna", "Starlix"]:
-            cursor.execute("INSERT INTO drug (name) VALUES (?)",
-                           (drug_name, ))
-
-
 class MealAnnotations(DatabaseModel):
     table = "annotations_meal"
     id_field = "annotation_meal_id"
