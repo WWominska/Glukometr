@@ -16,7 +16,7 @@ Page
             MenuItem
             {
                 text: "Przywróć ustawienia domyślne"
-                onClicked: pythonGlukometr.thresholds.reset()
+                onClicked: thresholds.setDefaults()
             }
         }
 
@@ -36,13 +36,13 @@ Page
                 currentIndex: 0
                 Repeater
                 {
-                    model: pythonGlukometr.thresholds.model
+                    model: thresholds.model
 
                     ExpandingSection
                     {
                         id: section
 
-                        property int sectionIndex: model.index
+                        property int sectionIndex: index
                         title: changeToString(meal)
 
                         Image
@@ -98,10 +98,12 @@ Page
                         {
                             function updateThreshold() {
                                 if (min != minScroll.value|| max != maxScroll.value) {
-                                    pythonGlukometr.thresholds.update(id, {
+                                    thresholds.update({
+                                        "threshold_id": threshold_id,
+                                    }, {
                                         "min": minScroll.value,
                                         "max": maxScroll.value
-                                    }, true)
+                                    }, false)
                                 }
                             }
 
@@ -138,9 +140,7 @@ Page
         }
     }
 
-    Component.onCompleted: pythonGlukometr.thresholds.get()
-    Component.onDestruction: pythonGlukometr.thresholds.get()
+    Component.onCompleted: thresholds.get()
+    Component.onDestruction: thresholds.get()
 }
-
-//pythonGlukometr.updateThreshold(meal, min, max)
 

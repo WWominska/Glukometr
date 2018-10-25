@@ -6,8 +6,8 @@ Page
     id: results
 
     Connections {
-        target: pythonGlukometr.thresholds
-        onModelUpdated: measurements.get()
+        target: thresholds
+        onModelChanged: measurements.get()
     }
 
     SilicaListView
@@ -102,10 +102,10 @@ Page
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
             onClicked: pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/MeasurementDetails.qml"), {
-                                          "measurement_id": model.measurement_id,
-                                          "value": model.value,
-                                          "meal": model.meal,
-                                          "timestamp": model.timestamp
+                                          "measurement_id": measurement_id,
+                                          "value": value,
+                                          "meal": meal,
+                                          "timestamp": timestamp
                                       })
             menu: ContextMenu
             {
@@ -115,11 +115,11 @@ Page
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
-                                                                         {"meal": model.meal})
+                                                                         {"meal": meal})
                         dialog.accepted.connect(function()
                         {
                             measurements.update({
-                                "measurement_id": model.measurement_id
+                                "measurement_id": measurement_id
                             }, {"meal": dialog.meal}, true);
                         })
                     }
@@ -128,7 +128,7 @@ Page
                 {
                     text: "Usuń"
                     onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
-                        measurements.remove(model.measurement_id)
+                        measurements.remove(measurement_id)
                     })
                 }
             }
@@ -140,14 +140,14 @@ Page
                 width: Theme.itemSizeExtraSmall
                 height: width
                 anchors.verticalCenter: sugar.verticalCenter
-                color: pythonGlukometr.evaluateMeasurement(model.value, model.meal)
+                color: thresholds.evaluateMeasurement(value, meal)
             }
 
             Label
             {
                 id: sugar
                 font.pixelSize: Theme.fontSizeSmall
-                text: model.value
+                text: value
                 anchors
                 {
                     left: dot.right
@@ -172,7 +172,7 @@ Page
                 }
                 id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall
-                text: changeToString(model.meal)
+                text: changeToString(meal)
                 color: Theme.secondaryColor
                 anchors
                 {
@@ -188,7 +188,7 @@ Page
                 id: dateLabel
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
                 anchors
                 {
                     left: whenMeasurement.right

@@ -58,7 +58,7 @@ CoverBackground
                 width: Theme.itemSizeExtraSmall
                 height: width
                 anchors.verticalCenter: measurementColumn.verticalCenter
-                color: pythonGlukometr.evaluateMeasurement(model.value, model.meal)
+                color: thresholds.evaluateMeasurement(model.value, model.meal)
             }
 
             Column {

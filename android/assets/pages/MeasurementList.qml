@@ -9,10 +9,10 @@ import "../components"
 Page
 {
     id: results
-    /*Connections {
-        target: pythonGlukometr.thresholds
-        onModelUpdated: measurements.get()
-    }*/
+    Connections {
+        target: thresholds
+        onModelChanged: measurements.get()
+    }
 
     ListView
     {
@@ -132,7 +132,7 @@ Page
                     width: Theme.itemSizeExtraSmall/2
                     height: Theme.itemSizeExtraSmall/2
                     anchors.centerIn: parent
-                    color: pythonGlukometr.evaluateMeasurement(model.value, model.meal)
+                    color: thresholds.evaluateMeasurement(model.value, model.meal)
                     radius: width
                 }
 

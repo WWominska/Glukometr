@@ -28,9 +28,6 @@ Item
 
     Item {
         id: pythonGlukometr
-        function evaluateMeasurement(value, meal) {
-            return "green";
-        }
     }
 
     Item {

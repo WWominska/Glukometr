@@ -1,27 +1,24 @@
 
 import QtQuick 2.0
-import QtQuick.Controls 2.3
+import Sailfish.Silica 1.0
 import QtGraphicalEffects 1.0
-import ".."
-import "../components"
-
 Page
 {
     id: screen
 
-    Flickable
+    SilicaFlickable
     {
         anchors.fill: parent
         contentHeight: column.height
 
-        /*PullDownMenu
+        PullDownMenu
         {
             MenuItem
             {
                 text: "Przywróć ustawienia domyślne"
-                onClicked: pythonGlukometr.thresholds.reset()
+                onClicked: thresholds.setDefaults()
             }
-        }*/
+        }
 
         Column
         {
@@ -34,19 +31,19 @@ Page
                 title: "Ustaw progi"
             }
 
-            Item // ExpandingSectionGroup
+            ExpandingSectionGroup
             {
                 currentIndex: 0
                 Repeater
                 {
-                    model: pythonGlukometr.thresholds.model
+                    model: thresholds.model
 
-                    Item //ExpandingSection
+                    ExpandingSection
                     {
                         id: section
 
-                        property int sectionIndex: model.index
-                        //title: changeToString(meal)
+                        property int sectionIndex: index
+                        title: changeToString(meal)
 
                         Image
                         {
@@ -101,10 +98,12 @@ Page
                         {
                             function updateThreshold() {
                                 if (min != minScroll.value|| max != maxScroll.value) {
-                                    pythonGlukometr.thresholds.update(id, {
+                                    thresholds.update({
+                                        "threshold_id": threshold_id,
+                                    }, {
                                         "min": minScroll.value,
                                         "max": maxScroll.value
-                                    }, true)
+                                    }, false)
                                 }
                             }
 
@@ -141,9 +140,7 @@ Page
         }
     }
 
-    Component.onCompleted: pythonGlukometr.thresholds.get()
-    Component.onDestruction: pythonGlukometr.thresholds.get()
+    Component.onCompleted: thresholds.get()
+    Component.onDestruction: thresholds.get()
 }
-
-//pythonGlukometr.updateThreshold(meal, min, max)
 
