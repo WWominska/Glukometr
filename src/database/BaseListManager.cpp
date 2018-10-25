@@ -17,7 +17,8 @@ void BaseListManager::initializeTable() {
     if (m_db) {
         DbFuture *f = new DbFuture();
         connect(f, &DbFuture::finished, this, &BaseListManager::slotTableCreated);
-        m_db->executeSQL(getCreateQuery(), f);
+        connect(f, &DbFuture::canceled, this, &BaseListManager::slotTableCreated);
+        m_db->executeSQL(getCreateQuery(), QVariantMap(), f);
     }
 }
 
@@ -27,43 +28,58 @@ void BaseListManager::slotTableCreated() {
     get();
 }
 
-void BaseListManager::executeQuery(const QString &query, const std::function<void(QSqlQuery)> &callback) {
+void BaseListManager::executeQuery(
+        const QString &query,
+        const std::function<void(QSqlQuery)> &callback,
+        const QVariantMap &params)
+{
     if (m_db) {
         DbFuture *f = new DbFuture();
         connect(f, &DbFuture::finished,
          [=]() {
             callback(f->result());
          });
-        m_db->executeSQL(query, f);
+        m_db->executeSQL(query, params, f);
     }
 }
 
 QString BaseListManager::baseQuery() {
-    return "SELECT * FROM " + getTableName();
+    return "SELECT * FROM %1";
 }
 
 void BaseListManager::get() {
-    m_db->executeSQL(baseQuery(), m_model);
+    DbFuture *f = new DbFuture();
+    connect(f, &DbFuture::finished, [=]() {
+        m_model->setQuery(f->result());
+    });
+    m_db->executeSQL(baseQuery().arg(getTableName()), QVariantMap(), f);
 }
 
 void BaseListManager::update(
-            QVariantMap where, QVariantMap fields, bool refresh) {
-    QString query = "UPDATE " + getTableName() + " SET ";
+        QVariantMap where, QVariantMap fields,
+        bool refresh)
+{
+    QVariantMap params;
+    QString query = QString("UPDATE %1 SET ").arg(getTableName());
+
     for (QVariantMap::const_iterator iter = fields.begin(); iter != fields.end(); ++iter) {
-        query += iter.key() + " = " + iter.value().toString();
+        query += QString("%1 = :f_%1").arg(iter.key());
+        params["f_" + iter.key()] = iter.value();
         if (iter != fields.end() - 1)
             query += " AND ";
     }
+
     query += " WHERE ";
     for (QVariantMap::const_iterator iter = where.begin(); iter != where.end(); ++iter) {
-        query += iter.key() + " = " + iter.value().toString();
+        query += QString("%1 = :w_%1").arg(iter.key());
+        params["w_" + iter.key()] = iter.value();
         if (iter != where.end() - 1)
             query += " AND ";
     }
     this->executeQuery(query, [=](QSqlQuery) {
         if (refresh)
             get();
-    });
+    }, params);
 }
 
 QVariantMap BaseListManager::getDefaults() {
@@ -77,11 +93,13 @@ void BaseListManager::add(QVariantMap data) {
             data[iter.key()] = iter.value();
     }
 
-    QString query = "INSERT INTO " + getTableName() + " ";
+    QVariantMap params;
+    QString query = QString("INSERT INTO %1 ").arg(getTableName());
     QString keys = "(", values = "(";
     for (QVariantMap::const_iterator iter = data.begin(); iter != data.end(); ++iter) {
         keys += iter.key();
-        values += iter.value().toString();
+        values += ":p_" + iter.key();
+        params["p_" + iter.key()] = iter.value();
         if (iter != data.end() - 1) {
             keys += ", ";
             values += ", ";
@@ -93,13 +111,27 @@ void BaseListManager::add(QVariantMap data) {
 
     this->executeQuery(query, [=](QSqlQuery) {
         get();
-    });
+    }, params);
 }
 
 void BaseListManager::remove(int id) {
-    this->executeQuery("DELETE FROM " + getTableName() + " WHERE " + getTableName() + "_id = " + QString::number(id), [=](QSqlQuery) {
+    remove({{getTableName() + "_id", id}});
+}
+
+void BaseListManager::remove(QVariantMap where) {
+    QVariantMap params;
+    QString query = QString("DELETE FROM %1 WHERE ").arg(getTableName());
+
+    for (QVariantMap::const_iterator iter = where.begin(); iter != where.end(); ++iter) {
+        query += QString("%1 = :%1").arg(iter.key());
+        params[iter.key()] = iter.value();
+        if (iter != where.end() - 1)
+            query += " AND ";
+    }
+
+    this->executeQuery(query, [=](QSqlQuery) {
         get();
-    });
+    }, params);
 }
 
 SqlQueryModel* BaseListManager::getModel() {

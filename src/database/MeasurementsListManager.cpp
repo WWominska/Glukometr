@@ -16,12 +16,12 @@ QString MeasurementsListManager::getCreateQuery() const {
 }
 
 QVariantMap MeasurementsListManager::getDefaults() {
-    QVariantMap defaults;
     QDateTime now = QDateTime::currentDateTime();
-    defaults["value"] = 0;
-    defaults["timestamp"] = now.toTime_t();
-    defaults["meal"] = 4;
-    return defaults;
+    return QVariantMap({
+       {"meal", 4},
+       {"value", 0},
+       {"timestamp", now.toTime_t()}
+    });
 }
 
 void MeasurementsListManager::getLastSequenceNumber(int deviceId) {

@@ -17,7 +17,7 @@ public:
     }
     QString getCreateQuery() const override;
     QString baseQuery() override {
-        return "SELECT * FROM measurement ORDER BY timestamp DESC";
+        return "SELECT * FROM %1 ORDER BY timestamp DESC";
     }
 
     QVariantMap getDefaults() override;

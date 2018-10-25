@@ -68,11 +68,11 @@ public:
     
 public slots:
     void setupDb();
-    void executeSQL(const QString &query, DbFuture *f=nullptr);
-    void executeSQL(const QString &query, SqlQueryModel* model, DbFuture *f=nullptr);
+    void executeSQL(const QString &query, const QVariantMap &params=QVariantMap(), DbFuture *f=nullptr);
 
 private:
     QSqlDatabase db;
+    QSqlQuery prepareQuery(const QString &query, const QVariantMap &params);
 };
 
 #endif // DATABASEWORKER_H

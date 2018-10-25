@@ -22,7 +22,7 @@ public:
     virtual QString getCreateQuery() const;
     void initializeTable();
 
-    void executeQuery(const QString &query, const std::function<void(QSqlQuery)> &callback);
+    void executeQuery(const QString &query, const std::function<void(QSqlQuery)> &callback, const QVariantMap &params=QVariantMap());
     virtual QString baseQuery();
     Q_INVOKABLE void get();
 
@@ -31,6 +31,7 @@ public:
 
     Q_INVOKABLE void add(QVariantMap data);
     Q_INVOKABLE void remove(int id);
+    Q_INVOKABLE void remove(QVariantMap where);
 
 signals:
     void modelChanged();
@@ -46,6 +47,7 @@ protected:
 private:
     bool m_tableCreated = false;
     SqlQueryModel* getModel();
+    // QString keysToBindings(QVariantMap params);
 };
 
 #endif // BASELISTMANAGER_H

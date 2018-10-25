@@ -26,29 +26,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 DatabaseWorker::DatabaseWorker() {}
 
-void DatabaseWorker::executeSQL(const QString &query, DbFuture *f) {
-    setupDb();
-    QSqlQuery q(db);
-    q.prepare(query);
-    bool ret = q.exec();
+void DatabaseWorker::executeSQL(
+        const QString &query,
+        const QVariantMap &params,
+        DbFuture *f) {
+    QSqlQuery q = prepareQuery(query, params);
+    bool ret = q.exec(); // execute query
+
+    // show error when failed
     if (!ret) {
         qDebug() << "DB Error: " << q.lastError();
         qDebug() << "while executing query: " << q.executedQuery();
     }
-    q.finish();
-    if (f)
-        f->setResult(q);
-}
 
-void DatabaseWorker::executeSQL(const QString &query, SqlQueryModel *model, DbFuture *f) {
-    setupDb();
-    qDebug() << "called executeSQL" << query;
+    // handle promise
     if (f) {
-        connect(model, &SqlQueryModel::modelReset, [=]() {
-            f->finish();
-        });
+        if (ret)
+            f->setResult(q);
+        else f->canceled();
     }
-    model->setQuery(query, db);
 }
 
 void DatabaseWorker::setupDb() {
@@ -59,4 +55,18 @@ void DatabaseWorker::setupDb() {
 
     if (!db.isOpen())
         db.open();
+}
+
+QSqlQuery DatabaseWorker::prepareQuery(const QString& query, const QVariantMap& params) {
+    // prepare DB
+    setupDb();
+    QSqlQuery q = QSqlQuery(db);
+    q.prepare(query);
+
+    // bind parameters
+    for (QVariantMap::const_iterator iter = params.begin(); iter != params.end(); ++iter)
+        q.bindValue(":" + iter.key(), iter.value());
+
+    // return query
+    return q;
 }
