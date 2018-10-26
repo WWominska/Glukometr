@@ -11,6 +11,9 @@
 #include "database/MeasurementsListManager.h"
 #include "database/Thresholds.h"
 #include "database/Drugs.h"
+#include "database/MealAnnotations.h"
+#include "database/TextAnnotations.h"
+#include "database/DrugAnnotations.h"
 
 #ifdef Q_OS_SAILFISH
 #include <sailfishapp.h>
@@ -48,12 +51,18 @@ int main(int argc, char *argv[])
     MeasurementsListManager *measurements = new MeasurementsListManager(worker);
     Thresholds *thresholds = new Thresholds(worker);
     Drugs *drugs = new Drugs(worker);
+    MealAnnotations* mealAnnotations = new MealAnnotations(worker);
+    TextAnnotations* textAnnotations = new TextAnnotations(worker);
+    DrugAnnotations* drugAnnotations = new DrugAnnotations(worker);
 
     // register context properties
     view->rootContext()->setContextProperty("appSettings", settings);
     view->rootContext()->setContextProperty("measurements", measurements);
     view->rootContext()->setContextProperty("thresholds", thresholds);
     view->rootContext()->setContextProperty("drugs", drugs);
+    view->rootContext()->setContextProperty("mealAnnotations", mealAnnotations);
+    view->rootContext()->setContextProperty("textAnnotations", textAnnotations);
+    view->rootContext()->setContextProperty("drugAnnotations", drugAnnotations);
 
     // load QML file and start the app
     view->setSource(QUrl("qrc:/assets/main.qml"));
@@ -71,6 +80,9 @@ int main(int argc, char *argv[])
     delete thresholds;
     delete drugs;
     delete measurements;
+    delete mealAnnotations;
+    delete textAnnotations;
+    delete drugAnnotations;
     delete settings;
     delete worker;
 

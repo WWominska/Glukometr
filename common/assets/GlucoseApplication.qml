@@ -4,24 +4,6 @@ import io.thp.pyotherside 1.4
 
 Item {
     GlucoseListModel {
-        id: mealAnnotationsModel
-        interpreter: python
-        pythonClass: "glukometr.meal_annotations"
-    }
-
-    GlucoseListModel {
-        id: textAnnotationsModel
-        interpreter: python
-        pythonClass: "glukometr.text_annotations"
-    }
-
-    GlucoseListModel {
-        id: drugAnnotationsModel
-        interpreter: python
-        pythonClass: "glukometr.drug_annotations"
-    }
-
-    GlucoseListModel {
         id: devicesModel
         interpreter: python
         pythonClass: "glukometr.devices"
@@ -67,9 +49,6 @@ Item {
     }
 
     property alias devices: devicesModel
-    property alias mealAnnotations: mealAnnotationsModel
-    property alias textAnnotations: textAnnotationsModel
-    property alias drugAnnotations: drugAnnotationsModel
     property alias reminders: remindersModel
 
     Python {

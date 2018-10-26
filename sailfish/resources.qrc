@@ -4,7 +4,6 @@
         <file alias="glukometr.py">../common/python/glukometr.py</file>
         <file alias="storage.py">../common/python/storage.py</file>
         <file alias="devices.py">../common/python/devices.py</file>
-        <file alias="annotations.py">../common/python/annotations.py</file>
         <file alias="reminders.py">../common/python/reminders.py</file>
     </qresource>
     <qresource prefix="/">

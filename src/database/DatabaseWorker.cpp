@@ -36,7 +36,8 @@ void DatabaseWorker::executeSQL(
     // show error when failed
     if (!ret) {
         qDebug() << "DB Error: " << q.lastError();
-        qDebug() << "while executing query: " << q.executedQuery();
+        qDebug() << "while executing query: " << q.executedQuery() << q.boundValues();
+        qDebug() << "Provided query:" << query << "with params " << params;
     }
 
     // handle promise

@@ -144,7 +144,7 @@ Dialog
                             text: name
                             onClicked:
                             {
-                                drugsName.drugId = id
+                                drugsName.drugId = drug_id
                                 drugsName.value = text
                             }
                         }

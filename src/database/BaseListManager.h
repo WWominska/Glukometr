@@ -24,7 +24,8 @@ public:
 
     void executeQuery(const QString &query, const std::function<void(QSqlQuery)> &callback, const QVariantMap &params=QVariantMap());
     virtual QString baseQuery();
-    Q_INVOKABLE void get();
+    Q_INVOKABLE void get(bool reset=false);
+    Q_INVOKABLE void get(QVariantMap where, bool reset=false);
 
     Q_INVOKABLE void update(QVariantMap where, QVariantMap fields, bool refresh=true);
     virtual QVariantMap getDefaults();
@@ -46,6 +47,7 @@ public slots:
 protected:
     SqlQueryModel* m_model;
     DatabaseWorker* m_db;
+    QVariantMap lastFilter;
 
 private:
     SqlQueryModel* getModel();

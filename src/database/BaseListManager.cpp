@@ -57,12 +57,27 @@ QString BaseListManager::baseQuery() {
     return "SELECT * FROM %1";
 }
 
-void BaseListManager::get() {
+void BaseListManager::get(bool reset)
+{
+    // shorthand for get(QVariantMap(), reset=true)
+    get(QVariantMap(), reset);
+}
+
+void BaseListManager::get(QVariantMap where, bool reset) {
+    QString query = baseQuery().arg(getTableName());
+
+    if (where.isEmpty() && !reset)
+        where = lastFilter;
+    else lastFilter = where;
+
+    if (!where.isEmpty())
+        query = QString("%1 WHERE %2").arg(query, keysToBindings(where));
+
     DbFuture *f = new DbFuture();
     connect(f, &DbFuture::finished, [=]() {
         m_model->setQuery(f->result());
     });
-    m_db->executeSQL(baseQuery().arg(getTableName()), QVariantMap(), f);
+    m_db->executeSQL(query, where, f);
 }
 
 void BaseListManager::update(
