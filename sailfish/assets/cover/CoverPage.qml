@@ -44,7 +44,7 @@ CoverBackground
             bottom: coverActionArea.top
         }
         width: parent.width
-        model: pythonGlukometr.measurements.model
+        model: measurements.model
 
         delegate: BackgroundItem {
             id: delegate
@@ -58,7 +58,7 @@ CoverBackground
                 width: Theme.itemSizeExtraSmall
                 height: width
                 anchors.verticalCenter: measurementColumn.verticalCenter
-                color: pythonGlukometr.evaluateMeasurement(value, meal)
+                color: thresholds.evaluateMeasurement(model.value, model.meal)
             }
 
             Column {
@@ -74,7 +74,7 @@ CoverBackground
                     color: Theme.primaryColor
                     font.pixelSize: Theme.fontSizeSmall
                     truncationMode: TruncationMode.Fade
-                    text: value
+                    text: model.value
                 }
                 Label {
                     width: parent.width
@@ -82,7 +82,7 @@ CoverBackground
                     font.pixelSize:  Theme.fontSizeTiny
                     truncationMode: TruncationMode.Fade
                     color: Theme.secondaryColor
-                    text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                    text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
                 }
             }
         }

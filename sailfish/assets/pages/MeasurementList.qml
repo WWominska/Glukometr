@@ -4,11 +4,10 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-    Component.onCompleted: pythonGlukometr.measurements.get()
 
     Connections {
-        target: pythonGlukometr.thresholds
-        onModelUpdated: pythonGlukometr.measurements.get()
+        target: thresholds
+        onModelChanged: measurements.get()
     }
 
     SilicaListView
@@ -95,7 +94,7 @@ Page
 
         id: book
         anchors.fill: parent
-        model: pythonGlukometr.measurements.model
+        model: measurements.model
         delegate: ListItem
         {
             enabled: !isTutorialEnabled
@@ -103,7 +102,7 @@ Page
             RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
             onClicked: pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/MeasurementDetails.qml"), {
-                                          "measurement_id": id,
+                                          "measurement_id": measurement_id,
                                           "value": value,
                                           "meal": meal,
                                           "timestamp": timestamp
@@ -119,9 +118,9 @@ Page
                                                                          {"meal": meal})
                         dialog.accepted.connect(function()
                         {
-                            pythonGlukometr.measurements.update(id, {
-                                "meal": dialog.meal
-                            })
+                            measurements.update({
+                                "measurement_id": measurement_id
+                            }, {"meal": dialog.meal}, true);
                         })
                     }
                 }
@@ -129,7 +128,7 @@ Page
                 {
                     text: "Usuń"
                     onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
-                        pythonGlukometr.measurements.remove(id)
+                        measurements.remove(measurement_id)
                     })
                 }
             }
@@ -141,7 +140,7 @@ Page
                 width: Theme.itemSizeExtraSmall
                 height: width
                 anchors.verticalCenter: sugar.verticalCenter
-                color: pythonGlukometr.evaluateMeasurement(value, meal)
+                color: thresholds.evaluateMeasurement(value, meal)
             }
 
             Label
@@ -186,7 +185,7 @@ Page
 
             Label
             {
-                id: data
+                id: dateLabel
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
                 text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")

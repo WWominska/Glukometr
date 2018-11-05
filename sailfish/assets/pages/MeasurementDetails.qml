@@ -27,7 +27,7 @@ Page
                     {
                         switch (dialog.noteType) {
                         case 0: // dodajemy posilek
-                            pythonGlukometr.mealAnnotations.add({
+                            mealAnnotations.add({
                                 "name": dialog.foodName,
                                 "measurement_id": measurement_id,
                                 "amount": dialog.foodAmount,
@@ -35,7 +35,7 @@ Page
                             })
                             break;
                         case 1: // dodajemy lek
-                            pythonGlukometr.drugAnnotations.add({
+                            drugAnnotations.add({
                                   "drug_id": dialog.drugId,
                                   "dose": dialog.drugsUnit,
                                   "unit": dialog.idDrugs,
@@ -43,7 +43,7 @@ Page
                               })
                             break;
                         case 2: // dodajemy tegzt
-                            pythonGlukometr.textAnnotations.add({
+                            textAnnotations.add({
                                 "content": dialog.textNotes,
                                 "measurement_id": measurement_id,
                             })
@@ -94,12 +94,12 @@ Page
                 top: measurementDetails.bottom
             }
 
-            model: pythonGlukometr.mealAnnotations.model
+            model: mealAnnotations.model
             height: contentHeight
             width: parent.width
             Component.onCompleted:
             {
-                pythonGlukometr.mealAnnotations.get({
+                mealAnnotations.get({
                     "measurement_id": measurement_id
                 })
             }
@@ -181,7 +181,7 @@ Page
                            })
                            dialog.accepted.connect(function()
                            {
-                               pythonGlukometr.mealAnnotations.update(id, {
+                               mealAnnotations.update({"annotation_meal_id": annotation_meal_id}, {
                                    "name": dialog.foodName,
                                    "amount": dialog.foodAmount,
                                    "unit": dialog.foodUnit
@@ -193,7 +193,7 @@ Page
                    MenuItem
                    {
                        text: "Usuń"
-                       onClicked: remorseFood.execute(foreverFood, "Usunięcie posiłku", function() {pythonGlukometr.mealAnnotations.remove(id) } )
+                       onClicked: remorseFood.execute(foreverFood, "Usunięcie posiłku", function() {mealAnnotations.remove(annotation_meal_id) } )
                    }
                }
             }
@@ -206,13 +206,13 @@ Page
             {
                 top: mealList.bottom
             }
-            model: pythonGlukometr.drugAnnotations.model
+            model: drugAnnotations.model
             height: contentHeight
             width: parent.width
             interactive: false
             Component.onCompleted:
             {
-                pythonGlukometr.drugAnnotations.get({
+                drugAnnotations.get({
                     "measurement_id": measurement_id
                 })
             }
@@ -238,7 +238,7 @@ Page
                 Label
                 {
                     id: drugNameId
-                    text: drug_name
+                    text: name
                     anchors
                     {
                         left: drugsIcon.right
@@ -290,13 +290,13 @@ Page
                                "isEdited": true,
                                "noteType": 1,
                                "drugId": drug_id,
-                               "drugName": drug_name,
+                               "drugName": name,
                                "drugsUnit": dose,
                                "idDrugs": unit
                            })
                            dialog.accepted.connect(function()
                            {
-                               pythonGlukometr.drugAnnotations.update(id, {
+                               drugAnnotations.update({"annotation_drug_id": annotation_drug_id}, {
                                    "drug_id": dialog.drugId,
                                    "dose": dialog.drugsUnit,
                                    "unit": dialog.idDrugs
@@ -308,7 +308,7 @@ Page
                    MenuItem
                    {
                        text: "Usuń"
-                       onClicked: remorseDrugs.execute(drugsEverywhere, "Usunięcie leku", function() {pythonGlukometr.drugAnnotations.remove(id) } )
+                       onClicked: remorseDrugs.execute(drugsEverywhere, "Usunięcie leku", function() {drugAnnotations.remove(annotation_drug_id) } )
                    }
              }
             }
@@ -323,13 +323,13 @@ Page
                 top: drugsList.bottom
             }
 
-            model: pythonGlukometr.textAnnotations.model
+            model: textAnnotations.model
             height: contentHeight
             interactive: false
             width: parent.width
             Component.onCompleted:
             {
-                pythonGlukometr.textAnnotations.get({
+                textAnnotations.get({
                     "measurement_id": measurement_id
                 })
             }
@@ -366,7 +366,7 @@ Page
                            })
                            dialog.accepted.connect(function()
                            {
-                               pythonGlukometr.textAnnotations.update(id, {
+                               textAnnotations.update({"annotation_text_id": annotation_text_id}, {
                                    "content": dialog.textNotes
                                })
                            })
@@ -375,7 +375,7 @@ Page
                    MenuItem
                    {
                        text: "Usuń"
-                       onClicked: remorseNotes.execute(notes, "Usunięcie notatki", function() {pythonGlukometr.textAnnotations.remove(id) } )
+                       onClicked: remorseNotes.execute(notes, "Usunięcie notatki", function() {textAnnotations.remove(annotation_text_id) } )
                    }
                }
             }

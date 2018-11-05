@@ -9,19 +9,27 @@ Page
     property string macAddress
 
     function getLastSequenceNumber() {
-        pythonGlukometr.measurements.getLastSequenceNumber(deviceId, function (lastSequenceNumber) {
-            glucometer.lastSequenceNumber = lastSequenceNumber;
-            glucometer.connectToService(macAddress)
-        })
+        measurements.getLastSequenceNumber(deviceId);
+    }
+
+    Connections {
+        target: measurements
+        onLastSequenceNumber: {
+            console.log(deviceId + " " + sequenceNumber);
+            if (page.deviceId == deviceId) {
+                glucometer.lastSequenceNumber = sequenceNumber
+                glucometer.connectToService(macAddress)
+            }
+        }
     }
 
     Component.onCompleted: {
         if (deviceId != -1)
             getLastSequenceNumber()
-        else pythonGlukometr.devices.getDeviceId(macAddress, function (deviceId) {
-            page.deviceId = deviceId
+        else {
+            page.deviceId = devices.getDeviceId(macAddress)
             getLastSequenceNumber()
-        })
+        }
     }
 
     Glucometer
@@ -44,8 +52,8 @@ Page
         onPairing: logi.text = "Parowanie..."
         onRacpStarted: logi.text = "Pobieranie pomiarów"
         onRacpFinished: {
-            pythonGlukometr.devices.update(page.deviceId, {"last_sync": -1})
-            pythonGlukometr.measurements.get()
+            devices.update(page.deviceId, {"last_sync": -1})
+            measurements.get()
             logi.text = "Pobrano wszystko"
             pageStack.pop(0)
         }
@@ -62,7 +70,7 @@ Page
                 default: newMeal = -1; break; // nie okreslono
             }
 
-            pythonGlukometr.measurements.update({
+            measurements.update({
                 "sequence_number": sequence_number,
                 "device_id": device
             }, {"meal": newMeal}, true)
@@ -70,7 +78,7 @@ Page
 
         onNewMeasurement:
         {
-            pythonGlukometr.measurements.add({
+            measurements.add({
                 "value": value,
                 "timestamp": timestamp,
                 "device_id": device,

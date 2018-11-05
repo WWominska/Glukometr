@@ -16,21 +16,18 @@ Page
     {
         id: bleDiscovery
         onNewDevice: {
-            pythonGlukometr.devices.isKnown(macAddress, function (result) {
-                if (result)
-                    return;
-
+            if (!devices.isKnown(macAddress)) {
                 discoveredDevices.append({
                     "name": name,
                     "macAddress": macAddress
                 })
-            })
+            }
         }
     }
 
     Component.onCompleted: {
         bleDiscovery.startDiscovery()
-        pythonGlukometr.devices.get()
+        devices.get()
         application.bluetoothPageOpen = true
 
     }
@@ -84,7 +81,7 @@ Page
             }
             width: parent.width
             height: contentHeight
-            model: pythonGlukometr.devices.model
+            model: devices.model
 
             delegate: ListItem
             {
@@ -101,8 +98,7 @@ Page
                             var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
                             dialog.accepted.connect(function()
                             {
-                                pythonGlukometr.devices.update(
-                                            id, {"name": dialog.name})
+                                devices.update(device_id, {"name": dialog.name})
                             })
                         }
                     }
@@ -111,14 +107,12 @@ Page
                     {
                         text: "Zapomnij urządzenie"
                         onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {
-                            pythonGlukometr.devices.remove(id, undefined, function () {
-                                pythonGlukometr.measurements.get()
-                            })
+                            devices.remove(device_id)
                         })
                     }
                 }
 
-                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": id, "macAddress": mac_address });
+                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": device_id, "macAddress": mac_address });
 
                 Image {
                     id: bluetoothIcon
@@ -158,7 +152,7 @@ Page
                     }
 
                     font.pixelSize: Theme.fontSizeTiny
-                    text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : "Nigdy"
+                    text: last_sync > 0 ? new Date(last_sync*1000).toLocaleDateString() : "Nigdy"
                     color: Theme.secondaryColor
                 }
             }
@@ -202,12 +196,13 @@ Page
             {
                 onClicked:
                 {
-                    pythonGlukometr.devices.add({
+                    devices.add({
                         "name": name,
                         "mac_address": macAddress
                     })
                     pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {
                                        "deviceId": -1,
+                                       "last_sync": -1,
                                        "macAddress": macAddress});
                 }
                 Image {

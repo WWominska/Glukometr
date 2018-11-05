@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Nemo.Configuration 1.0
 import "pages";
 
 ApplicationWindow {
@@ -16,11 +15,12 @@ ApplicationWindow {
 
     Component.onCompleted:
     {
-        if (settings.isFirstRun)
+        if (!settings.notFirstRun)
         {
-            settings.isFirstRun = false
+            settings.notFirstRun = true
             pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/Tutorial.qml"), {}, PageStackAction.Immediate)
         }
+        reminders.get();
     }
 
     function openAddMeasurementDialog()
@@ -28,23 +28,12 @@ ApplicationWindow {
         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddMeasurement.qml"))
         dialog.accepted.connect(function()
         {
-            pythonGlukometr.measurements.add({
+            measurements.add({
                 "value": dialog.value,
                 "meal": dialog.meal
             });
             if (dialog.remind)
-                pythonGlukometr.reminders.remindInTwoHours()
+                reminders.remindInTwoHours()
         })
-    }
-
-    GlucoseApplication {
-        id: pythonGlukometr
-    }
-
-    ConfigurationGroup {
-        id: settings
-        path: "/apps/harbour-glukometr"
-        property bool isFirstRun: true
-        property string phoneNumber: ""
     }
 }
