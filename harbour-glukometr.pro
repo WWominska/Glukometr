@@ -53,7 +53,8 @@ HEADERS += src/BleDiscovery.h \
            src/database/MealAnnotations.h \
            src/database/TextAnnotations.h \
            src/database/DrugAnnotations.h \
-           src/database/Reminders.h
+           src/database/Reminders.h \
+           src/database/Devices.h
 SOURCES += src/BleDiscovery.cpp \
            src/main.cpp \
            src/BleParser.cpp \
@@ -68,7 +69,8 @@ SOURCES += src/BleDiscovery.cpp \
            src/database/MealAnnotations.cpp \
            src/database/TextAnnotations.cpp \
            src/database/DrugAnnotations.cpp \
-           src/database/Reminders.cpp
+           src/database/Reminders.cpp \
+           src/database/Devices.cpp
 
 OTHER_FILES += common/* \
                common/python/* \

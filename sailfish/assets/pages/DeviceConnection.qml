@@ -26,10 +26,10 @@ Page
     Component.onCompleted: {
         if (deviceId != -1)
             getLastSequenceNumber()
-        else pythonGlukometr.devices.getDeviceId(macAddress, function (deviceId) {
-            page.deviceId = deviceId
+        else {
+            page.deviceId = devices.getDeviceId(macAddress)
             getLastSequenceNumber()
-        })
+        }
     }
 
     Glucometer
@@ -52,7 +52,7 @@ Page
         onPairing: logi.text = "Parowanie..."
         onRacpStarted: logi.text = "Pobieranie pomiarów"
         onRacpFinished: {
-            pythonGlukometr.devices.update(page.deviceId, {"last_sync": -1})
+            devices.update(page.deviceId, {"last_sync": -1})
             measurements.get()
             logi.text = "Pobrano wszystko"
             pageStack.pop(0)

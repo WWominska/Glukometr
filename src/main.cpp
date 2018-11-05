@@ -15,6 +15,7 @@
 #include "database/TextAnnotations.h"
 #include "database/DrugAnnotations.h"
 #include "database/Reminders.h"
+#include "database/Devices.h"
 
 #ifdef Q_OS_SAILFISH
 #include <sailfishapp.h>
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
     TextAnnotations* textAnnotations = new TextAnnotations(worker);
     DrugAnnotations* drugAnnotations = new DrugAnnotations(worker);
     Reminders* reminders = new Reminders(worker);
+    Devices* devices = new Devices(worker);
 
     // register context properties
     view->rootContext()->setContextProperty("appSettings", settings);
@@ -66,6 +68,7 @@ int main(int argc, char *argv[])
     view->rootContext()->setContextProperty("textAnnotations", textAnnotations);
     view->rootContext()->setContextProperty("drugAnnotations", drugAnnotations);
     view->rootContext()->setContextProperty("reminders", reminders);
+    view->rootContext()->setContextProperty("devices", devices);
 
     // load QML file and start the app
     view->setSource(QUrl("qrc:/assets/main.qml"));
@@ -86,6 +89,8 @@ int main(int argc, char *argv[])
     delete mealAnnotations;
     delete textAnnotations;
     delete drugAnnotations;
+    delete reminders;
+    delete devices;
     delete settings;
     delete worker;
 
