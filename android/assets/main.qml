@@ -69,6 +69,4 @@ Item
                 pythonGlukometr.reminders.remindInTwoHours()
         })
     }
-
-    ApplicationSettings { id: settings }
 }

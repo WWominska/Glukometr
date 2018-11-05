@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="assets/ApplicationSettings.qml">../common/assets/ApplicationSettings.qml</file>
         <file>assets/main.qml</file>
         <file>assets/cover/CoverPage.qml</file>
         <file>icons/icon-after-meal.svg</file>

@@ -7,6 +7,7 @@ winrt {
     TEMPLATE += vcapp
     CONFIG += windeployqt
     WINRT_MANIFEST = winrt/AppxManifest.xml
+    OTHER_FILES += winrt/*
 }
 
 unix:packagesExist(sailfishapp):!android {
@@ -16,13 +17,25 @@ unix:packagesExist(sailfishapp):!android {
     CONFIG += sailfishapp
     DEFINES += Q_OS_SAILFISH
     DISTFILES += harbour-glukometr.desktop
+    OTHER_FILES += sailfish/* \
+                   sailfish/rpm/* \
+                   sailfish/assets/*.qml \
+                   sailfish/assets/pages/*.qml \
+                   sailfish/assets/dialogs/*.qml \
+                   sailfish/assets/cover/*.qml
 } else {
     QT += quickcontrols2
     RESOURCES += android/resources.qrc
+    OTHER_FILES += android/assets/*.qml \
+               android/assets/pages/*.qml \
+               android/assets/dialogs/*.qml \
+               android/assets/components/*.qml
 }
 
 android {
     QTPLUGIN += QSQLITE
+
+    OTHER_FILES += android/AndroidManifest.xml android/res/*
 
     DISTFILES += \
         android/AndroidManifest.xml \
@@ -72,16 +85,4 @@ SOURCES += src/BleDiscovery.cpp \
            src/database/Reminders.cpp \
            src/database/Devices.cpp
 
-OTHER_FILES += common/assets/*.qml \
-               sailfish/* \
-               sailfish/rpm/* \
-               sailfish/assets/*.qml \
-               sailfish/assets/pages/*.qml \
-               sailfish/assets/dialogs/*.qml \
-               sailfish/assets/cover/*.qml \
-               android/assets/*.qml \
-               android/assets/pages/*.qml \
-               android/assets/dialogs/*.qml \
-               android/assets/components/*.qml \
-               android/AndroidManifest.xml android/res/* \
-               winrt/*
+OTHER_FILES += common/assets/*.qml
