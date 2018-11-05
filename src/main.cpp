@@ -23,6 +23,13 @@
 #include <QQuickStyle>
 #endif
 
+void addComponent(QQuickView* view, const QString &property, QObject* component)
+{
+    view->rootContext()->setContextProperty(property, component);
+    QObject::connect(view, SIGNAL(openglContextCreated(QOpenGLContext*)), component, SLOT(appInitialized()));
+    QObject::connect(view, SIGNAL(destroyed(QObject*)), component, SLOT(deleteLater()));
+}
+
 int main(int argc, char *argv[])
 {
 #ifdef Q_OS_SAILFISH
@@ -43,32 +50,21 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<SqlQueryModel>("glukometr", 1, 0, "SqlQuery", "");
 
     // Initialize Settings and a Worker
-    Settings* settings = new Settings();
     DatabaseWorker* worker = new DatabaseWorker();
     QQuickView *view = new QQuickView;
 
     worker->start();
 
-    // Initialize and register managers
-    MeasurementsListManager *measurements = new MeasurementsListManager(worker);
-    Thresholds *thresholds = new Thresholds(worker);
-    Drugs *drugs = new Drugs(worker);
-    MealAnnotations* mealAnnotations = new MealAnnotations(worker);
-    TextAnnotations* textAnnotations = new TextAnnotations(worker);
-    DrugAnnotations* drugAnnotations = new DrugAnnotations(worker);
-    Reminders* reminders = new Reminders(worker);
-    Devices* devices = new Devices(worker);
-
     // register context properties
-    view->rootContext()->setContextProperty("settings", settings);
-    view->rootContext()->setContextProperty("measurements", measurements);
-    view->rootContext()->setContextProperty("thresholds", thresholds);
-    view->rootContext()->setContextProperty("drugs", drugs);
-    view->rootContext()->setContextProperty("mealAnnotations", mealAnnotations);
-    view->rootContext()->setContextProperty("textAnnotations", textAnnotations);
-    view->rootContext()->setContextProperty("drugAnnotations", drugAnnotations);
-    view->rootContext()->setContextProperty("reminders", reminders);
-    view->rootContext()->setContextProperty("devices", devices);
+    addComponent(view, "settings", new Settings());
+    addComponent(view, "measurements", new MeasurementsListManager(worker));
+    addComponent(view, "thresholds", new Thresholds(worker));
+    addComponent(view, "drugs", new Drugs(worker));
+    addComponent(view, "mealAnnotations", new MealAnnotations(worker));
+    addComponent(view, "textAnnotations", new TextAnnotations(worker));
+    addComponent(view, "drugAnnotations", new DrugAnnotations(worker));
+    addComponent(view, "reminders", new Reminders(worker));
+    addComponent(view, "devices", new Devices(worker));
 
     // load QML file and start the app
     view->setSource(QUrl("qrc:/assets/main.qml"));
@@ -81,17 +77,6 @@ int main(int argc, char *argv[])
     // quit worker thread
     worker->exit();
     worker->wait();
-
-    // delete everything
-    delete thresholds;
-    delete drugs;
-    delete measurements;
-    delete mealAnnotations;
-    delete textAnnotations;
-    delete drugAnnotations;
-    delete reminders;
-    delete devices;
-    delete settings;
     delete worker;
 
     // return value

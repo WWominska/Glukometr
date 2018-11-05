@@ -162,3 +162,8 @@ QString BaseListManager::keysToBindings(
     }
     return query.join(separator);
 }
+
+void BaseListManager::appInitialized() {
+    this->initializeTable();
+    this->get();
+}
