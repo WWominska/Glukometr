@@ -36,6 +36,4 @@ ApplicationWindow {
                 reminders.remindInTwoHours()
         })
     }
-
-    ApplicationSettings { id: settings }
 }

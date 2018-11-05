@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     Devices* devices = new Devices(worker);
 
     // register context properties
-    view->rootContext()->setContextProperty("appSettings", settings);
+    view->rootContext()->setContextProperty("settings", settings);
     view->rootContext()->setContextProperty("measurements", measurements);
     view->rootContext()->setContextProperty("thresholds", thresholds);
     view->rootContext()->setContextProperty("drugs", drugs);

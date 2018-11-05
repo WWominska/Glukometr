@@ -34,6 +34,16 @@ class Settings : public QSettings
 {
     Q_OBJECT
     Q_DISABLE_COPY( Settings )
+    Q_PROPERTY(
+            bool notFirstRun
+            READ getNotFirstRun
+            WRITE setNotFirstRun
+            NOTIFY notFirstRunChanged)
+    Q_PROPERTY(
+            QString phoneNumber
+            READ getPhoneNumber
+            WRITE setPhoneNumber
+            NOTIFY phoneNumberChanged)
 
 public:
     explicit Settings(QObject *parent = 0);
@@ -46,6 +56,13 @@ public:
     Q_INVOKABLE QVariant get(const QString & group, const QString & key, const QVariant & defaultValue=QVariant());
     Q_INVOKABLE void     set(const QString & group, const QString & key, const QVariant & data);
 public slots:
+    Q_INVOKABLE bool getNotFirstRun();
+    Q_INVOKABLE void setNotFirstRun(bool notFirstRun);
+    Q_INVOKABLE QString getPhoneNumber();
+    Q_INVOKABLE void setPhoneNumber(QString phoneNumber);
+signals:
+    void notFirstRunChanged();
+    void phoneNumberChanged();
     
 };
 

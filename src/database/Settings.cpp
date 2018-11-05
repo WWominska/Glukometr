@@ -59,3 +59,17 @@ void Settings::set(const QString & group, const QString & key, const QVariant & 
   endGroup();
   this->sync();
 }
+
+
+// settings
+bool Settings::getNotFirstRun() { return get("conf", "NotFirstRun", false).toBool(); }
+void Settings::setNotFirstRun(bool notFirstRun) {
+    set("conf", "NotFirstRun", notFirstRun);
+    emit notFirstRunChanged();
+}
+
+QString Settings::getPhoneNumber() { return get("conf", "PhoneNumber", "").toString(); }
+void Settings::setPhoneNumber(QString phoneNumber) {
+    set("conf", "PhoneNumber", phoneNumber);
+    emit phoneNumberChanged();
+}
