@@ -23,6 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************/
 
 #include "DatabaseWorker.h"
+#include <QDir>
+#include <QStandardPaths>
 
 DatabaseWorker::DatabaseWorker() {}
 
@@ -51,7 +53,12 @@ void DatabaseWorker::executeSQL(
 void DatabaseWorker::setupDb() {
     if (db.databaseName().isEmpty()) {
         db = QSqlDatabase::addDatabase("QSQLITE", "Database");
+#ifdef Q_OS_SAILFISH
+        db.setDatabaseName(QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation))
+                           .filePath("harbour-glukometr") + "/database.sqlite");
+#else
         db.setDatabaseName("com.glukometr.db");
+#endif
     }
 
     if (!db.isOpen())
