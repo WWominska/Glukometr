@@ -119,8 +119,7 @@ QStringList Reminders::callTimedClient(const QStringList &args)
     QProcess timedClient;
     timedClient.start("timedclient-qt5 " + args.join(" "));
     timedClient.waitForFinished();
-    return QStringList({
-       {timedClient.readAll().trimmed()},
-       {timedClient.readAllStandardError().trimmed()}
-    });
+    QStringList output;
+    output << timedClient.readAll().trimmed() << timedClient.readAllStandardError().trimmed();
+    return output;
 }
