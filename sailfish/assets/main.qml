@@ -37,6 +37,5 @@ ApplicationWindow {
         })
     }
 
-    GlucoseApplication { id: pythonGlukometr }
     ApplicationSettings { id: settings }
 }

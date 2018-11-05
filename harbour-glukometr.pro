@@ -72,10 +72,7 @@ SOURCES += src/BleDiscovery.cpp \
            src/database/Reminders.cpp \
            src/database/Devices.cpp
 
-OTHER_FILES += common/* \
-               common/python/* \
-               common/assets/cover/*.qml \
-               common/assets/*.qml \
+OTHER_FILES += common/assets/*.qml \
                sailfish/* \
                sailfish/rpm/* \
                sailfish/assets/*.qml \
