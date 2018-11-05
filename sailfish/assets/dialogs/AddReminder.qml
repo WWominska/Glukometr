@@ -25,8 +25,8 @@ Dialog
         ValueButton
         {
             id: label
-            property int selectedHour
-            property int selectedMinute
+            property int selectedHour: 13
+            property int selectedMinute: 0
 
             function openTimeDialog()
             {

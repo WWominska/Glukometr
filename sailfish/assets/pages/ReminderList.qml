@@ -3,12 +3,14 @@ import Sailfish.Silica 1.0
 
 Page
 {
-    Component.onCompleted: pythonGlukometr.reminders.get()
+    Component.onCompleted: {
+        reminders.clearExpiredReminders();
+        reminders.get();
+    }
 
     function makeReminder(text, reminder_type, when, repeating)
     {
-        pythonGlukometr.reminders.remind(text, reminder_type, when, repeating,
-                                         function () { pythonGlukometr.reminders.get() })
+        reminders.remind(text, reminder_type, when, repeating)
     }
 
     function reminderTypeToString(type)
@@ -39,19 +41,22 @@ Page
                         }
                         date.setHours(dialog.selectedHour)
                         date.setMinutes(dialog.selectedMinute)
-                        pythonGlukometr.reminders.addReminder(dialog.reminderType, date, dialog.repeating)
+                        date.setSeconds(0);
+                        date.setMilliseconds(0);
+                        reminders.remind(
+                                    reminderTypeToString(dialog.reminderType),
+                                    dialog.reminderType, date, dialog.repeating)
                     })
                 }
             }
         }
 
-        model: pythonGlukometr.reminders.model
+        model: reminders.model
         header: PageHeader { title: "Przypomnienia" }
         delegate: ListItem
         {
             id:list
             RemorseItem { id: remorse }
-            //contentHeight: column.childrenRect.height + 2*Theme.paddingSmall
             menu: ContextMenu
             {
                 MenuItem
@@ -59,10 +64,8 @@ Page
                     text: "Usuń"
                     onClicked: remorse.execute(list, "Usunięcie powiadomienia", function()
                     {
-                        pythonGlukometr.reminders.cancel(cookie, function ()
-                        {
-                            pythonGlukometr.reminders.remove(id)
-                        })
+                        reminders.cancel(cookie_id);
+                        reminders.remove(reminder_id);
                     })
                 }
             }
@@ -80,7 +83,7 @@ Page
             Label
             {
                 id:whenCall
-                text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"HH:mm")
+                text: new Date(reminder_datetime*1000).toLocaleString(Qt.locale("pl_PL"),"HH:mm")
                 anchors
                 {
                     right: parent.right

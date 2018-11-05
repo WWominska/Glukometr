@@ -17,39 +17,7 @@ Item {
         }
     }
 
-    GlucoseListModel {
-        id: remindersModel
-        interpreter: python
-        pythonClass: "glukometr.reminders"
-
-        function cancel(cookie, callback) {
-            python.call(pythonClass + ".cancel", [cookie, ], callback)
-        }
-
-        function remind(title, reminder_type, when, repeating, callback) {
-            python.call(pythonClass + ".remind",
-                        [title, reminder_type, when, repeating, ], callback)
-        }
-
-        function remindInTwoHours() {
-            var now = new Date().getTime();
-            var twoHoursLater = new Date(now + (1000*60)*60*2);
-            addReminder(0, twoHoursLater, 0);
-        }
-
-        function addReminder(reminder_type, when, repeating) {
-            var text = "";
-            switch (reminder_type) {
-            case 0: text = "Zmierz cukier"; break;
-            case 1: text = "Weź leki"; break;
-            case 2: text = "Zjedz coś"; break;
-            }
-            remind(text, reminder_type, when, repeating, function () { get() });
-        }
-    }
-
     property alias devices: devicesModel
-    property alias reminders: remindersModel
 
     Python {
         id: python

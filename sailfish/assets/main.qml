@@ -20,6 +20,7 @@ ApplicationWindow {
             settings.notFirstRun = true
             pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/Tutorial.qml"), {}, PageStackAction.Immediate)
         }
+        reminders.get();
     }
 
     function openAddMeasurementDialog()
@@ -32,7 +33,7 @@ ApplicationWindow {
                 "meal": dialog.meal
             });
             if (dialog.remind)
-                pythonGlukometr.reminders.remindInTwoHours()
+                reminders.remindInTwoHours()
         })
     }
 
