@@ -20,6 +20,12 @@ Item
     property bool bluetoothPageOpen: false
     property real disabledOpacity: 0.2
 
+    FontLoader {
+        id: materialFont
+        name: "Material Icons"
+        source: "qrc:/fonts/MaterialIcons-Regular.ttf"
+    }
+
     Shortcut {
         sequences: ["Esc", "Back"]
         enabled: pageStack.depth > 1

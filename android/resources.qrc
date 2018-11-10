@@ -41,5 +41,6 @@
         <file>assets/components/ListItem.qml</file>
         <file alias="tuo.jpg">37267ae379d43f14ad475de97ea877de.jpg</file>
         <file>assets/components/OreoBackground.qml</file>
+        <file>assets/fonts/MaterialIcons-Regular.ttf</file>
     </qresource>
 </RCC>

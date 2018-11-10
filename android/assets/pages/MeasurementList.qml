@@ -233,18 +233,24 @@ Page
             anchors.fill: parent
 
             ToolButton {
+                font.family: "Material Icons"
+                font.pixelSize: 20
+                text: "\ue145"
                 width: parent.width/3
-                icon.source: "qrc:/icons/icon-m-add.svg"
                 onClicked: openAddMeasurementDialog()
             }
             ToolButton {
+                font.family: "Material Icons"
+                font.pixelSize: 20
+                text: "\ue1a7"
                 width: parent.width/3
-                icon.source: "qrc:/icons/icon-m-bluetooth.svg"
                 onClicked: pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
             ToolButton {
+                font.family: "Material Icons"
+                font.pixelSize: 20
+                text: "\ue8b8"
                 width: parent.width/3
-                icon.source: "qrc:/icons/icon-m-developer-mode.svg"
                 onClicked: pageStack.push("qrc:/assets/pages/Settings.qml")
             }
         }
