@@ -15,6 +15,8 @@ Item {
             left: parent.left
             leftMargin: Theme.horizontalPageMargin
             verticalCenter: parent.verticalCenter
+            top: parent.top
+            topMargin: Theme.horizontalPageMargin * 0.5
         }
         font.pixelSize: Theme.fontSizeSmall
         color: "#f7f5f0"

@@ -29,14 +29,14 @@ Page
             image: "qrc:/icons/icon-settings-threshold.svg"
         }
 
-        ListElement
-        {
-            settingText: "Przypomnienia"
-            secondaryText: 0
-            replace: false
-            source: "qrc:/assets/pages/ReminderList.qml"
-            image: "qrc:/icons/icon-m-alarm.svg"
-        }
+//        ListElement
+//        {
+//            settingText: "Przypomnienia"
+//            secondaryText: 0
+//            replace: false
+//            source: "qrc:/assets/pages/ReminderList.qml"
+//            image: "qrc:/icons/icon-m-alarm.svg"
+//        }
 
         ListElement
         {

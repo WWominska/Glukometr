@@ -19,6 +19,23 @@ Page
         onModelChanged: measurements.get()
     }
 
+    Rectangle
+    {
+        anchors
+        {
+            right: parent.right
+            rightMargin: Theme.horizontalPageMargin
+            bottom: parent.bottom
+            bottomMargin: Theme.horizontalPageMargin*4
+        }
+        width: 50
+        height: 50
+        radius: 50
+        border.color: "#99e3decb"
+        border.width: 1
+        color: "#99f7f5f0"
+    }
+
     ListView
     {
         // opacity: hint.running ? disabledOpacity : 1.0

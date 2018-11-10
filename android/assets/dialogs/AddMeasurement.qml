@@ -20,7 +20,7 @@ DialogPage
     property bool remind: false
     property bool result: false
 
-    property alias remind: repeat.checked
+    //property alias remind: repeat.checked
 
     property int tutorialPhase: 0
     property real disabledOpacity: 0.2
@@ -50,7 +50,8 @@ DialogPage
         {
             id: column
             width: parent.width
-            spacing: Theme.paddingSmall
+
+            spacing: Theme.paddingSmall*0.6
 
 
              SectionHeader
@@ -59,21 +60,6 @@ DialogPage
                 text: "Podaj cukier"
 
                 opacity: showIfPhase(0) ? 1.0 : disabledOpacity
-             }
-
-             Label
-             {
-                anchors
-                {
-                    left: parent.left
-                    margins: Theme.horizontalPageMargin
-                    right: parent.right
-                }
-                text: "Wartość cukru"
-                color: "#d9d2b9"
-                wrapMode: Text.WordWrap
-                enabled: opacity === 1
-                opacity: showIfPhase(1) ? 1.0 : disabledOpacity
              }
 
              TextField
