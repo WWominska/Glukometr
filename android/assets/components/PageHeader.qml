@@ -1,34 +1,43 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.2
+import QtQuick.Controls.Material 2.1
 import ".."
 
-Item {
+ToolBar {
+    Material.foreground: "white"
     width: parent.width
-    height: content.childrenRect.height + 2 * Theme.paddingMedium
-    property alias title: titleLabel.text
-    property alias description: descriptionLabel.text
+    background: Rectangle {
+        color: "black"
+        opacity: 0.8
+    }
 
-    Column {
-        id: content
-        anchors {
-            top: parent.top
-            topMargin: Theme.paddingMedium
-            left: parent.left
-            leftMargin: Theme.horizontalPageMargin
-            right: parent.right
-            rightMargin: Theme.horizontalPageMargin
+    //height: content.childrenRect.height + 2 * Theme.paddingMedium
+    property alias title: titleLabel.text
+    //property alias description: descriptionLabel.text
+
+
+    RowLayout {
+        spacing: 10
+        anchors.fill: parent
+
+        ToolButton {
+            text: "fstecz"
+            icon.name: stackView.depth > 1 ? "back" : "drawer"
+            onClicked: pageStack.pop()
         }
-        Text {
+
+        Label {
             id: titleLabel
-            anchors.right: parent.right
-            color: Theme.highlightColor
-            font.pixelSize: Theme.fontSizeLarge
+            text: listView.currentItem ? listView.currentItem.text : "Gallery"
+            font.pixelSize: 20
+            elide: Label.ElideRight
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            Layout.fillWidth: true
         }
-        Text {
-            id: descriptionLabel
-            anchors.right: parent.right
-            height: text != "" ? paintedHeight : 0
-            color: Theme.secondaryColor
-            font.pixelSize: Theme.fontSizeMedium
+        ToolButton {
+
         }
     }
 }

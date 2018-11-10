@@ -1,34 +1,43 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick.Controls 2.3
+import ".."
+import "../components"
 
 Page
 {
     id: drugsPage
-
-    SilicaListView
+    header: PageHeader
     {
-        header: PageHeader
-        {
-            id: pageHeader
-            title: "Leki"
-        }
-        PullDownMenu
-        {
-            MenuItem
-            {
-                text: "Dodaj lek"
-                onClicked:
-                {
-                    var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
-                    dialog.accepted.connect(function()
+        id: pageHeader
+        title: "Leki"
+    }
+    background: OreoBackground {}
+
+    ListView
+    {
+
+        ScrollBar.vertical: ScrollBar { }
+        ToolBar {
+            id: toolBar
+            width: parent.width
+            anchors.bottom: parent.bottom
+            Row{
+                anchors.fill: parent
+
+                ToolButton {
+                    width: parent.width/3
+                    icon.source: "qrc:/icons/icon-m-add.svg"
+                    onClicked:
                     {
-                        drugs.add({"name": dialog.value})
-                    })
+                        var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
+                        dialog.accepted.connect(function()
+                        {
+                            drugs.add({"name": dialog.value})
+                        })
+                    }
                 }
             }
         }
-        VerticalScrollDecorator {}
-
 
         id: drugsBook
         anchors.fill: parent
@@ -36,13 +45,13 @@ Page
         delegate: ListItem
         {
             id: drugItem
-            RemorseItem { id: remorseDrug }
-            menu: ContextMenu
+            //RemorseItem { id: remorseDrug }
+            menu: Menu
             {
                 MenuItem
                 {
                     text: "Usuń"
-                    onClicked: remorseDrug.execute(drugItem, "Usunięcie leku", function() {drugs.remove(drug_id) } )
+                    onClicked: remorse.execute(drugItem, "Usunięcie leku", function() {drugs.remove(drug_id) } )
                 }
 
                 MenuItem

@@ -10,6 +10,12 @@ Page
     id: screen
     property int tutorialBluetooth: application.isTutorialEnabled
 
+    header: PageHeader {
+        id: pageHeader
+        title: "Wybierz urządzenie"
+    }
+    background: OreoBackground {}
+
     ListModel {
         id: discoveredDevices
     }
@@ -18,7 +24,7 @@ Page
     {
         id: bleDiscovery
         onNewDevice: {
-            pythonGlukometr.devices.isKnown(macAddress, function (result) {
+            devices.isKnown(macAddress, function (result) {
                 if (result)
                     return;
 
@@ -32,7 +38,7 @@ Page
 
     Component.onCompleted: {
         bleDiscovery.startDiscovery()
-        pythonGlukometr.devices.get()
+        devices.get()
         application.bluetoothPageOpen = true
 
     }
@@ -60,20 +66,10 @@ Page
             }
         }*/
 
-        PageHeader
-        {
-            id: pageHeader
-            title: "Wybierz urządzenie"
-        }
-
         SectionHeader
         {
             id: rememberedDevicesHeader
-            anchors {
-                top: pageHeader.bottom;
-                topMargin: Theme.paddingLarge
-            }
-            // font.pixelSize: Theme.fontSizeLarge
+            font.pixelSize: Theme.fontSizeLarge
             text: "Zapamiętane urządzenie"
         }
 
@@ -86,7 +82,7 @@ Page
             }
             width: parent.width
             height: contentHeight
-            model: pythonGlukometr.devices.model
+            model: devices.model
 
             delegate: ItemDelegate
             {
@@ -105,8 +101,8 @@ Page
                             var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
                             dialog.accepted.connect(function()
                             {
-                                pythonGlukometr.devices.update(
-                                            id, {"name": dialog.name})
+                                devices.update(
+                                            devices_id, {"name": dialog.name})
                             })
                         }
                     }
@@ -115,14 +111,14 @@ Page
                     {
                         text: "Zapomnij urządzenie"
                         onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {
-                            pythonGlukometr.devices.remove(id, undefined, function () {
+                            devices.remove(devices_id, undefined, function () {
                                 measurements.get()
                             })
                         })
                     }
                 }
 
-                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": id, "macAddress": mac_address });
+                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": devices_id, "macAddress": mac_address });
 
                 Image {
                     id: bluetoothIcon
@@ -175,7 +171,7 @@ Page
                 top: rememberedDevicesList.bottom
                 topMargin: Theme.paddingLarge
             }
-            // font.pixelSize: Theme.fontSizeLarge
+            font.pixelSize: Theme.fontSizeLarge
             text: "Wykryte urządzenia"
         }
 
@@ -187,7 +183,9 @@ Page
                 top: discoveredDevicesHeader.bottom
                 topMargin: Theme.paddingLarge
                 left: parent.left
+                leftMargin: Theme.horizontalPageMargin
                 right: parent.right
+                rightMargin: Theme.horizontalPageMargin
             }
             visible: bleDiscovery.running
             //label: "Szukanie urządzeń"
@@ -207,7 +205,7 @@ Page
                 width: parent.width
                 onClicked:
                 {
-                    pythonGlukometr.devices.add({
+                    devices.add({
                         "name": name,
                         "mac_address": macAddress
                     })

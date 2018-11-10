@@ -5,6 +5,7 @@ import ".."
 
 
 Page {
+    background: OreoBackground {}
     signal accepted
     signal canceled
     signal done

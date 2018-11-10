@@ -18,13 +18,15 @@ DialogPage
         }
     }
 
-    header: DialogHeader {
-        id: header
+    footer: DialogHeader {}
+    header: PageHeader {
+        id: pageHeader
+        title: "Ustaw numer"
     }
 
     Flickable
     {
-        //VerticalScrollDecorator {}
+        ScrollBar.vertical: ScrollBar { }
         anchors.fill: parent
         contentWidth: parent.width
         contentHeight: column.childrenRect.height
@@ -39,11 +41,26 @@ DialogPage
             {
                 id: phoneNumberHead
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Podaj numer telefonu"
+                text: "Podaj numer kontaktowy"
+            }
+            Label
+            {
+                text: "do osoby, z którą należy się skontaktować w razie nagłego wypadku."
+                wrapMode: Text.WordWrap
+                color: "#d9d2b9"
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+
+                }
             }
 
             TextField
             {
+
                 x: Theme.horizontalPageMargin
                 text: settings.phoneNumber
                 id: unitFood
@@ -51,6 +68,7 @@ DialogPage
                 width: parent.width - 2*x
                 inputMethodHints: Qt.ImhDialableCharactersOnly
                 placeholderText: "88**8**88"
+                color: "#f7f5f0"
                 validator: RegExpValidator { regExp: /^\(?[0-9]{1,3}\)? ?-?[0-9]{1,3} ?-?[0-9]{3,5} ?-?[0-9]{4}( ?-?[0-9]{3})? ?(\w{1,9}\s?\d{1,6})?$/ }
                 maximumLength: 9
             }

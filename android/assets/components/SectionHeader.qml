@@ -10,9 +10,13 @@ Item {
 
     Label {
         id: titleLabel
-        anchors.right: parent.right
-        anchors.rightMargin: Theme.horizontalPageMargin
-        anchors.verticalCenter: parent.verticalCenter
+        anchors
+        {
+            left: parent.left
+            leftMargin: Theme.horizontalPageMargin
+            verticalCenter: parent.verticalCenter
+        }
         font.pixelSize: Theme.fontSizeSmall
+        color: "#f7f5f0"
     }
 }

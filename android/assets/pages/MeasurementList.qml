@@ -8,6 +8,11 @@ import "../components"
 
 Page
 {
+    header: PageHeader {
+        id: pageHeader
+        title: "Pomiary"
+    }
+    background: OreoBackground {}
     id: results
     Connections {
         target: thresholds
@@ -18,63 +23,58 @@ Page
     {
         // opacity: hint.running ? disabledOpacity : 1.0
         // Behavior on opacity { FadeAnimation {} }
-        header: Item
-        {
-            width: parent.width
-            height: pageHeader.height + dit.height
+//        header: Item
+//        {
+//            width: parent.width
+//            height: dit.height
 
-            PageHeader {
-                id: pageHeader
-                title: "Pomiary"
-            }
+//            Rectangle
+//            {
+//                id: dit
+//                width: parent.width
+//                anchors
+//                {
+//                    left: parent.left
+//                    right: parent.right
+//                    leftMargin: Theme.horizontalPageMargin
+//                    rightMargin: Theme.horizontalPageMargin
+//                    top: pageHeader.bottom
+//                    topMargin: Theme.paddingMedium
+//                }
+//                height: sweetValue.paintedHeight + Theme.paddingMedium
+//                color: "transparent"
 
-            Rectangle
-            {
-                id: dit
-                width: parent.width
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    leftMargin: Theme.horizontalPageMargin
-                    rightMargin: Theme.horizontalPageMargin
-                    top: pageHeader.bottom
-                    topMargin: Theme.paddingMedium
-                }
-                height: sweetValue.paintedHeight + Theme.paddingMedium
-                color: "transparent"
+//                Label
+//                {
+//                    id: sweetValue
+//                    font.pixelSize: Theme.fontSizeMedium
+//                    text: "Cukier"
+//                    anchors
+//                    {
+//                        left: parent.left
+//                        top: parent.top
+//                    }
+//                    color: Theme.primaryColor
+//                }
 
-                Label
-                {
-                    id: sweetValue
-                    font.pixelSize: Theme.fontSizeMedium
-                    text: "Cukier"
-                    anchors
-                    {
-                        left: parent.left
-                        top: parent.top
-                    }
-                    color: Theme.primaryColor
-                }
+//                Label
+//                {
+//                    id: dateAndTime
+//                    font.pixelSize: Theme.fontSizeMedium
+//                    horizontalAlignment: Text.AlignRight
+//                    text: "Data i Czas"
+//                    anchors
+//                    {
+//                        right: parent.right
+//                        top: parent.top
+//                    }
+//                    color: Theme.primaryColor
+//                    clip: true
+//                }
+//            }
+//        }
 
-                Label
-                {
-                    id: dateAndTime
-                    font.pixelSize: Theme.fontSizeMedium
-                    horizontalAlignment: Text.AlignRight
-                    text: "Data i Czas"
-                    anchors
-                    {
-                        right: parent.right
-                        top: parent.top
-                    }
-                    color: Theme.primaryColor
-                    clip: true
-                }
-            }
-        }
-
-        //VerticalScrollDecorator {}*/
+        ScrollBar.vertical: ScrollBar { }
 
 
         id: book
@@ -86,6 +86,27 @@ Page
         }
 
         model: measurements.model
+        section {
+            property: "date_measured"
+            delegate: Rectangle
+            {
+                height: tekst.paintedHeight + Theme.paddingMedium
+                width: parent.width
+                color: "#66000000"
+                Label
+                {
+                    id: tekst
+                    text: section
+                    anchors
+                    {
+                        left: parent.left
+                        leftMargin: Theme.paddingLarge
+                        verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+        }
+
         delegate: ListItem
         {
             enabled: !isTutorialEnabled
@@ -129,10 +150,11 @@ Page
             Item
             {
                 Rectangle {
-                    width: Theme.itemSizeExtraSmall/2
-                    height: Theme.itemSizeExtraSmall/2
+                    width: Theme.itemSizeExtraSmall/3
+                    height: Theme.itemSizeExtraSmall/3
                     anchors.centerIn: parent
                     color: thresholds.evaluateMeasurement(model.value, model.meal)
+
                     radius: width
                 }
 
@@ -154,7 +176,8 @@ Page
                     top: parent.top
                     topMargin: Theme.paddingSmall
                 }
-                color: Theme.primaryColor
+                color: "#f7f5f0"
+                //color: Theme.primaryColor
             }
 
             Label
@@ -180,6 +203,7 @@ Page
                     left: parent.left
                     leftMargin: Theme.horizontalPageMargin
                 }
+                color: "#e3decb"
             }
 
             Label
@@ -187,7 +211,7 @@ Page
                 id: dateLabel
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"HH:mm")
                 anchors
                 {
                     left: whenMeasurement.right
@@ -196,7 +220,7 @@ Page
                     top: parent.top
                     topMargin: Theme.paddingSmall
                 }
-                color: Theme.highlightColor
+                color: "#f7f5f0"
             }
         }
     }

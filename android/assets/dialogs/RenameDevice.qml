@@ -1,11 +1,14 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick.Controls 2.3
+import ".."
+import "../components"
 
-Dialog
+DialogPage
 {
     id: dialogDevice
     property string name;
 
+    header: DialogHeader {id: header}
     canAccept: nameField.text != ""
     onDone:
     {
@@ -21,7 +24,7 @@ Dialog
         width: parent.width
         spacing: Theme.paddingSmall
 
-         DialogHeader { id: naglowek }
+
 
          SectionHeader
          {
@@ -35,7 +38,7 @@ Dialog
              width: parent.width
              text: name
              placeholderText: "Np. Glukometr w domu"
-             label: "Twoja nazwa"
+             //label: "Twoja nazwa"
          }
     }
 }

@@ -1,6 +1,7 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick.Controls 2.3
 import glukometr 1.0
+import "../components"
 
 Page
 {
@@ -26,7 +27,7 @@ Page
     Component.onCompleted: {
         if (deviceId != -1)
             getLastSequenceNumber()
-        else pythonGlukometr.devices.getDeviceId(macAddress, function (deviceId) {
+        else devices.getDeviceId(macAddress, function (deviceId) {
             page.deviceId = deviceId
             getLastSequenceNumber()
         })
@@ -52,7 +53,7 @@ Page
         onPairing: logi.text = "Parowanie..."
         onRacpStarted: logi.text = "Pobieranie pomiarów"
         onRacpFinished: {
-            pythonGlukometr.devices.update(page.deviceId, {"last_sync": -1})
+            devices.update(page.deviceId, {"last_sync": -1})
             measurements.get()
             logi.text = "Pobrano wszystko"
             pageStack.pop(0)

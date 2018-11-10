@@ -23,7 +23,7 @@ DialogPage
                 ListElement
                 {
                     meal: 0
-                    iconSource: "qrc:/icons/icon-fasting.svg"
+                    iconSource: "qrc:/icons/icon-after-meal.svg"
                     name: "Na czczo"
                 }
 
@@ -37,7 +37,7 @@ DialogPage
                 ListElement
                 {
                     meal: 2
-                    iconSource: "qrc:/icons/icon-after-meal.svg"
+                    iconSource: "qrc:/icons/icon-fasting.svg"
                     name: "Po posiłku"
                 }
 

@@ -7,6 +7,13 @@ import "../components"
 DialogPage
 {
     id: dialog
+
+    footer: DialogHeader {}
+    header: PageHeader {
+        id: pageHeader
+        title: "Dodaj pomiar"
+    }
+
     property int meal: 4
     property alias value: nameField.text
     property real value;
@@ -17,18 +24,6 @@ DialogPage
 
     property int tutorialPhase: 0
     property real disabledOpacity: 0.2
-
-    /*onTutorialPhaseChanged:
-    {
-        if (tutorialPhase >= 1)
-        {
-            interactionLabel.anchors.bottom = undefined
-            interactionLabel.y = naglowek.contentHeight - Theme.paddingLarge
-        } else {
-            interactionLabel.anchors.bottom = dialog.bottom
-            interactionLabel.y = undefined
-        }
-    }*/
 
     canAccept: nameField.acceptableInput
 
@@ -44,32 +39,9 @@ DialogPage
         return true
     }
 
-    /*InteractionHintLabel
-    {
-        id: interactionLabel
-        anchors.bottom: parent.bottom
-        visible: application.isTutorialEnabled
-        text: {
-            switch (tutorialPhase)
-            {
-            case 0:
-                return nameField.focus ? "Wpisz wartosć i stuknij w dowolnym miejscu na ekranie" : "Tutaj możesz wpisać wartość cukru. Stuknij w tym miejscu";
-            case 1:
-                return "Każdy pomiar może mieć ustaloną porę. Stuknij by wybrać";
-            case 2:
-                return "Naciśnij 'Akceptuj' by dodać pomiar";
-            }
-        }
-        invert: tutorialPhase >= 1
-    }*/
-
-    header: DialogHeader {
-        id: naglowek
-    }
-
     Flickable
     {
-        // VerticalScrollDecorator {}
+        ScrollBar.vertical: ScrollBar { }
         anchors.fill: parent
         contentWidth: parent.width
         contentHeight: column.childrenRect.height
@@ -85,6 +57,7 @@ DialogPage
              {
                 font.pixelSize: Theme.fontSizeLarge
                 text: "Podaj cukier"
+
                 opacity: showIfPhase(0) ? 1.0 : disabledOpacity
              }
 
@@ -97,10 +70,10 @@ DialogPage
                     right: parent.right
                 }
                 text: "Wartość cukru"
+                color: "#d9d2b9"
                 wrapMode: Text.WordWrap
                 enabled: opacity === 1
                 opacity: showIfPhase(1) ? 1.0 : disabledOpacity
-
              }
 
              TextField
@@ -147,6 +120,7 @@ DialogPage
                     right: parent.right
                 }
                 text: "Poniżej możesz ustawić pore w jakiej dokonałeś pomiaru"
+                color: "#d9d2b9"
                 wrapMode: Text.WordWrap
                 enabled: opacity === 1
                 opacity: showIfPhase(1) ? 1.0 : disabledOpacity
@@ -260,29 +234,30 @@ DialogPage
                  }
              }
 
-             CheckBox
-             {
-                 id: repeat
-                 anchors
-                 {
-                     left: parent.left
-                     margins: Theme.horizontalPageMargin
-                     right: parent.right
-                 }
-                 checked: meal === 1
-                 text: "Przypomnij za 2 godziny"
-                 enabled: opacity === 1
-                 opacity: showIfPhase(2) ? 1.0 : disabledOpacity
-             }
-             Label {
-                 anchors
-                 {
-                     left: parent.left
-                     margins: Theme.horizontalPageMargin
-                     right: parent.right
-                 }
-                 text: "Przypomnienie uaktywni się za 2 godziny"
-             }
+//             CheckBox
+//             {
+//                 id: repeat
+//                 anchors
+//                 {
+//                     left: parent.left
+//                     margins: Theme.horizontalPageMargin
+//                     right: parent.right
+//                 }
+//                 checked: meal === 1
+//                 text: "Przypomnij za 2 godziny"
+//                 enabled: opacity === 1
+//                 opacity: showIfPhase(2) ? 1.0 : disabledOpacity
+//             }
+//             Label {
+//                 anchors
+//                 {
+//                     left: parent.left
+//                     leftMargin: Theme.paddingLarge
+//                     //right: parent.right
+//                 }
+//                 color: "#d9d2b9"
+//                 text: "Przypomnienie uaktywni się za 2 godziny"
+//             }
         }
     }
 }

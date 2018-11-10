@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     QQuickStyle::setStyle("Material");
 #endif
 #ifdef Q_OS_WIN
-    QQuickStyle::setStyle("Universal");
+    QQuickStyle::setStyle("Material"); //("Universal");
 #endif
     qmlRegisterType<BleDiscovery>("glukometr", 1, 0, "BleDiscovery");
     qmlRegisterType<Glucometer>("glukometr", 1, 0, "Glucometer");

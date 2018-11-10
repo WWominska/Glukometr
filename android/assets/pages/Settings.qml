@@ -5,6 +5,12 @@ import "../components"
 
 Page
 {
+    header: PageHeader {
+        id: pageHeader
+        title: "Ustawienia"
+    }
+    background: OreoBackground {}
+
     Item {
         id: consts
         property int noText: 0
@@ -19,7 +25,7 @@ Page
             settingText: "Progi"
             secondaryText: 0
             replace: false
-            source: "" //"qrc:/assets/pages/Thresholds.qml"
+            source: "qrc:/assets/pages/Thresholds.qml"
             image: "qrc:/icons/icon-settings-threshold.svg"
         }
 
@@ -28,7 +34,7 @@ Page
             settingText: "Przypomnienia"
             secondaryText: 0
             replace: false
-            source: "" // "qrc:/assets/pages/ReminderList.qml"
+            source: "qrc:/assets/pages/ReminderList.qml"
             image: "qrc:/icons/icon-m-alarm.svg"
         }
 
@@ -46,17 +52,8 @@ Page
             settingText: "Leki"
             secondaryText: 0
             replace: false
-            source: "" // "qrc:/assets/pages/DrugList.qml"
+            source: "qrc:/assets/pages/DrugList.qml"
             image: "qrc:/icons/icon-annotations-drug.svg"
-        }
-        ListElement
-        {
-            secondaryText: 0
-            settingText: "Rozpocznij tutorial"
-            source: "qrc:/assets/pages/Tutorial.qml"
-            replace: true
-            image: "qrc:/icons/icon-m-question.svg"
-
         }
     }
 
@@ -65,12 +62,6 @@ Page
     {
         anchors.fill: parent
         model: settingList
-
-        header: PageHeader
-        {
-            title: "Ustawienia"
-        }
-
         delegate: ItemDelegate
         {
             width: parent.width
@@ -98,6 +89,7 @@ Page
             {
                 id: label
                 text: settingText
+                font.pixelSize: Theme.fontSizeMedium
                 anchors
                 {
                     left: icon.right
@@ -106,20 +98,21 @@ Page
                 }
             }
             Label {
+                font.pixelSize: Theme.fontSizeMedium
                 text:
                 {
                     switch (secondaryText) {
                     case consts.phoneNumber:
-                        return settings.phoneNumber ? settings.phoneNumber : "Naciśnij aby ustawić";
+                        return settings.phoneNumber ? settings.phoneNumber :"Naciśnij aby ustawić";
                     default: return "";
                     }
                 }
-                color: Theme.highlightColor
+                color: "#d9d2b9"
 
                 anchors
                 {
                     left: label.right
-                    leftMargin: Theme.paddingMedium
+                    leftMargin: Theme.paddingSmall
                     verticalCenter: parent.verticalCenter
                 }
             }
