@@ -8,7 +8,6 @@
         <file>icons/icon-annotations-meal.svg</file>
         <file>icons/icon-glucometer.svg</file>
         <file>icons/icon-settings-threshold.svg</file>
-        <file>icons/icon-m-acknowledge.svg</file>
         <file>icons/icon-m-night.svg</file>
         <file>icons/icon-m-question.svg</file>
         <file>assets/dialogs/AddAnnotation.qml</file>

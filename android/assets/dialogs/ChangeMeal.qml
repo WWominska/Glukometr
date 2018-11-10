@@ -85,17 +85,12 @@ DialogPage
                     }
                 }
 
-                Image
+                IconLabel
                 {
                     id: checkIcon
-                    source: "qrc:/icons/icon-m-acknowledge.svg"
-                    sourceSize {
-                        width: 32
-                        height: 32
-                    }
+                    text: "\ue86c"
+                    font.pixelSize: 32
                     visible: dialog.meal == meal
-                    width: 32
-                    height: 32
                     anchors
                     {
                         right: parent.right
