@@ -18,7 +18,6 @@ Page {
             result = true
             done()
             accepted()
-            pageStack.pop()
         }
     }
     function cancel() {
@@ -26,7 +25,6 @@ Page {
             result = false
             done()
             canceled()
-            pageStack.pop()
         }
     }
 
