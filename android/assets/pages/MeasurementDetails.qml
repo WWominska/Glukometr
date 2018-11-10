@@ -68,7 +68,6 @@ Page
             width: parent.width
             anchors
             {
-                top: pageHeader.bottom
                 left: parent.left
                 right: parent.right
                 leftMargin: Theme.horizontalPageMargin
@@ -127,7 +126,7 @@ Page
                         verticalCenter: parent.verticalCenter
                         leftMargin: Theme.horizontalPageMargin
                     }
-                    width: Theme.iconSizeMedium
+                    width: 32
                     height: width
                 }
                 Label
@@ -242,7 +241,7 @@ Page
                         verticalCenter: parent.verticalCenter
                         leftMargin: Theme.horizontalPageMargin
                     }
-                    width: Theme.iconSizeMedium
+                    width: 32
                     height: width
                 }
 
@@ -257,7 +256,6 @@ Page
                         topMargin: Theme.paddingSmall
                         leftMargin: Theme.paddingMedium
                     }
-                    color: Theme.highlightColor
                     font.pixelSize: Theme.fontSizeMedium
 
                 }
@@ -271,7 +269,6 @@ Page
                         top: drugNameId.bottom
                         leftMargin: Theme.paddingMedium
                     }
-                    color: Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeSmall
                 }
                 Label
@@ -284,7 +281,6 @@ Page
                         left: doseId.right
                         leftMargin: Theme.paddingSmall
                     }
-                    color: Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeSmall
                 }
 
