@@ -7,19 +7,12 @@ Page
 {
     id: screen
 
-    SilicaFlickable
+    header: PageHeader { title: "Progi" }
+
+    Flickable
     {
         anchors.fill: parent
         contentHeight: column.height
-
-        PullDownMenu
-        {
-            MenuItem
-            {
-                text: "Przywróć ustawienia domyślne"
-                onClicked: thresholds.setDefaults()
-            }
-        }
 
         Column
         {
@@ -27,113 +20,115 @@ Page
             width: screen.width
             spacing: Theme.paddingLarge
 
-            PageHeader
-            {
-                title: "Ustaw progi"
+            Button {
+                text: "Przywróć ustawienia domyślne"
+                onClicked: thresholds.setDefaults()
             }
 
-            ExpandingSectionGroup
+            Repeater
             {
-                currentIndex: 0
-                Repeater
+                model: thresholds.model
+
+                Rectangle
                 {
-                    model: thresholds.model
+                    color: "transparent"
+                    width: parent.width
+                    height: contentColumn.childrenRect.height
+                    id: section
 
-                    ExpandingSection
+                    property int sectionIndex: index
+
+
+                    function changeToString(meal)
                     {
-                        id: section
-
-                        property int sectionIndex: index
-                        title: changeToString(meal)
-
-                        Image
+                        switch(meal)
                         {
-                            width: Theme.iconSizeMedium
-                            height: width
+                            case 0: return "Na czczo"
+                            case 1: return "Przed posiłkiem"
+                            case 2: return "Po posiłku"
+                            case 3: return "Nocna"
+                        }
+                    }
 
-                            x: !expanded ? Theme.horizontalPageMargin : parent.width - width - Theme.horizontalPageMargin
-                            Behavior on x
+                    function changeToIcon(meal)
+                    {
+                        switch(meal)
+                        {
+                            case 0: return "qrc:/icons/icon-fasting.svg"
+                            case 1: return "qrc:/icons/icon-before-meal.svg"
+                            case 2: return "qrc:/icons/icon-after-meal.svg"
+                            case 3: return "qrc:/icons/icon-m-night.svg"
+                        }
+                    }
+
+                    Column
+                    {
+                        Rectangle {
+                            id: sectionTitle
+                            height: 48
+                            color: "#33000000"
+                            width: parent.width
+                            Image
                             {
-                                NumberAnimation
+                                id: sectionIcon
+                                width: 32
+                                height: 32
+                                anchors
                                 {
-                                easing.type: Easing.InCubic
-                                easing.amplitude: 3.0
-                                easing.period: 2.0
-                                duration: 250
+                                    verticalCenter: parent.verticalCenter
                                 }
+                                source: changeToIcon(meal)
                             }
-                            anchors
-                            {
-                                top: parent.top
-                                topMargin: (Theme.itemSizeMedium - height)/2
-                            }
-
-                            source: changeToIcon(meal)
-
-
-                        }
-
-                        function changeToString(meal)
-                        {
-                            switch(meal)
-                            {
-                                case 0: return "Na czczo"
-                                case 1: return "Przed posiłkiem"
-                                case 2: return "Po posiłku"
-                                case 3: return "Nocna"
-                            }
-                        }
-
-                        function changeToIcon(meal)
-                        {
-                            switch(meal)
-                            {
-                                case 0: return "qrc:/icons/icon-fasting.svg"
-                                case 1: return "qrc:/icons/icon-before-meal.svg"
-                                case 2: return "qrc:/icons/icon-after-meal.svg"
-                                case 3: return "image://Theme/icon-m-night"
-                            }
-                        }
-
-                        content.sourceComponent: Column
-                        {
-                            function updateThreshold() {
-                                if (min != minScroll.value|| max != maxScroll.value) {
-                                    thresholds.update({
-                                        "threshold_id": threshold_id,
-                                    }, {
-                                        "min": minScroll.value,
-                                        "max": maxScroll.value
-                                    }, false)
+                            Label {
+                                anchors {
+                                    left: sectionIcon.right
+                                    leftMargin: Theme.paddingLarge
+                                    verticalCenter: parent.verticalCenter
                                 }
+                                text: changeToString(meal)
                             }
+                        }
 
-                            width: section.width
-                            Slider
-                            {
-                                stepSize: 5
-                                id: minScroll
-                                width: parent.width
-                                minimumValue: 90
-                                maximumValue: 180
+                        id: contentColumn
+                        function updateThreshold() {
+                            if (min != scroll.first.value || max != scroll.second.value) {
+                                thresholds.update({
+                                    "threshold_id": threshold_id,
+                                }, {
+                                    "min": scroll.first.value.toFixed(0),
+                                    "max": scroll.second.value.toFixed(0)
+                                }, false)
+                            }
+                        }
+
+                        width: section.width
+                        RangeSlider
+                        {
+                            stepSize: 5
+                            id: scroll
+                            width: parent.width
+                            from: 90
+                            to: 180
+                            first {
                                 value: min
-                                valueText: value
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                onDownChanged: updateThreshold()
+                                onPressedChanged: parent.updateThreshold()
                             }
-
-                            Slider
-                            {
-                                stepSize: 5
-                                id: maxScroll
-                                width: parent.width
-                                minimumValue: 110
-                                maximumValue: 260
+                            ToolTip {
+                                parent: scroll.first.handle
+                                visible: scroll.first.pressed
+                                text: scroll.first.value.toFixed(1)
+                            }
+                            second {
                                 value: max
-                                valueText: value
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                onDownChanged: updateThreshold()
+                                onPressedChanged: parent.updateThreshold()
                             }
+                            ToolTip {
+                                parent: scroll.second.handle
+                                visible: scroll.second.pressed
+                                text: scroll.second.value.toFixed(0)
+                            }
+                            live: true
+                            anchors.horizontalCenter: parent.horizontalCenter
                         }
                     }
                 }
