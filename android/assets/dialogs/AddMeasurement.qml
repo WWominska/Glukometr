@@ -20,7 +20,7 @@ DialogPage
     property bool remind: false
     property bool result: false
 
-    property alias remind: repeat.checked
+    // property alias remind: repeat.checked
 
     property int tutorialPhase: 0
     property real disabledOpacity: 0.2

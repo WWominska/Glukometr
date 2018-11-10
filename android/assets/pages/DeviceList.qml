@@ -24,15 +24,12 @@ Page
     {
         id: bleDiscovery
         onNewDevice: {
-            devices.isKnown(macAddress, function (result) {
-                if (result)
-                    return;
-
+            if (!devices.isKnown(macAddress)) {
                 discoveredDevices.append({
                     "name": name,
                     "macAddress": macAddress
                 })
-            })
+            }
         }
     }
 
@@ -102,7 +99,7 @@ Page
                             dialog.accepted.connect(function()
                             {
                                 devices.update(
-                                            devices_id, {"name": dialog.name})
+                                            device_id, {"name": dialog.name})
                             })
                         }
                     }
@@ -111,14 +108,14 @@ Page
                     {
                         text: "Zapomnij urządzenie"
                         onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {
-                            devices.remove(devices_id, undefined, function () {
+                            devices.remove(device_id, undefined, function () {
                                 measurements.get()
                             })
                         })
                     }
                 }
 
-                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": devices_id, "macAddress": mac_address });
+                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": device_id, "macAddress": mac_address });
 
                 Image {
                     id: bluetoothIcon
