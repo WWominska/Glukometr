@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.3
 import glukometr 1.0
 import "../components"
+import ".."
 
 Page
 {
@@ -27,10 +28,10 @@ Page
     Component.onCompleted: {
         if (deviceId != -1)
             getLastSequenceNumber()
-        else devices.getDeviceId(macAddress, function (deviceId) {
-            page.deviceId = deviceId
+        else {
+            page.deviceId = devices.getDeviceId(macAddress)
             getLastSequenceNumber()
-        })
+        }
     }
 
     Glucometer
