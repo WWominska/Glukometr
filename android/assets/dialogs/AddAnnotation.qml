@@ -175,7 +175,13 @@ DialogPage
                     rightMargin: Theme.horizontalPageMargin
                 }
                 delegate: ItemDelegate {
+                    Component.onCompleted: {
+                        if (!drugsName.drugId)
+                            drugsName.drugId = drug_id
+                    }
+
                     text: name
+                    width: parent.width
                     onClicked: {
                         drugsName.drugId = drug_id
                         drugsName.popup.close()
