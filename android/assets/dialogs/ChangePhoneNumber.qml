@@ -27,7 +27,12 @@ DialogPage
     Flickable
     {
         ScrollBar.vertical: ScrollBar { }
-        anchors.fill: parent
+        anchors
+        {
+            top: parent.top
+            topMargin: Theme.horizontalPageMargin
+            fill: parent
+        }
         contentWidth: parent.width
         contentHeight: column.childrenRect.height
 
@@ -35,17 +40,17 @@ DialogPage
         {
             id:column
             width: parent.width
-            spacing: Theme.paddingSmall
+            spacing: Theme.paddingMedium
 
-            SectionHeader
-            {
-                id: phoneNumberHead
-                font.pixelSize: Theme.fontSizeLarge
-                text: "Podaj numer kontaktowy"
-            }
+//            SectionHeader
+//            {
+//                id: phoneNumberHead
+//                font.pixelSize: Theme.fontSizeLarge
+//                text: "Podaj numer kontaktowy"
+//            }
             Label
             {
-                text: "do osoby, z którą należy się skontaktować w razie nagłego wypadku."
+                text: "Podaj numer kontaktowy do osoby, z którą należy się skontaktować w razie nagłego wypadku."
                 wrapMode: Text.WordWrap
                 color: "#d9d2b9"
                 anchors

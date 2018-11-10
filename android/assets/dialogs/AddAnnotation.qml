@@ -48,7 +48,7 @@ DialogPage
             ComboBox {
                 id: selectId
                 Material.foreground: "#fff"
-                Material.background: "#000"
+                Material.background: "#55737373"
                 Material.theme: Material.Light
                 model: ["Posiłek", "Lek", "Notatka tekstowa"]
                anchors {
@@ -129,6 +129,9 @@ DialogPage
             }
             ComboBox {
                 id: unitId
+                Material.foreground: "#fff"
+                Material.background: "#55737373"
+                Material.theme: Material.Light
                 visible: selectId.currentIndex == 0
                 model: ["g", "ml", "sztuk"]
                 anchors {
@@ -158,6 +161,8 @@ DialogPage
 
             ComboBox {
                 id: drugsName
+                Material.foreground: "#fff"
+                Material.background: "#55737373"
                 Material.theme: Material.Light
                 property int drugId
                 visible: selectId.currentIndex == 1
@@ -244,6 +249,9 @@ DialogPage
 
             ComboBox {
                 id: drugsId
+                Material.foreground: "#fff"
+                Material.background: "#55737373"
+                Material.theme: Material.Light
                 visible: selectId.currentIndex == 1
                 model: ["dm/L", "g", "ml", "sztuk"]
                 anchors {
