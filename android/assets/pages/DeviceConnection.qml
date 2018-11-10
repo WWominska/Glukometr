@@ -14,6 +14,10 @@ Page
         measurements.getLastSequenceNumber(deviceId);
     }
 
+    header: PageHeader {
+        title: "Połączenie"
+    }
+
     Connections {
         target: measurements
         onLastSequenceNumber: {

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.1
 import ".."
 import "../components"
 
@@ -13,31 +14,23 @@ Page
     }
     background: OreoBackground {}
 
+    FloatingActionButton {
+        Material.foreground: "#000"
+        Material.background: "#99f7f5f0"
+        text: "\ue145"
+        onClicked: {
+            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
+            dialog.accepted.connect(function()
+            {
+                drugs.add({"name": dialog.value})
+            })
+        }
+    }
+
     ListView
     {
 
         ScrollBar.vertical: ScrollBar { }
-        ToolBar {
-            id: toolBar
-            width: parent.width
-            anchors.bottom: parent.bottom
-            Row{
-                anchors.fill: parent
-
-                ToolButton {
-                    width: parent.width/3
-                    icon.source: "qrc:/icons/icon-m-add.svg"
-                    onClicked:
-                    {
-                        var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
-                        dialog.accepted.connect(function()
-                        {
-                            drugs.add({"name": dialog.value})
-                        })
-                    }
-                }
-            }
-        }
 
         id: drugsBook
         anchors.fill: parent

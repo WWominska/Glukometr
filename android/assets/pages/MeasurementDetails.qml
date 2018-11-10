@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
 import QtGraphicalEffects 1.0
+import QtQuick.Controls.Material 2.3
 import ".."
 import "../components"
 
@@ -11,113 +12,63 @@ Page
     property date timestamp
     property int value
 
+    FloatingActionButton {
+       Material.foreground: "#000"
+       Material.background: "#99f7f5f0"
+       text: "\ue145"
+       onClicked:
+       {
+          var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"))
+          dialog.accepted.connect(function()
+          {
+              switch (dialog.noteType) {
+              case 0: // dodajemy posilek
+                  mealAnnotations.add({
+                      "name": dialog.foodName,
+                      "measurement_id": measurement_id,
+                      "amount": dialog.foodAmount,
+                      "unit": dialog.foodUnit
+                  })
+                  break;
+              case 1: // dodajemy lek
+                  drugAnnotations.add({
+                        "drug_id": dialog.drugId,
+                        "dose": dialog.drugsUnit,
+                        "unit": dialog.idDrugs,
+                        "measurement_id": measurement_id
+                    })
+                  break;
+              case 2: // dodajemy tegzt
+                  textAnnotations.add({
+                      "content": dialog.textNotes,
+                      "measurement_id": measurement_id,
+                  })
+                  break;
+              }
+          })
+      }
+   }
+
     header: PageHeader {
         id: pageHeader
         title: "Szczegóły pomiaru"
     }
     background: OreoBackground {}
 
-    ToolBar {
-        id: toolBar
-        width: parent.width
-        anchors.bottom: parent.bottom
-        Row{
-            anchors.fill: parent
-
-            ToolButton {
-                width: parent.width/3
-                icon.source: "qrc:/icons/icon-m-add.svg"
-                onClicked:
-                {
-                   var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"))
-                   dialog.accepted.connect(function()
-                   {
-                       switch (dialog.noteType) {
-                       case 0: // dodajemy posilek
-                           mealAnnotations.add({
-                               "name": dialog.foodName,
-                               "measurement_id": measurement_id,
-                               "amount": dialog.foodAmount,
-                               "unit": dialog.foodUnit
-                           })
-                           break;
-                       case 1: // dodajemy lek
-                           drugAnnotations.add({
-                                 "drug_id": dialog.drugId,
-                                 "dose": dialog.drugsUnit,
-                                 "unit": dialog.idDrugs,
-                                 "measurement_id": measurement_id
-                             })
-                           break;
-                       case 2: // dodajemy tegzt
-                           textAnnotations.add({
-                               "content": dialog.textNotes,
-                               "measurement_id": measurement_id,
-                           })
-                           break;
-                       }
-                   })
-               }
-            }
-        }
-    }
     Flickable
     {
         ScrollBar.vertical: ScrollBar { }
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            bottom: toolBar.top
-        }
+        anchors.fill: parent
         contentWidth: parent.width
-        contentHeight: measurementHeader.height + measurementDetails.height + mealList.height + drugsList.height + textList.height + Theme.horizontalPageMargin*3
+        contentHeight: pageHeader.height + measurementDetails.height + mealList.height + drugsList.height + textList.height + Theme.horizontalPageMargin*3
 
-
-        /*PullDownMenu
-        {
-            MenuItem
-            {
-                text: "Dodaj notatkę"
-                onClicked: {
-                    var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"))
-                    dialog.accepted.connect(function()
-                    {
-                        switch (dialog.noteType) {
-                        case 0: // dodajemy posilek
-                            mealAnnotations.add({
-                                "name": dialog.foodName,
-                                "measurement_id": measurement_id,
-                                "amount": dialog.foodAmount,
-                                "unit": dialog.foodUnit
-                            })
-                            break;
-                        case 1: // dodajemy lek
-                            drugAnnotations.add({
-                                  "drug_id": dialog.drugId,
-                                  "dose": dialog.drugsUnit,
-                                  "unit": dialog.idDrugs,
-                                  "measurement_id": measurement_id
-                              })
-                            break;
-                        case 2: // dodajemy tegzt
-                            textAnnotations.add({
-                                "content": dialog.textNotes,
-                                "measurement_id": measurement_id,
-                            })
-                            break;
-                        }
-                    })
-                }
-            }
-        }*/
         Rectangle
         {
             id: measurementDetails
             width: parent.width
             anchors
             {
-                top: measurementHeader.bottom
+                top: pageHeader.bottom
                 left: parent.left
                 right: parent.right
                 leftMargin: Theme.horizontalPageMargin

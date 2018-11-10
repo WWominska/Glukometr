@@ -19,88 +19,18 @@ Page
         onModelChanged: measurements.get()
     }
 
-    Rectangle
-    {
-        anchors
-        {
-            right: parent.right
-            rightMargin: Theme.horizontalPageMargin
-            bottom: parent.bottom
-            bottomMargin: Theme.horizontalPageMargin*4
-        }
-        width: 50
-        height: 50
-        radius: 50
-        border.color: "#99e3decb"
-        border.width: 1
-        color: "#99f7f5f0"
+    FloatingActionButton {
+        Material.foreground: "#000"
+        Material.background: "#99f7f5f0"
+        text: "\ue145"
+        onClicked: openAddMeasurementDialog()
     }
 
     ListView
     {
-        // opacity: hint.running ? disabledOpacity : 1.0
-        // Behavior on opacity { FadeAnimation {} }
-//        header: Item
-//        {
-//            width: parent.width
-//            height: dit.height
-
-//            Rectangle
-//            {
-//                id: dit
-//                width: parent.width
-//                anchors
-//                {
-//                    left: parent.left
-//                    right: parent.right
-//                    leftMargin: Theme.horizontalPageMargin
-//                    rightMargin: Theme.horizontalPageMargin
-//                    top: pageHeader.bottom
-//                    topMargin: Theme.paddingMedium
-//                }
-//                height: sweetValue.paintedHeight + Theme.paddingMedium
-//                color: "transparent"
-
-//                Label
-//                {
-//                    id: sweetValue
-//                    font.pixelSize: Theme.fontSizeMedium
-//                    text: "Cukier"
-//                    anchors
-//                    {
-//                        left: parent.left
-//                        top: parent.top
-//                    }
-//                    color: Theme.primaryColor
-//                }
-
-//                Label
-//                {
-//                    id: dateAndTime
-//                    font.pixelSize: Theme.fontSizeMedium
-//                    horizontalAlignment: Text.AlignRight
-//                    text: "Data i Czas"
-//                    anchors
-//                    {
-//                        right: parent.right
-//                        top: parent.top
-//                    }
-//                    color: Theme.primaryColor
-//                    clip: true
-//                }
-//            }
-//        }
-
         ScrollBar.vertical: ScrollBar { }
-
-
         id: book
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-            bottom: toolBar.top
-        }
+        anchors.fill: parent
 
         model: measurements.model
         section {
@@ -194,7 +124,6 @@ Page
                     topMargin: Theme.paddingSmall
                 }
                 color: "#f7f5f0"
-                //color: Theme.primaryColor
             }
 
             Label
@@ -241,73 +170,4 @@ Page
             }
         }
     }
-
-    ToolBar {
-        id: toolBar
-        width: parent.width
-        anchors.bottom: parent.bottom
-        Row{
-            anchors.fill: parent
-
-            ToolButton {
-                font.family: "Material Icons"
-                font.pixelSize: 20
-                text: "\ue145"
-                width: parent.width/3
-                onClicked: openAddMeasurementDialog()
-            }
-            ToolButton {
-                font.family: "Material Icons"
-                font.pixelSize: 20
-                text: "\ue1a7"
-                width: parent.width/3
-                onClicked: pageStack.push("qrc:/assets/pages/DeviceList.qml")
-            }
-            ToolButton {
-                font.family: "Material Icons"
-                font.pixelSize: 20
-                text: "\ue8b8"
-                width: parent.width/3
-                onClicked: pageStack.push("qrc:/assets/pages/Settings.qml")
-            }
-        }
-    }
-
-    /*
-    InteractionHintLabel
-    {
-        text: "Aby przejść dalej przesuń palcem w dół"
-        color: Theme.secondaryColor
-        anchors.top: parent.top
-        opacity: hint.running ? (pullDownMenu.active ? 0.0 : 1.0) : 0.0
-        Behavior on opacity { FadeAnimation {} }
-        invert: true
-    }
-
-    InteractionHintLabel
-    {
-        text: "Wybierz 'Dodaj pomiar'"
-        color: Theme.secondaryColor
-        anchors.bottom: parent.bottom
-        opacity: hint.running ? (pullDownMenu.active ? 1.0 : 0.0) : 0.0
-        Behavior on opacity { FadeAnimation {} }
-        invert: false
-    }
-
-    TouchInteractionHint
-    {
-        id: hint
-        loops: Animation.Infinite
-        interactionMode: TouchInteraction.Pull
-        direction: TouchInteraction.Down
-        Connections {
-            target: application
-            onIsTutorialEnabledChanged:
-            {
-                if (application.isTutorialEnabled)
-                    hint.start()
-                else hint.stop();
-            }
-        }
-    }*/
 }

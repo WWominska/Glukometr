@@ -22,9 +22,14 @@ ToolBar {
         anchors.fill: parent
 
         ToolButton {
-            text: "fstecz"
-            icon.name: stackView.depth > 1 ? "back" : "drawer"
-            onClicked: pageStack.pop()
+            font.family: "Material Icons"
+            font.pixelSize: 20
+            text: pageStack.depth > 1 ? "\ue5c4" : "\ue1a7"
+            onClicked: {
+                if (pageStack.depth > 1)
+                    pageStack.pop()
+                else pageStack.push("qrc:/assets/pages/DeviceList.qml")
+            }
         }
 
         Label {
@@ -37,7 +42,10 @@ ToolBar {
             Layout.fillWidth: true
         }
         ToolButton {
-
+            font.family: "Material Icons"
+            font.pixelSize: 20
+            text: "\ue8b8"
+            onClicked: pageStack.push("qrc:/assets/pages/Settings.qml")
         }
     }
 }

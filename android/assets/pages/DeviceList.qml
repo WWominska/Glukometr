@@ -117,14 +117,14 @@ Page
 
                 onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": device_id, "macAddress": mac_address });
 
-                Image {
+                IconLabel {
                     id: bluetoothIcon
-                    source: "qrc:/icons/icon-m-bluetooth-device.svg"
                     anchors {
                         left: parent.left
                         verticalCenter: parent.verticalCenter
                         leftMargin: Theme.horizontalPageMargin
                     }
+                    text: "\ue1a7"
                     width: Theme.iconSizeMedium
                     height: width
                 }
@@ -156,7 +156,7 @@ Page
 
                     font.pixelSize: Theme.fontSizeTiny
                     text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : "Nigdy"
-                    color: Theme.secondaryColor
+                    color: Theme.primaryColor
                 }
             }
         }
@@ -210,15 +210,14 @@ Page
                                        "deviceId": -1,
                                        "macAddress": macAddress});
                 }
-                Image {
+                IconLabel {
                     id: bluetoothIcon2
-                    source: "qrc:/icons/icon-m-bluetooth-device"
                     anchors {
                         left: parent.left
-                        top: parent.top
-                        topMargin: Theme.paddingSmall
+                        verticalCenter: parent.verticalCenter
                         leftMargin: Theme.horizontalPageMargin
                     }
+                    text: "\ue1a7"
                     width: Theme.iconSizeMedium
                     height: width
                 }
@@ -230,7 +229,7 @@ Page
                     {
                        left: bluetoothIcon2.right
                        verticalCenter: parent.verticalCenter
-                       leftMargin: Theme.paddingSmall
+                       leftMargin: Theme.paddingMedium
                     }
                     font.pixelSize: Theme.fontSizeMedium
                     color: Theme.primaryColor

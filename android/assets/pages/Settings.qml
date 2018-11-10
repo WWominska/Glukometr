@@ -26,6 +26,7 @@ Page
             secondaryText: 0
             replace: false
             source: "qrc:/assets/pages/Thresholds.qml"
+            materialIcon: ""
             image: "qrc:/icons/icon-settings-threshold.svg"
         }
 
@@ -35,7 +36,8 @@ Page
 //            secondaryText: 0
 //            replace: false
 //            source: "qrc:/assets/pages/ReminderList.qml"
-//            image: "qrc:/icons/icon-m-alarm.svg"
+//            materialIcon: "\ue855"
+//            image: ""
 //        }
 
         ListElement
@@ -44,7 +46,8 @@ Page
             secondaryText: 1
             replace: false
             source: "qrc:/assets/dialogs/ChangePhoneNumber.qml"
-            image: "qrc:/icons/icon-l-answer.svg"
+            materialIcon: "\ue0cd"
+            image: ""
         }
 
         ListElement
@@ -53,6 +56,7 @@ Page
             secondaryText: 0
             replace: false
             source: "qrc:/assets/pages/DrugList.qml"
+            materialIcon: ""
             image: "qrc:/icons/icon-annotations-drug.svg"
         }
     }
@@ -66,9 +70,20 @@ Page
         {
             width: parent.width
             height: 48
+            IconLabel {
+                text: materialIcon
+                font.pixelSize: 32
+                visible: materialIcon != ""
+                anchors {
+                    left: icon.left
+                    verticalCenter: parent.verticalCenter
+                }
+            }
+
             Image
             {
                 id: icon
+                visible: materialIcon == ""
                 anchors
                 {
                     verticalCenter: parent.verticalCenter
