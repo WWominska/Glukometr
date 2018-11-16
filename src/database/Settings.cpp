@@ -30,14 +30,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifdef Q_OS_BLACKBERRY
 QString Settings::confFile = QDir::currentPath() + QDir::separator() + "data/Settings.conf";
-#elif Q_OS_SAILFISH
+#elif defined(Q_OS_SAILFISH) | defined(Q_OS_WIN)
 QString Settings::confFile = QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation))
         .filePath("harbour-glukometr") + "/Settings.conf";
 #else
 QString Settings::confFile = QDir::currentPath() + QDir::separator() + "Settings.conf";
 #endif
 
-Settings::Settings(QObject *parent) : QSettings(Settings::confFile, QSettings::NativeFormat , parent) {
+Settings::Settings(QObject *parent) : QSettings(Settings::confFile, QSettings::IniFormat, parent) {
   qDebug() << confFile;
 }
 
