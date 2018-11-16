@@ -26,5 +26,12 @@
         <file>assets/pages/Settings.qml</file>
         <file>assets/pages/Thresholds.qml</file>
         <file>assets/pages/Tutorial.qml</file>
+        <file>icons/icon-after-meal-light.svg</file>
+        <file>icons/icon-annotations-drug-light.svg</file>
+        <file>icons/icon-annotations-meal-light.svg</file>
+        <file>icons/icon-before-meal-light.svg</file>
+        <file>icons/icon-fasting-light.svg</file>
+        <file>icons/icon-glucometer-light.svg</file>
+        <file>icons/icon-settings-threshold-light.svg</file>
     </qresource>
 </RCC>
