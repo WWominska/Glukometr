@@ -19,6 +19,7 @@ Page
             replace: false
             source: "qrc:/assets/pages/Thresholds.qml"
             image: "qrc:/icons/icon-settings-threshold.svg"
+            lightImage: "qrc:/icons/icon-settings-threshold-light.svg"
         }
 
         ListElement
@@ -28,6 +29,7 @@ Page
             replace: false
             source: "qrc:/assets/pages/ReminderList.qml"
             image: "image://Theme/icon-m-alarm"
+            lightImage: "image://Theme/icon-m-alarm"
         }
 
         ListElement
@@ -37,6 +39,7 @@ Page
             replace: false
             source: "qrc:/assets/dialogs/ChangePhoneNumber.qml"
             image: "image://Theme/icon-m-answer"
+            lightImage: "image://Theme/icon-m-answer"
         }
 
         ListElement
@@ -46,6 +49,7 @@ Page
             replace: false
             source: "qrc:/assets/pages/DrugList.qml"
             image: "qrc:/icons/icon-annotations-drug.svg"
+            lightImage: "qrc:/icons/icon-annotations-drug-light.svg"
         }
         ListElement
         {
@@ -54,7 +58,7 @@ Page
             source: "qrc:/assets/pages/Tutorial.qml"
             replace: true
             image: "image://Theme/icon-m-question"
-
+            lightImage: "image://Theme/icon-m-question"
         }
     }
 
@@ -85,9 +89,8 @@ Page
                 sourceSize.width: width
                 sourceSize.height: height
                 smooth: true
-                source: image
+                source: application.lightTheme ? lightImage : image
             }
-
             Label
             {
                 id: label

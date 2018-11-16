@@ -139,7 +139,7 @@ Page
             sourceSize.width: width
             sourceSize.height: width
             anchors.centerIn: parent
-            source: "qrc:/icons/icon-glucometer.svg"
+            source: "qrc:/icons/icon-glucometer" + (application.lightTheme ? "-light" : "") + ".svg"
             fillMode: Image.PreserveAspectFit
         }
     }

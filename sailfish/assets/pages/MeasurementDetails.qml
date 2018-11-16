@@ -110,7 +110,7 @@ Page
                 Image
                 {
                     id: foodIcon
-                    source: "qrc:/icons/icon-annotations-meal.svg"
+                    source: "qrc:/icons/icon-annotations-meal" + (application.lightTheme ? "-light" : "") + ".svg"
                     anchors
                     {
                         left: parent.left
@@ -224,7 +224,7 @@ Page
                 Image
                 {
                     id: drugsIcon
-                    source: "qrc:/icons/icon-annotations-drug.svg"
+                    source: "qrc:/icons/icon-annotations-drug" + (application.lightTheme ? "-light" : "") + ".svg"
                     anchors
                     {
                         left: parent.left
