@@ -20,6 +20,7 @@
 #ifdef Q_OS_SAILFISH
 #include <sailfishapp.h>
 #else
+#include <QIcon>
 #include <QQuickStyle>
 #endif
 
@@ -41,9 +42,11 @@ int main(int argc, char *argv[])
 
 #ifdef Q_OS_ANDROID
     QQuickStyle::setStyle("Material");
+    QIcon::setThemeName("glukometr");
 #endif
 #ifdef Q_OS_WIN
     QQuickStyle::setStyle("Material"); //("Universal");
+    QIcon::setThemeName("glukometr");
 #endif
     qmlRegisterType<BleDiscovery>("glukometr", 1, 0, "BleDiscovery");
     qmlRegisterType<Glucometer>("glukometr", 1, 0, "Glucometer");

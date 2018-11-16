@@ -15,75 +15,19 @@ DialogPage
     {
         width: parent.width
 
-
         Repeater
         {
-            model: ListModel
-            {
-                ListElement
-                {
-                    meal: 0
-                    iconSource: "qrc:/icons/icon-after-meal.svg"
-                    name: "Na czczo"
-                }
-
-                ListElement
-                {
-                    meal: 1
-                    iconSource: "qrc:/icons/icon-before-meal.svg"
-                    name: "Przed posiłkiem"
-                }
-
-                ListElement
-                {
-                    meal: 2
-                    iconSource: "qrc:/icons/icon-fasting.svg"
-                    name: "Po posiłku"
-                }
-
-                ListElement
-                {
-                    meal: 3
-                    iconSource: "qrc:/icons/icon-m-night.svg"
-                    name: "Nocna"
-                }
-
-                ListElement
-                {
-                    meal: 4
-                    iconSource: "qrc:/icons/icon-m-question.svg"
-                    name: "Nie określono"
-                }
-            }
-
+            model: application.mealListModel
             delegate: ItemDelegate
             {
                 Connections {
                     target: dialog
                     onMealChanged: checkIcon.visible = dialog.meal == meal
                 }
+                icon.name: iconSource
+                text: name
                 highlighted: checkIcon.visible
-                height: mealIcon.height + 20
-
                 width: parent.width
-                Image
-                {
-                    id: mealIcon
-                    source: iconSource
-                    sourceSize {
-                        width: 32
-                        height: 32
-                    }
-
-                    width: 32
-                    height: 32
-                    anchors
-                    {
-                        left: parent.left
-                        leftMargin: Theme.horizontalPageMargin
-                        verticalCenter: parent.verticalCenter
-                    }
-                }
 
                 IconLabel
                 {
@@ -98,18 +42,6 @@ DialogPage
                         verticalCenter: parent.verticalCenter
                     }
                 }
-
-                Label
-                {
-                    anchors
-                    {
-                       left: mealIcon.right
-                       verticalCenter: parent.verticalCenter
-                       leftMargin: Theme.paddingMedium
-                    }
-                    text: name
-                }
-
                 onClicked: { dialog.meal = meal; dialog.accept() }
             }
         }

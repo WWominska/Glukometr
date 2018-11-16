@@ -115,30 +115,17 @@ Page
             {
                 width: parent.width
                 id: foreverFood
+                icon.name: "food"
 
-                Image
-                {
-                    id: foodIcon
-                    source: "qrc:/icons/icon-annotations-meal.svg"
-                    anchors
-                    {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    width: 32
-                    height: width
-                }
                 Label
                {
                    id:nameId
                    text: name
+                   x: 56
                    anchors
                    {
-                       left: foodIcon.right
                        top: parent.top
                        topMargin: Theme.paddingSmall
-                       leftMargin: Theme.paddingMedium
                    }
                    color: "#f7f5f0"
                    font.pixelSize: Theme.fontSizeMedium
@@ -148,11 +135,10 @@ Page
                {
                    id:amountId
                    text: amount
+                   x: 56
                    anchors
                    {
-                       left: foodIcon.right
                        top: nameId.bottom
-                       leftMargin: Theme.paddingMedium
                    }
                    color: "#d9d2b9"
                    font.pixelSize: Theme.fontSizeSmall
@@ -230,31 +216,17 @@ Page
             delegate: ListItem
             {
                 id: drugsEverywhere
-
-                Image
-                {
-                    id: drugsIcon
-                    source: "qrc:/icons/icon-annotations-drug.svg"
-                    anchors
-                    {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    width: 32
-                    height: width
-                }
+                icon.name: "needle"
 
                 Label
                 {
                     id: drugNameId
                     text: name
+                    x: 56
                     anchors
                     {
-                        left: drugsIcon.right
                         top: parent.top
                         topMargin: Theme.paddingSmall
-                        leftMargin: Theme.paddingMedium
                     }
                     font.pixelSize: Theme.fontSizeMedium
 
@@ -263,9 +235,9 @@ Page
                 {
                     id: doseId
                     text: dose
+                    x: 56
                     anchors
                     {
-                        left: drugsIcon.right
                         top: drugNameId.bottom
                         leftMargin: Theme.paddingMedium
                     }
@@ -284,7 +256,6 @@ Page
                     font.pixelSize: Theme.fontSizeSmall
                 }
 
-                //RemorseItem { id: remorseDrugs }
                 contentHeight: drugNameId.height + doseId.height + Theme.paddingSmall*3
                 menu: Menu
                 {

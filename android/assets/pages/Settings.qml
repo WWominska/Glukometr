@@ -26,8 +26,7 @@ Page
             secondaryText: 0
             replace: false
             source: "qrc:/assets/pages/Thresholds.qml"
-            materialIcon: ""
-            image: "qrc:/icons/icon-settings-threshold.svg"
+            image: "thresholds"
         }
 
 //        ListElement
@@ -36,8 +35,7 @@ Page
 //            secondaryText: 0
 //            replace: false
 //            source: "qrc:/assets/pages/ReminderList.qml"
-//            materialIcon: "\ue855"
-//            image: ""
+//            image: "bell"
 //        }
 
         ListElement
@@ -46,8 +44,7 @@ Page
             secondaryText: 1
             replace: false
             source: "qrc:/assets/dialogs/ChangePhoneNumber.qml"
-            materialIcon: "\ue0cd"
-            image: ""
+            image: "phone"
         }
 
         ListElement
@@ -56,8 +53,7 @@ Page
             secondaryText: 0
             replace: false
             source: "qrc:/assets/pages/DrugList.qml"
-            materialIcon: ""
-            image: "qrc:/icons/icon-annotations-drug.svg"
+            image: "needle"
         }
     }
 
@@ -68,47 +64,17 @@ Page
         model: settingList
         delegate: ItemDelegate
         {
+            icon.name: image
             width: parent.width
-            height: 48
-            IconLabel {
-                text: materialIcon
-                font.pixelSize: 32
-                visible: materialIcon != ""
-                anchors {
-                    left: icon.left
-                    verticalCenter: parent.verticalCenter
-                }
-            }
-
-            Image
-            {
-                id: icon
-                visible: materialIcon == ""
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    leftMargin: Theme.horizontalPageMargin
-                }
-                width: 32
-                height: 32
-                sourceSize {
-                    width: 32
-                    height: 32
-                }
-                smooth: true
-                source: image
-            }
 
             Label
             {
                 id: label
                 text: settingText
                 font.pixelSize: Theme.fontSizeMedium
+                x: 56
                 anchors
                 {
-                    left: icon.right
-                    leftMargin: Theme.paddingMedium
                     verticalCenter: parent.verticalCenter
                 }
             }
