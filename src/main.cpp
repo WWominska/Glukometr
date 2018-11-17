@@ -1,6 +1,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QScopedPointer>
 #include <QQmlContext>
+#include <QApplication>
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QTranslator>
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
 #else
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QScopedPointer<QGuiApplication> app(new QGuiApplication(argc, argv));
+    QScopedPointer<QApplication> app(new QApplication(argc, argv));
 
     // enable translations
     QTranslator translator;

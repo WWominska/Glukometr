@@ -26,7 +26,7 @@ unix:packagesExist(sailfishapp):!android {
                    sailfish/assets/dialogs/*.qml \
                    sailfish/assets/cover/*.qml
 } else {
-    QT += quickcontrols2
+    QT += quickcontrols2 widgets charts
     RESOURCES += android/resources.qrc
     OTHER_FILES += android/assets/*.qml \
                android/assets/pages/*.qml \

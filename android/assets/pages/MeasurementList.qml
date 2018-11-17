@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import QtCharts 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.1
@@ -74,6 +75,21 @@ Page
     {
         ScrollBar.vertical: ScrollBar { }
         id: book
+        header: ChartView {
+            id: plaaceeek
+            width: parent.width
+            height: parent.height * 0.3
+            theme: ChartView.ChartThemeDark
+            antialiasing: true
+
+            PieSeries {
+                id: pieSeries
+                PieSlice { label: "Prawidłowe"; value: 94.9 }
+                PieSlice { label: "Hipoglikemia"; value: 5.1 }
+                PieSlice { label: "Hiperglikemia"; value: 20 }
+            }
+        }
+
         anchors.fill: parent
 
         model: measurements.model
