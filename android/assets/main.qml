@@ -64,13 +64,6 @@ Item
         id: pythonGlukometr
     }
 
-    Item {
-        id: remorse
-        function execute(component, label, callback) {
-            callback();
-        }
-    }
-
     StackView {
         id: pageStack
         initialItem: MeasurementList {}

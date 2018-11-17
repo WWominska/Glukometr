@@ -99,7 +99,6 @@ Page
             enabled: !isTutorialEnabled
             id: measurement
             width: parent.width
-            //RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
             onClicked: pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/MeasurementDetails.qml"), {
                                           "measurement_id": model.measurement_id,
@@ -128,9 +127,7 @@ Page
                 MenuItem
                 {
                     text: qsTr("Usuń")
-                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
-                        measurements.remove(model.measurement_id)
-                    })
+                    onClicked: measurements.remove(model.measurement_id)
                 }
             }
 

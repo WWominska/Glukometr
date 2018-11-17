@@ -86,7 +86,6 @@ Page
                 id:deviceSet
                 width: parent.width
 
-                //RemorseItem { id: remorse }
                 height: deviceAdd.height + lastSyncDate.height + Theme.paddingSmall*3
                 Menu
                 {
@@ -107,11 +106,7 @@ Page
                     MenuItem
                     {
                         text: qsTr("Zapomnij urządzenie")
-                        onClicked: remorse.execute(deviceSet, qsTr("Urządzenie zostanie zapomniane"), function() {
-                            devices.remove(device_id, undefined, function () {
-                                measurements.get()
-                            })
-                        })
+                        onClicked: devices.remove(device_id, undefined)
                     }
                 }
 

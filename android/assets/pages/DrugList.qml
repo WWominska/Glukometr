@@ -38,13 +38,12 @@ Page
         delegate: ListItem
         {
             id: drugItem
-            //RemorseItem { id: remorseDrug }
             menu: Menu
             {
                 MenuItem
                 {
                     text: qsTr("Usuń")
-                    onClicked: remorse.execute(drugItem, qsTr("Usunięcie leku"), function() {drugs.remove(drug_id) } )
+                    onClicked: drugs.remove(drug_id)
                 }
 
                 MenuItem
