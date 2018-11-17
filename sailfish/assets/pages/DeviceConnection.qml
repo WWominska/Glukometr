@@ -31,6 +31,7 @@ Page
             getLastSequenceNumber()
         }
     }
+    Component.onDestruction: measurements.get()
 
     Glucometer
     {
@@ -53,7 +54,6 @@ Page
         onRacpStarted: logi.text = "Pobieranie pomiarów"
         onRacpFinished: {
             devices.update(page.deviceId, {"last_sync": -1})
-            measurements.get()
             logi.text = "Pobrano wszystko"
             pageStack.pop(0)
         }
@@ -73,18 +73,18 @@ Page
             measurements.update({
                 "sequence_number": sequence_number,
                 "device_id": device
-            }, {"meal": newMeal}, true)
+            }, {"meal": newMeal}, false)
         }
 
         onNewMeasurement:
         {
             measurements.add({
                 "value": value,
-                "timestamp": timestamp,
+                "timestamp": Date.parse(timestamp)/1000,
                 "device_id": device,
                 "sequence_number": sequence_number,
                 "meal": -1
-            })
+            }, false)
         }
     }
 

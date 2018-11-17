@@ -108,7 +108,7 @@ QVariantMap BaseListManager::getDefaults() {
     return QVariantMap();
 }
 
-void BaseListManager::add(QVariantMap data) {
+void BaseListManager::add(QVariantMap data, bool refresh) {
     QVariantMap defaults = getDefaults();
     for (QVariantMap::const_iterator iter = defaults.begin(); iter != defaults.end(); ++iter) {
         if (!data.contains(iter.key()))
@@ -125,22 +125,24 @@ void BaseListManager::add(QVariantMap data) {
         bindings.join(", ")
     );
     this->executeQuery(query, [=](QSqlQuery) {
-        get();
+        if (refresh)
+            get();
     }, data);
 }
 
-void BaseListManager::remove(int id) {
-    remove({{getTableName() + "_id", id}});
+void BaseListManager::remove(int id, bool refresh) {
+    remove({{getTableName() + "_id", id}}, refresh);
 }
 
-void BaseListManager::remove(QVariantMap where) {
+void BaseListManager::remove(QVariantMap where, bool refresh) {
     QString query = QString("DELETE FROM %1%2").arg(
         getTableName(),
         where.isEmpty() ? "" : " WHERE " + keysToBindings(where)
     );
 
     this->executeQuery(query, [=](QSqlQuery) {
-        get();
+        if (refresh)
+            get();
     }, where);
 }
 

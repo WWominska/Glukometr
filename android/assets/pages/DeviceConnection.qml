@@ -29,6 +29,8 @@ Page
         }
     }
 
+    Component.onDestruction: measurements.get()
+
     Component.onCompleted: {
         if (deviceId != -1)
             getLastSequenceNumber()
@@ -59,7 +61,6 @@ Page
         onRacpStarted: logi.text = qsTr("Pobieranie pomiarów")
         onRacpFinished: {
             devices.update(page.deviceId, {"last_sync": -1})
-            measurements.get()
             logi.text = qsTr("Pobrano wszystko")
             pageStack.pop(0)
         }
@@ -79,18 +80,18 @@ Page
             measurements.update({
                 "sequence_number": sequence_number,
                 "device_id": device
-            }, {"meal": newMeal}, true)
+            }, {"meal": newMeal}, false)
         }
 
         onNewMeasurement:
         {
             measurements.add({
                 "value": value,
-                "timestamp": timestamp,
+                "timestamp": Date.parse(timestamp)/1000,
                 "device_id": device,
                 "sequence_number": sequence_number,
                 "meal": -1
-            })
+            }, false)
         }
     }
 

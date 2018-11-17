@@ -31,9 +31,9 @@ public:
     Q_INVOKABLE void update(QVariantMap where, QVariantMap fields, bool refresh=true);
     virtual QVariantMap getDefaults();
 
-    Q_INVOKABLE void add(QVariantMap data);
-    Q_INVOKABLE void remove(int id);
-    Q_INVOKABLE void remove(QVariantMap where=QVariantMap());
+    Q_INVOKABLE void add(QVariantMap data, bool refresh=true);
+    Q_INVOKABLE void remove(int id, bool refresh=true);
+    Q_INVOKABLE void remove(QVariantMap where=QVariantMap(), bool refresh=true);
 
     bool m_tableCreated = false;
 
