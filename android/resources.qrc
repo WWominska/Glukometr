@@ -78,5 +78,6 @@
         <file>icons/24x24@4/after-meal.png</file>
         <file>assets/pages/Calendar.qml</file>
         <file>assets/components/CalendarWidget.qml</file>
+        <file>icons/cukierek.svg</file>
     </qresource>
 </RCC>
