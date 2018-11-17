@@ -30,7 +30,7 @@ Page
         onClicked: openAddMeasurementDialog()
     }
 
-    Button {
+    /*Button {
         anchors {
             left: parent.left
             bottom: hlep.top
@@ -59,7 +59,7 @@ Page
                 "date_measured": [date, "<=", date1, ">="]
             })
         }
-    }
+    }*/
 
     FloatingActionButton {
         anchors.left: parent.left
