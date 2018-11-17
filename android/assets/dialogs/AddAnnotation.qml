@@ -7,11 +7,8 @@ import "../components"
 DialogPage
 {
     id:addNotes
-    footer: DialogHeader {}
-    header: PageHeader {
-        id: pageHeader
-        title: qsTr("Dodaj notatkę")
-    }
+    title: qsTr("Dodaj notatkę")
+
     property alias noteType: selectId.currentIndex
     property alias foodName: nameOfFood.text
     property alias foodAmount: unitFood.text

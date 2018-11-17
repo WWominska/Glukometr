@@ -11,7 +11,7 @@ QString Thresholds::getTableName() const {
 }
 
 QString Thresholds::getCreateQuery() const {
-    return "CREATE TABLE threshold (" \
+    return "CREATE TABLE IF NOT EXISTS threshold (" \
            "threshold_id integer primary key " \
            "autoincrement, " \
            "min real not null, " \

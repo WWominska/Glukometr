@@ -7,7 +7,7 @@ QString DrugAnnotations::getTableName() const {
 }
 
 QString DrugAnnotations::getCreateQuery() const {
-    return "CREATE TABLE annotation_drug (" \
+    return "CREATE TABLE IF NOT EXISTS annotation_drug (" \
            "annotation_drug_id integer primary key " \
            "autoincrement, " \
            "measurement_id integer REFERENCES " \

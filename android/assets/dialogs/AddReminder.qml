@@ -7,7 +7,7 @@ import QtGraphicalEffects 1.0
 Dialog
 {
     id: dialog
-    header: DialogHeader {id: header}
+    title: qsTr("Dodaj przypomnienie")
     property alias selectedHour: label.selectedHour
     property alias selectedMinute: label.selectedMinute
     property alias reminderType: combo.currentIndex
@@ -17,14 +17,6 @@ Dialog
     {
         anchors.fill: parent
 
-
-        SectionHeader
-        {
-            y: header.y + header.height - Theme.paddingSmall
-            id: addNotesHeader
-            font.pixelSize: Theme.fontSizeLarge
-            text: "Dodaj powiadomienia"
-        }
 //        ValueButton
 //        {
 //            id: label

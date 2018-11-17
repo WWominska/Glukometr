@@ -3,6 +3,8 @@ TARGET = harbour-glukometr
 QT += quick bluetooth sql
 CONFIG += c++11
 
+TRANSLATIONS += translations/glukometr_en.ts
+
 winrt {
     TEMPLATE += vcapp
     CONFIG += windeployqt

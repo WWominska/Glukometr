@@ -8,19 +8,14 @@ DialogPage
     id: addDrugsDialog
     property alias value: nameField.text
     property bool isEdited: false
-
-    footer: DialogHeader {}
-    header: PageHeader {
-        id: pageHeader
-        title: isEdited ? qsTr("Zmień nazwe") : qsTr("Dodaj lek")
-    }
+    title: isEdited ? qsTr("Zmień nazwe") : qsTr("Dodaj lek")
 
     Flickable
     {
         ScrollBar.vertical: ScrollBar { }
         anchors.fill: parent
         contentWidth: parent.width
-        contentHeight: column.childrenRect.height
+        //contentHeight: column.childrenRect.height
 
 //        Column
 //        {

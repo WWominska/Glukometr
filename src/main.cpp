@@ -3,6 +3,8 @@
 #include <QQmlContext>
 #include <QGuiApplication>
 #include <QQuickView>
+#include <QTranslator>
+#include <QLibraryInfo>
 #include <QDebug>
 #include "Glucometer.h"
 #include "BleDiscovery.h"
@@ -38,6 +40,11 @@ int main(int argc, char *argv[])
 #else
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QScopedPointer<QGuiApplication> app(new QGuiApplication(argc, argv));
+
+    // enable translations
+    QTranslator translator;
+    translator.load(":/translations/glukometr");
+    app->installTranslator(&translator);
 #endif
 
 #ifdef Q_OS_ANDROID

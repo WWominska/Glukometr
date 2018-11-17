@@ -51,21 +51,16 @@ Page
         header: PageHeader { title: "Przypomnienia" }
         delegate: ListItem
         {
-            id:list
-            //RemorseItem { id: remorse }
-            //contentHeight: column.childrenRect.height + 2*Theme.paddingSmall
+            id: list
             menu: Menu
             {
                 MenuItem
                 {
                     text: "Usuń"
-                    onClicked: remorse.execute(list, "Usunięcie powiadomienia", function()
-                    {
-                        reminders.cancel(cookie, function ()
-                        {
-                            reminders.remove(id)
-                        })
-                    })
+                    onClicked: {
+                        reminders.cancel(cookie)
+                        reminders.remove(id)
+                    }
                 }
             }
             Label

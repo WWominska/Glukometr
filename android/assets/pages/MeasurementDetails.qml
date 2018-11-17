@@ -157,8 +157,6 @@ Page
                    color: "#d9d2b9"
                    font.pixelSize: Theme.fontSizeSmall
                }
-
-               //RemorseItem { id: remorseFood }
                contentHeight: nameId.height + amountId.height + Theme.paddingSmall * 3
 
                menu: Menu
@@ -189,7 +187,7 @@ Page
                    MenuItem
                    {
                        text: qsTr("Usuń")
-                       onClicked: remorse/*Food*/.execute(foreverFood, "Usunięcie posiłku", function() {mealAnnotations.remove(annotation_meal_id) } )
+                       onClicked: mealAnnotations.remove(annotation_meal_id)
                    }
                }
             }
@@ -286,7 +284,7 @@ Page
                    MenuItem
                    {
                        text: qsTr("Usuń")
-                       onClicked: remorse/*Drugs*/.execute(drugsEverywhere, "Usunięcie leku", function() {drugAnnotations.remove(annotation_drug_id) } )
+                       onClicked: drugAnnotations.remove(annotation_drug_id)
                    }
              }
             }
@@ -328,7 +326,6 @@ Page
                     }
                     font.pixelSize: Theme.fontSizeMedium
                 }
-                //RemorseItem { id: remorseNotes }
                contentHeight: contentId.height + Theme.paddingSmall*3
                menu: Menu
                {
@@ -353,7 +350,7 @@ Page
                    MenuItem
                    {
                        text: qsTr("Usuń")
-                       onClicked: remorse/*Notes*/.execute(notes, "Usunięcie notatki", function() {textAnnotations.remove(annotation_text_id) } )
+                       onClicked: textAnnotations.remove(annotation_text_id)
                    }
                }
             }

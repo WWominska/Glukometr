@@ -5,11 +5,22 @@ import QtQuick.Controls.Material 2.1
 import ".."
 
 ToolBar {
+    id: header
     Material.foreground: "white"
     width: parent.width
     background: Rectangle {
         color: "black"
         opacity: 0.8
+    }
+
+    property alias rightIcon: rightButton.text
+    property var rightCallback: function () {}
+
+    property alias leftIcon: leftButton.text
+    property var leftCallback: function () {
+        if (pageStack.depth > 1)
+            pageStack.pop()
+        else pageStack.push("qrc:/assets/pages/DeviceList.qml")
     }
 
     //height: content.childrenRect.height + 2 * Theme.paddingMedium
@@ -22,14 +33,11 @@ ToolBar {
         anchors.fill: parent
 
         ToolButton {
+            id: leftButton
             font.family: "Material Icons"
             font.pixelSize: 20
             text: pageStack.depth > 1 ? "\ue5c4" : "\ue1a7"
-            onClicked: {
-                if (pageStack.depth > 1)
-                    pageStack.pop()
-                else pageStack.push("qrc:/assets/pages/DeviceList.qml")
-            }
+            onClicked: leftCallback()
         }
 
         Label {
@@ -42,10 +50,11 @@ ToolBar {
             Layout.fillWidth: true
         }
         ToolButton {
+            id: rightButton
             font.family: "Material Icons"
             font.pixelSize: 20
-            text: "\ue8b8"
-            onClicked: pageStack.push("qrc:/assets/pages/Settings.qml")
+            enabled: text != ""
+            onClicked: header.rightCallback()
         }
     }
 }

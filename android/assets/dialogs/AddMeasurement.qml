@@ -7,12 +7,7 @@ import "../components"
 DialogPage
 {
     id: dialog
-
-    footer: DialogHeader {}
-    header: PageHeader {
-        id: pageHeader
-        title: qsTr("Dodaj pomiar")
-    }
+    title: qsTr("Dodaj pomiar")
 
     property int meal: 4
     property alias value: nameField.text
@@ -111,9 +106,9 @@ DialogPage
                  {
                      Connections {
                          target: dialog
-                         onMealChanged: checkIcon.visible = dialog.meal == meal
+                         onMealChanged: checkIcon.visible = dialog.meal === model.modelData.meal
                      }
-                     icon.name: iconSource
+                     icon.name: model.modelData.iconSource
                      highlighted: checkIcon.visible
                      width: parent.width
                      IconLabel
@@ -121,7 +116,7 @@ DialogPage
                          id: checkIcon
                          text: "\ue86c"
                          font.pixelSize: 32
-                         visible: dialog.meal == meal
+                         visible: dialog.meal === model.modelData.meal
                          anchors
                          {
                              right: parent.right
@@ -129,8 +124,8 @@ DialogPage
                              verticalCenter: parent.verticalCenter
                          }
                      }
-                     text: name
-                     onClicked: dialog.meal = meal;
+                     text: model.modelData.name
+                     onClicked: dialog.meal = model.modelData.meal;
                  }
              }
 

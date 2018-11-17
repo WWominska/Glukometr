@@ -7,7 +7,7 @@ QString MealAnnotations::getTableName() const {
 }
 
 QString MealAnnotations::getCreateQuery() const {
-    return "CREATE TABLE annotation_meal (" \
+    return "CREATE TABLE IF NOT EXISTS annotation_meal (" \
            "annotation_meal_id integer primary key " \
            "autoincrement, " \
            "measurement_id integer REFERENCES " \

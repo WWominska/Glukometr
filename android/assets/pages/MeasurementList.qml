@@ -11,6 +11,10 @@ Page
     header: PageHeader {
         id: pageHeader
         title: qsTr("Pomiary")
+        rightIcon: "\ue8b8"
+        rightCallback: function () {
+            pageStack.push("qrc:/assets/pages/Settings.qml")
+        }
     }
     background: OreoBackground {}
     id: results
@@ -99,13 +103,12 @@ Page
             enabled: !isTutorialEnabled
             id: measurement
             width: parent.width
-            //RemorseItem { id: remorse }
             contentHeight: sugar.height + whenMeasurement.height + Theme.paddingSmall*3
             onClicked: pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/MeasurementDetails.qml"), {
-                                          "measurement_id": model.measurement_id,
-                                          "value": model.value,
-                                          "meal": model.meal,
-                                          "timestamp": model.timestamp
+                                          "measurement_id": measurement_id,
+                                          "value": value,
+                                          "meal": meal,
+                                          "timestamp": timestamp
                                       })
             menu: Menu
             {
@@ -116,11 +119,11 @@ Page
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
-                                                                         {"meal": model.meal})
+                                                                         {"meal": meal})
                         dialog.accepted.connect(function()
                         {
                             measurements.update({
-                                "measurement_id": model.measurement_id
+                                "measurement_id": measurement_id
                             }, {"meal": dialog.meal}, true);
                         })
                     }
@@ -128,9 +131,7 @@ Page
                 MenuItem
                 {
                     text: qsTr("Usuń")
-                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
-                        measurements.remove(model.measurement_id)
-                    })
+                    onClicked: measurements.remove(measurement_id)
                 }
             }
 
@@ -140,7 +141,7 @@ Page
                     width: Theme.itemSizeExtraSmall/3
                     height: Theme.itemSizeExtraSmall/3
                     anchors.centerIn: parent
-                    color: thresholds.evaluateMeasurement(model.value, model.meal)
+                    color: thresholds.evaluateMeasurement(value, meal)
 
                     radius: width
                 }
@@ -156,7 +157,7 @@ Page
             {
                 id: sugar
                 font.pixelSize: Theme.fontSizeSmall
-                text: model.value
+                text: value
                 anchors
                 {
                     left: dot.right
@@ -181,7 +182,7 @@ Page
                 }
                 id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall
-                text: changeToString(model.meal)
+                text: changeToString(meal)
                 anchors
                 {
                     top: sugar.bottom
@@ -197,7 +198,7 @@ Page
                 id: dateLabel
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale(),"HH:mm")
+                text: new Date(timestamp*1000).toLocaleString(Qt.locale(),"HH:mm")
                 anchors
                 {
                     left: whenMeasurement.right

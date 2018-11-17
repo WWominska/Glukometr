@@ -12,7 +12,7 @@ QString Reminders::getTableName() const {
 }
 
 QString Reminders::getCreateQuery() const {
-    return "CREATE TABLE reminder (" \
+    return "CREATE TABLE IF NOT EXISTS reminder (" \
            "reminder_id integer primary key autoincrement, " \
            "reminder_datetime text NOT NULL, " \
            "cookie_id integer, " \

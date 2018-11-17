@@ -10,7 +10,7 @@ QString Drugs::getTableName() const {
 }
 
 QString Drugs::getCreateQuery() const {
-    return "CREATE TABLE drug (" \
+    return "CREATE TABLE IF NOT EXISTS drug (" \
            "drug_id integer primary key autoincrement, " \
            "name text)";
 }

@@ -17,45 +17,29 @@ Page
         property int phoneNumber: 1
     }
 
-    ListModel
-    {
-        id: settingList
-        ListElement
+    property var settingList: [
         {
-            settingText: "Progi"
-            secondaryText: 0
-            replace: false
-            source: "qrc:/assets/pages/Thresholds.qml"
-            image: "thresholds"
-        }
-
-//        ListElement
-//        {
-//            settingText: "Przypomnienia"
-//            secondaryText: 0
-//            replace: false
-//            source: "qrc:/assets/pages/ReminderList.qml"
-//            image: "bell"
-//        }
-
-        ListElement
+            "settingText": qsTr("Progi"),
+            "secondaryText": 0,
+            "replace": false,
+            "source": "qrc:/assets/pages/Thresholds.qml",
+            "image": "thresholds"
+        },
         {
-            settingText: "Telefon: "
-            secondaryText: 1
-            replace: false
-            source: "qrc:/assets/dialogs/ChangePhoneNumber.qml"
-            image: "phone"
-        }
-
-        ListElement
+            "settingText": qsTr("Telefon: "),
+            "secondaryText": 1,
+            "replace": false,
+            "source": "qrc:/assets/dialogs/ChangePhoneNumber.qml",
+            "image": "phone"
+        },
         {
-            settingText: "Leki"
-            secondaryText: 0
-            replace: false
-            source: "qrc:/assets/pages/DrugList.qml"
-            image: "needle"
-        }
-    }
+            "settingText": qsTr("Leki"),
+            "secondaryText": 0,
+            "replace": false,
+            "source": "qrc:/assets/pages/DrugList.qml",
+            "image": "needle"
+        },
+    ]
 
     id: setting
     ListView
@@ -64,13 +48,13 @@ Page
         model: settingList
         delegate: ItemDelegate
         {
-            icon.name: image
+            icon.name: model.modelData.image
             width: parent.width
 
             Label
             {
                 id: label
-                text: settingText
+                text: model.modelData.settingText
                 font.pixelSize: Theme.fontSizeMedium
                 x: 56
                 anchors
@@ -82,7 +66,7 @@ Page
                 font.pixelSize: Theme.fontSizeMedium
                 text:
                 {
-                    switch (secondaryText) {
+                    switch (model.modelData.secondaryText) {
                     case consts.phoneNumber:
                         return settings.phoneNumber ? settings.phoneNumber :qsTr("Naciśnij aby ustawić");
                     default: return "";
@@ -106,12 +90,12 @@ Page
                     onClicked: Qt.openUrlExternally("tel:+48" + settings.phoneNumber)
                 }
             }
-            onPressAndHold: if(secondaryText == consts.phoneNumber) contextMenu.popup()
+            onPressAndHold: if(model.modelData.secondaryText == consts.phoneNumber) contextMenu.popup()
 
             onClicked: {
-                if (replace)
-                    pageStack.replace(Qt.resolvedUrl(source))
-                else pageStack.push(Qt.resolvedUrl(source))
+                if (model.modelData.replace)
+                    pageStack.replace(Qt.resolvedUrl(model.modelData.source))
+                else pageStack.push(Qt.resolvedUrl(model.modelData.source))
             }
         }
     }
