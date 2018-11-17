@@ -61,8 +61,10 @@ void DatabaseWorker::setupDb() {
 #endif
     }
 
-    if (!db.isOpen())
+    if (!db.isOpen()) {
         db.open();
+        db.exec("PRAGMA foreign_keys = ON");
+    }
 }
 
 QSqlQuery DatabaseWorker::prepareQuery(const QString& query, const QVariantMap& params) {
