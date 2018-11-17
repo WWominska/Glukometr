@@ -141,6 +141,7 @@ Dialog
                      ListElement
                      {
                          meal: 0
+                         lightIcon: "qrc:/icons/icon-fasting-light.svg"
                          icon: "qrc:/icons/icon-fasting.svg"
                          name: "Na czczo"
                      }
@@ -148,6 +149,7 @@ Dialog
                      ListElement
                      {
                          meal: 1
+                         lightIcon: "qrc:/icons/icon-before-meal-light.svg"
                          icon: "qrc:/icons/icon-before-meal.svg"
                          name: "Przed posiłkiem"
                      }
@@ -155,6 +157,7 @@ Dialog
                      ListElement
                      {
                          meal: 2
+                         lightIcon: "qrc:/icons/icon-after-meal-light.svg"
                          icon: "qrc:/icons/icon-after-meal.svg"
                          name: "Po posiłku"
                      }
@@ -162,6 +165,7 @@ Dialog
                      ListElement
                      {
                          meal: 3
+                         lightIcon: "image://Theme/icon-m-night"
                          icon: "image://Theme/icon-m-night"
                          name: "Nocna"
                      }
@@ -169,6 +173,7 @@ Dialog
                      ListElement
                      {
                          meal: 4
+                         lightIcon: "image://Theme/icon-m-question"
                          icon: "image://Theme/icon-m-question"
                          name: "Nie określono"
                      }
@@ -180,7 +185,7 @@ Dialog
                      Image
                      {
                          id: mealIcon
-                         source: icon
+                         source: application.lightTheme ? lightIcon : icon
                          width: Theme.iconSizeMedium
                          height: width
                          anchors
@@ -196,7 +201,7 @@ Dialog
                      {
                           anchors.fill: mealIcon
                           source: mealIcon
-                          color: "#ffffff"
+                          color: application.lightTheme ? "#000000" : "#ffffff"
                      }
 
                      Image
@@ -232,7 +237,7 @@ Dialog
                             leftMargin: Theme.paddingMedium
                          }
                          font.pixelSize: Theme.fontSizeMedium
-                         color: "#ffffff"
+                         //color: "#ffffff"
                          text: name
                      }
                      onClicked:

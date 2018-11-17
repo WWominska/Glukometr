@@ -9,6 +9,14 @@ ApplicationWindow {
     property bool bluetoothPageOpen: false
     property real disabledOpacity: 0.2
 
+    property bool lightTheme: {
+        try {
+            if (Theme.colorScheme !== Theme.LightOnDark)
+                return true
+        } catch (e) {}
+        return false
+    }
+
     cover: Qt.resolvedUrl("qrc:/assets/cover/CoverPage.qml")
     initialPage: Component { MeasurementList {} }
     allowedOrientations: defaultAllowedOrientations

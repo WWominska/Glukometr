@@ -5,9 +5,9 @@
 <style type="text/css">
 	.st0{display:none;}
 	.st1{display:inline;}
-	.st2{display:inline;opacity:0.24;fill:#FFFFFF;}
-	.st3{opacity:0.6;fill:#FFFFFF;}
-	.st4{fill:#FFFFFF;}
+        .st2{display:inline;opacity:0.24;fill:#000000;}
+        .st3{opacity:0.6;fill:#000000;}
+        .st4{fill:#000000;}
 </style>
 <g id="Layer_2" class="st0">
 	<rect x="-16.1" y="-16" class="st1" width="96.1" height="96.1"/>

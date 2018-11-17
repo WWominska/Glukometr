@@ -87,9 +87,9 @@ Page
                         {
                             switch(meal)
                             {
-                                case 0: return "qrc:/icons/icon-fasting.svg"
-                                case 1: return "qrc:/icons/icon-before-meal.svg"
-                                case 2: return "qrc:/icons/icon-after-meal.svg"
+                            case 0: return "qrc:/icons/icon-fasting" + (application.lightTheme ? "-light" : "") + ".svg"
+                                case 1: return "qrc:/icons/icon-before-meal" + (application.lightTheme ? "-light" : "") + ".svg"
+                                case 2: return "qrc:/icons/icon-after-meal" + (application.lightTheme ? "-light" : "") + ".svg"
                                 case 3: return "image://Theme/icon-m-night"
                             }
                         }
