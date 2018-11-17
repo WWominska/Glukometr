@@ -147,7 +147,6 @@ Page
                                     text: scroll.second.value.toFixed(0)
                                 }
                                 live: true
-                                anchors.horizontalCenter: parent.horizontalCenter
                             }
                             Label {
                                 text: "180"
