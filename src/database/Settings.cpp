@@ -38,7 +38,6 @@ QString Settings::confFile = QDir::currentPath() + QDir::separator() + "Settings
 #endif
 
 Settings::Settings(QObject *parent) : QSettings(Settings::confFile, QSettings::IniFormat, parent) {
-  qDebug() << confFile;
 }
 
 Settings::~Settings() {
