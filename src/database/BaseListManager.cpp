@@ -57,6 +57,10 @@ QString BaseListManager::baseQuery() {
     return "SELECT * FROM %1";
 }
 
+QString BaseListManager::orderClause() {
+    return "";
+}
+
 void BaseListManager::get(bool reset)
 {
     // shorthand for get(QVariantMap(), reset=true)
@@ -65,19 +69,22 @@ void BaseListManager::get(bool reset)
 
 void BaseListManager::get(QVariantMap where, bool reset) {
     QString query = baseQuery().arg(getTableName());
+    QVariantMap params;
 
     if (where.isEmpty() && !reset)
         where = lastFilter;
     else lastFilter = where;
 
     if (!where.isEmpty())
-        query = QString("%1 WHERE %2").arg(query, keysToBindings(where));
+        query = QString("%1 WHERE %2").arg(query, keysToBindings(where, &params));
+
+    query = QString("%1 %2").arg(query, orderClause());
 
     DbFuture *f = new DbFuture();
     connect(f, &DbFuture::finished, [=]() {
         m_model->setQuery(f->result());
     });
-    m_db->executeSQL(query, where, f);
+    m_db->executeSQL(query, params, f);
 }
 
 void BaseListManager::update(
@@ -155,10 +162,24 @@ QString BaseListManager::keysToBindings(
 {
     QStringList query;
     for (QVariantMap::const_iterator iter = fields.begin(); iter != fields.end(); ++iter) {
-        QString binding = QString("%1%2").arg(prefix, iter.key());
-        query.push_back(QString("%1 = :%2").arg(iter.key(), binding));
-        if (params)
-            params->operator [](binding) = iter.value();
+        QVariant value = iter.value();
+
+        if (value.type() == QVariant::List) {
+            QVariantList valueList = value.toList();
+            for (int index = 0; index < valueList.length(); index += 2) {
+                QString binding = QString("%1%2_%3").arg(prefix, iter.key(), QString::number(index/2));
+                query.push_back(QString("%1 %2 :%3").arg(
+                    iter.key(), valueList[index+1].toString(),
+                    binding));
+                if (params)
+                    params->operator [](binding) = valueList[index];
+            }
+        } else {
+            QString binding = QString("%1%2").arg(prefix, iter.key());
+            query.push_back(QString("%1 = :%2").arg(iter.key(), binding));
+            if (params)
+                params->operator [](binding) = value;
+        }
     }
     return query.join(separator);
 }

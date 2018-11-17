@@ -24,6 +24,7 @@ public:
 
     void executeQuery(const QString &query, const std::function<void(QSqlQuery)> &callback, const QVariantMap &params=QVariantMap());
     virtual QString baseQuery();
+    virtual QString orderClause();
     Q_INVOKABLE void get(bool reset=false);
     Q_INVOKABLE void get(QVariantMap where, bool reset=false);
 
