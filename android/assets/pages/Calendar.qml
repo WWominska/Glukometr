@@ -67,7 +67,7 @@ DialogPage
                 rightMargin: Theme.paddingLarge
                 verticalCenter: parent.verticalCenter
             }
-            color: "#473e3e"
+            color: "black"
             text: kalednarz.selectedDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy")
         }
 
@@ -155,7 +155,7 @@ DialogPage
                 rightMargin: Theme.paddingLarge
                 verticalCenter: parent.verticalCenter
             }
-            color: "#473e3e"
+            color: "black"
             text: kadenlarz.selectedDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy")
         }
 

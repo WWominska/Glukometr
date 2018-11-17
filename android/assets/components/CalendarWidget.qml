@@ -102,6 +102,15 @@ Item {
                 background: Rectangle {
                     anchors.fill: parent
                     color: "#85000000"
+                    Image
+                    {
+                        opacity: 0.5
+                        height: parent.height
+                        width: parent.height
+                        anchors.centerIn: parent
+                        source: "qrc:/icons/cukierek.svg"
+                        visible: model.day == selectedDate.getDate() && model.month == selectedDate.getMonth()
+                    }
                 }
                 //Material.foreground: "black"
 
