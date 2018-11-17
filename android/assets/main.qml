@@ -51,7 +51,7 @@ Item
     FontLoader {
         id: materialFont
         name: "Material Icons"
-        source: "qrc:/fonts/MaterialIcons-Regular.ttf"
+        source: "qrc:/assets/fonts/MaterialIcons-Regular.ttf"
     }
 
     Shortcut {
