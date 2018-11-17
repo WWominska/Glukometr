@@ -7,12 +7,7 @@ import "../components"
 DialogPage
 {
     id: dialog
-
-    footer: DialogHeader {}
-    header: PageHeader {
-        id: pageHeader
-        title: qsTr("Dodaj pomiar")
-    }
+    title: qsTr("Dodaj pomiar")
 
     property int meal: 4
     property alias value: nameField.text

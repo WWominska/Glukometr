@@ -9,7 +9,7 @@ DialogPage
 {
     id: dialog
     property int meal;
-    header: DialogHeader { id: naglowek }
+    title: qsTr("Zmień porę")
 
     Column
     {

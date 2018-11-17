@@ -18,11 +18,7 @@ DialogPage
         }
     }
 
-    footer: DialogHeader {}
-    header: PageHeader {
-        id: pageHeader
-        title: qsTr("Ustaw numer")
-    }
+    title: qsTr("Ustaw numer")
 
     Flickable
     {

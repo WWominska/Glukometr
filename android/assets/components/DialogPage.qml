@@ -5,6 +5,7 @@ import ".."
 
 
 Page {
+    id: page
     background: OreoBackground {}
     signal accepted
     signal canceled
@@ -12,6 +13,14 @@ Page {
     property bool result: false
     property bool canAccept: true
     property bool canCancel: true
+
+    header: PageHeader {
+        id: pageHeader
+        title: page.title
+        leftCallback: function () { cancel() }
+        rightIcon: "\ue5ca"
+        rightCallback: function () { accept() }
+    }
 
     function accept() {
         if (canAccept) {

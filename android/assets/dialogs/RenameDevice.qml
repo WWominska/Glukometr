@@ -8,7 +8,7 @@ DialogPage
     id: dialogDevice
     property string name;
 
-    header: DialogHeader {id: header}
+    title: qsTr("Zmień nazwę")
     canAccept: nameField.text != ""
     onDone:
     {
@@ -23,14 +23,6 @@ DialogPage
         id: column
         width: parent.width
         spacing: Theme.paddingSmall
-
-
-
-         SectionHeader
-         {
-            font.pixelSize: Theme.fontSizeLarge
-            text: qsTr("Zmień nazwe")
-         }
 
          TextField
          {
