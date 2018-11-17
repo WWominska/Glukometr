@@ -22,10 +22,10 @@ DialogPage
             {
                 Connections {
                     target: dialog
-                    onMealChanged: checkIcon.visible = dialog.meal == meal
+                    onMealChanged: checkIcon.visible = dialog.meal === model.modelData.meal
                 }
-                icon.name: iconSource
-                text: name
+                icon.name: model.modelData.iconSource
+                text: model.modelData.name
                 highlighted: checkIcon.visible
                 width: parent.width
 
@@ -34,7 +34,7 @@ DialogPage
                     id: checkIcon
                     text: "\ue86c"
                     font.pixelSize: 32
-                    visible: dialog.meal == meal
+                    visible: dialog.meal === model.modelData.meal
                     anchors
                     {
                         right: parent.right
@@ -42,7 +42,7 @@ DialogPage
                         verticalCenter: parent.verticalCenter
                     }
                 }
-                onClicked: { dialog.meal = meal; dialog.accept() }
+                onClicked: { dialog.meal = model.modelData.meal; dialog.accept() }
             }
         }
     }

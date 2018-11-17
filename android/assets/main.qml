@@ -20,42 +20,33 @@ Item
     property bool bluetoothPageOpen: false
     property real disabledOpacity: 0.2
 
-    property var mealListModel: ListModel {
-        ListElement
+    property var mealListModel: [
         {
-            meal: 0
-            iconSource: "fasting"
-            name: "Na czczo"
-        }
-
-        ListElement
+            "meal": 0,
+            "iconSource": "fasting",
+            "name": qsTr("Na czczo")
+        },
         {
-            meal: 1
-            iconSource: "apple"
-            name: "Przed posiłkiem"
-        }
-
-        ListElement
+            "meal": 1,
+            "iconSource": "apple",
+            "name": qsTr("Przed posiłkiem")
+        },
         {
-            meal: 2
-            iconSource: "after-meal"
-            name: "Po posiłku"
-        }
-
-        ListElement
+            "meal": 2,
+            "iconSource": "after-meal",
+            "name": qsTr("Po posiłku")
+        },
         {
-            meal: 3
-            iconSource: "night"
-            name: "Nocna"
-        }
-
-        ListElement
+            "meal": 3,
+            "iconSource": "night",
+            "name": qsTr("Nocna")
+        },
         {
-            meal: 4
-            iconSource: "question"
-            name: "Nie określono"
+            "meal": 4,
+            "iconSource": "question",
+            "name": qsTr("Nie określono")
         }
-    }
+    ]
 
     FontLoader {
         id: materialFont

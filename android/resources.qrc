@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file alias="translations/glukometr.qm" lang="en">../translations/glukometr_en.qm</file>
         <file>assets/main.qml</file>
         <file>icons/icon-glucometer.svg</file>
         <file>assets/dialogs/AddAnnotation.qml</file>
