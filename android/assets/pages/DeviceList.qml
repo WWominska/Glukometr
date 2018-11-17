@@ -12,7 +12,7 @@ Page
 
     header: PageHeader {
         id: pageHeader
-        title: "Wybierz urządzenie"
+        title: qsTr("Wybierz urządzenie")
     }
     background: OreoBackground {}
 
@@ -67,7 +67,7 @@ Page
         {
             id: rememberedDevicesHeader
             font.pixelSize: Theme.fontSizeLarge
-            text: "Zapamiętane urządzenie"
+            text: qsTr("Zapamiętane urządzenie")
         }
 
         ListView
@@ -92,7 +92,7 @@ Page
                 {
                     MenuItem
                     {
-                        text: "Zmień nazwę urządzenia"
+                        text: qsTr("Zmień nazwę urządzenia")
                         onClicked:
                         {
                             var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
@@ -106,8 +106,8 @@ Page
 
                     MenuItem
                     {
-                        text: "Zapomnij urządzenie"
-                        onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {
+                        text: qsTr("Zapomnij urządzenie")
+                        onClicked: remorse.execute(deviceSet, qsTr("Urządzenie zostanie zapomniane"), function() {
                             devices.remove(device_id, undefined, function () {
                                 measurements.get()
                             })
@@ -155,7 +155,7 @@ Page
                     }
 
                     font.pixelSize: Theme.fontSizeTiny
-                    text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : "Nigdy"
+                    text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : qsTr("Nigdy")
                     color: Theme.primaryColor
                 }
             }
@@ -169,7 +169,7 @@ Page
                 topMargin: Theme.paddingLarge
             }
             font.pixelSize: Theme.fontSizeLarge
-            text: "Wykryte urządzenia"
+            text: qsTr("Wykryte urządzenia")
         }
 
         ProgressBar

@@ -29,7 +29,7 @@ DialogPage
          SectionHeader
          {
             font.pixelSize: Theme.fontSizeLarge
-            text: "Zmień nazwe"
+            text: qsTr("Zmień nazwe")
          }
 
          TextField
@@ -37,7 +37,7 @@ DialogPage
              id: nameField
              width: parent.width
              text: name
-             placeholderText: "Np. Glukometr w domu"
+             placeholderText: qsTr("Np. Glukometr w domu")
              //label: "Twoja nazwa"
          }
     }

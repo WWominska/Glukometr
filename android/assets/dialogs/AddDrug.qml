@@ -12,7 +12,7 @@ DialogPage
     footer: DialogHeader {}
     header: PageHeader {
         id: pageHeader
-        title: isEdited ? "Zmień nazwe" : "Dodaj lek"
+        title: isEdited ? qsTr("Zmień nazwe") : qsTr("Dodaj lek")
     }
 
     Flickable

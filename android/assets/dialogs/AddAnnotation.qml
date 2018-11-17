@@ -10,7 +10,7 @@ DialogPage
     footer: DialogHeader {}
     header: PageHeader {
         id: pageHeader
-        title: "Dodaj notatkę"
+        title: qsTr("Dodaj notatkę")
     }
     property alias noteType: selectId.currentIndex
     property alias foodName: nameOfFood.text
@@ -50,7 +50,7 @@ DialogPage
                 Material.foreground: "#fff"
                 Material.background: "#55737373"
                 Material.theme: Material.Light
-                model: ["Posiłek", "Lek", "Notatka tekstowa"]
+                model: [qsTr("Posiłek"), qsTr("Lek"), qsTr("Notatka tekstowa")]
                anchors {
                    left: parent.left
                    leftMargin: Theme.horizontalPageMargin
@@ -73,7 +73,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: "Co zjadłeś przed pomiarem?"
+                text: qsTr("Co zjadłeś przed pomiarem?")
             }
 
             TextField
@@ -87,7 +87,7 @@ DialogPage
                 }
                 visible: selectId.currentIndex == 0
                 width: parent.width
-                placeholderText: "Schabowy"
+                placeholderText: qsTr("Schabowy")
                 color: "#f7f5f0"
             }
 
@@ -105,7 +105,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: "Ile tego zjadłeś?"
+                text: qsTr("Ile tego zjadłeś?")
             }
 
             TextField
@@ -133,7 +133,7 @@ DialogPage
                 Material.background: "#55737373"
                 Material.theme: Material.Light
                 visible: selectId.currentIndex == 0
-                model: ["g", "ml", "sztuk"]
+                model: [qsTr("g"), qsTr("ml"), qsTr("sztuk")]
                 anchors {
                     left: parent.left
                     leftMargin: Theme.horizontalPageMargin
@@ -156,7 +156,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: "Wybierz lek"
+                text: qsTr("Wybierz lek")
             }
 
             ComboBox {
@@ -230,7 +230,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: "Dawka"
+                text: qsTr("Dawka")
             }
 
             TextField
@@ -259,7 +259,7 @@ DialogPage
                 Material.background: "#55737373"
                 Material.theme: Material.Light
                 visible: selectId.currentIndex == 1
-                model: ["dm/L", "g", "ml", "sztuk"]
+                model: ["dm/L","g","ml", qsTr("sztuk")]
                 anchors {
                     left: parent.left
                     leftMargin: Theme.horizontalPageMargin
@@ -282,7 +282,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: "Uwagi dotyczące pomiaru"
+                text: qsTr("Uwagi dotyczące pomiaru")
             }
 
 
@@ -297,7 +297,7 @@ DialogPage
                 }
                 visible: selectId.currentIndex == 2
                 width: parent.width
-                placeholderText: "Jeździłem na rowerze przez 30 min"
+                placeholderText: qsTr("Jeździłem na rowerze przez 30 min")
                 color: "#f7f5f0"
             }
 

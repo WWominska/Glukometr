@@ -10,7 +10,7 @@ Page
     header: PageHeader
     {
         id: pageHeader
-        title: "Leki"
+        title: qsTr("Leki")
     }
     background: OreoBackground {}
 
@@ -43,13 +43,13 @@ Page
             {
                 MenuItem
                 {
-                    text: "Usuń"
-                    onClicked: remorse.execute(drugItem, "Usunięcie leku", function() {drugs.remove(drug_id) } )
+                    text: qsTr("Usuń")
+                    onClicked: remorse.execute(drugItem, qsTr("Usunięcie leku"), function() {drugs.remove(drug_id) } )
                 }
 
                 MenuItem
                 {
-                    text: "Edytuj"
+                    text: qsTr("Edytuj")
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"), {

@@ -15,7 +15,7 @@ Page
     }
 
     header: PageHeader {
-        title: "Połączenie"
+        title: qsTr("Połączenie")
     }
 
     Connections {
@@ -43,24 +43,24 @@ Page
         id: glucometer
         deviceId: page.deviceId
 
-        onError: logi.text = "Wystąpił błąd"
-        onInvalidService: logi.text = "Nie pobrano danych"
+        onError: logi.text = qsTr("Wystąpił błąd")
+        onInvalidService: logi.text = qsTr("Nie pobrano danych")
         onConnecting: {
             reconnectBtn.visible = false
             logi.text = "Łączenie..."
         }
-        onConnected: logi.text = "Połączono"
+        onConnected: logi.text = qsTr("Połączono")
         onDisconnected: {
             reconnectBtn.visible = true
-            logi.text = "Rozłączono"
+            logi.text = qsTr("Rozłączono")
         }
-        onNotAGlucometer: logi.text = "Urządzenie nie jest glukometrem"
-        onPairing: logi.text = "Parowanie..."
-        onRacpStarted: logi.text = "Pobieranie pomiarów"
+        onNotAGlucometer: logi.text = qsTr("Urządzenie nie jest glukometrem")
+        onPairing: logi.text = qsTr("Parowanie...")
+        onRacpStarted: logi.text = qsTr("Pobieranie pomiarów")
         onRacpFinished: {
             devices.update(page.deviceId, {"last_sync": -1})
             measurements.get()
-            logi.text = "Pobrano wszystko"
+            logi.text = qsTr("Pobrano wszystko")
             pageStack.pop(0)
         }
         onMealChanged:
@@ -109,7 +109,7 @@ Page
         Label
         {
             id: logi
-            text: "Oczekiwanie..."
+            text: qsTr("Oczekiwanie...")
             anchors.centerIn: updatei
             color: Theme.highlightColor
         }
@@ -121,7 +121,7 @@ Page
                 topMargin: Theme.paddingMedium
                 horizontalCenter: logi.horizontalCenter
             }
-            text: "Spróbuj ponownie"
+            text: qsTr("Spróbuj ponownie")
             onClicked: getLastSequenceNumber()
             visible: false
         }

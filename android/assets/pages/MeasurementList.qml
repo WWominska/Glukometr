@@ -10,7 +10,7 @@ Page
 {
     header: PageHeader {
         id: pageHeader
-        title: "Pomiary"
+        title: qsTr("Pomiary")
     }
     background: OreoBackground {}
     id: results
@@ -24,6 +24,37 @@ Page
         Material.background: "#99f7f5f0"
         text: "\ue145"
         onClicked: openAddMeasurementDialog()
+    }
+
+    Button {
+        anchors {
+            left: parent.left
+            bottom: hlep.top
+        }
+        z: 20
+        text: "bukła"
+        onClicked: {
+            measurements.get(true)
+        }
+    }
+
+    Button {
+        id: hlep
+        anchors {
+            left: parent.left
+            bottom: parent.bottom
+        }
+        z: 20
+        text: "hlep"
+        onClicked: {
+            var date = new Date();
+            date.setDate(date.getDate() - 1);
+            var date1 = new Date();
+            date1.setDate(date.getDate() - 7);
+            measurements.get({
+                "date_measured": [date, "<=", date1, ">="]
+            })
+        }
     }
 
     ListView
@@ -72,7 +103,7 @@ Page
                 id: contextMenu
                 MenuItem
                 {
-                    text: "Zmień pore posiłku"
+                    text: qsTr("Zmień pore posiłku")
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
@@ -87,7 +118,7 @@ Page
                 }
                 MenuItem
                 {
-                    text: "Usuń"
+                    text: qsTr("Usuń")
                     onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
                         measurements.remove(model.measurement_id)
                     })
@@ -132,11 +163,11 @@ Page
                 {
                     switch(meal)
                     {
-                        case 0: return "Na czczo"
-                        case 1: return "Przed posiłkiem"
-                        case 2: return "Po posiłku"
-                        case 3: return "Nocna"
-                        default: return "Nie określono"
+                        case 0: return qsTr("Na czczo")
+                        case 1: return qsTr("Przed posiłkiem")
+                        case 2: return qsTr("Po posiłku")
+                        case 3: return qsTr("Nocna")
+                        default: return qsTr("Nie określono")
                     }
                 }
                 id: whenMeasurement
@@ -157,7 +188,7 @@ Page
                 id: dateLabel
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"HH:mm")
+                text: new Date(model.timestamp*1000).toLocaleString(Qt.locale(),"HH:mm")
                 anchors
                 {
                     left: whenMeasurement.right

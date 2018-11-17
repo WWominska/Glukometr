@@ -7,7 +7,7 @@ Page
 {
     header: PageHeader {
         id: pageHeader
-        title: "Ustawienia"
+        title: qsTr("Ustawienia")
     }
     background: OreoBackground {}
 
@@ -84,7 +84,7 @@ Page
                 {
                     switch (secondaryText) {
                     case consts.phoneNumber:
-                        return settings.phoneNumber ? settings.phoneNumber :"Naciśnij aby ustawić";
+                        return settings.phoneNumber ? settings.phoneNumber :qsTr("Naciśnij aby ustawić");
                     default: return "";
                     }
                 }
@@ -102,7 +102,7 @@ Page
                 id: contextMenu
                 MenuItem {
                     enabled: settings.phoneNumber
-                    text: "Dzwoń"
+                    text: qsTr("Dzwoń")
                     onClicked: Qt.openUrlExternally("tel:+48" + settings.phoneNumber)
                 }
             }

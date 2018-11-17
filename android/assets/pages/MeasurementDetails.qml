@@ -51,7 +51,7 @@ Page
 
     header: PageHeader {
         id: pageHeader
-        title: "Szczegóły pomiaru"
+        title: qsTr("Szczegóły pomiaru")
     }
     background: OreoBackground {}
 
@@ -165,7 +165,7 @@ Page
                {
                    MenuItem
                    {
-                       text: "Edytuj"
+                       text: qsTr("Edytuj")
                        onClicked:
                        {
                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
@@ -188,7 +188,7 @@ Page
 
                    MenuItem
                    {
-                       text: "Usuń"
+                       text: qsTr("Usuń")
                        onClicked: remorse/*Food*/.execute(foreverFood, "Usunięcie posiłku", function() {mealAnnotations.remove(annotation_meal_id) } )
                    }
                }
@@ -261,7 +261,7 @@ Page
                 {
                     MenuItem
                     {
-                       text: "Edytuj"
+                       text: qsTr("Edytuj")
                        onClicked:
                        {
                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
@@ -285,7 +285,7 @@ Page
 
                    MenuItem
                    {
-                       text: "Usuń"
+                       text: qsTr("Usuń")
                        onClicked: remorse/*Drugs*/.execute(drugsEverywhere, "Usunięcie leku", function() {drugAnnotations.remove(annotation_drug_id) } )
                    }
              }
@@ -334,7 +334,7 @@ Page
                {
                    MenuItem
                    {
-                       text: "Edytuj"
+                       text: qsTr("Edytuj")
                        onClicked:
                        {
                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
@@ -352,7 +352,7 @@ Page
                    }
                    MenuItem
                    {
-                       text: "Usuń"
+                       text: qsTr("Usuń")
                        onClicked: remorse/*Notes*/.execute(notes, "Usunięcie notatki", function() {textAnnotations.remove(annotation_text_id) } )
                    }
                }

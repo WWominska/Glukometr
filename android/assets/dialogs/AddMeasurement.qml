@@ -11,7 +11,7 @@ DialogPage
     footer: DialogHeader {}
     header: PageHeader {
         id: pageHeader
-        title: "Dodaj pomiar"
+        title: qsTr("Dodaj pomiar")
     }
 
     property int meal: 4
@@ -54,7 +54,7 @@ DialogPage
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Podaj cukier"
+                text: qsTr("Podaj cukier")
 
                 opacity: showIfPhase(0) ? 1.0 : disabledOpacity
              }
@@ -84,7 +84,7 @@ DialogPage
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Pora posiłku"
+                text: qsTr("Pora posiłku")
                 opacity: showIfPhase(1) ? 1.0 : disabledOpacity
              }
 
@@ -96,7 +96,7 @@ DialogPage
                     margins: Theme.horizontalPageMargin
                     right: parent.right
                 }
-                text: "Poniżej możesz ustawić pore w jakiej dokonałeś pomiaru"
+                text: qsTr("Poniżej możesz ustawić pore w jakiej dokonałeś pomiaru")
                 color: "#d9d2b9"
                 wrapMode: Text.WordWrap
                 enabled: opacity === 1

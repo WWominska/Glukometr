@@ -21,7 +21,7 @@ DialogPage
     footer: DialogHeader {}
     header: PageHeader {
         id: pageHeader
-        title: "Ustaw numer"
+        title: qsTr("Ustaw numer")
     }
 
     Flickable
@@ -50,7 +50,7 @@ DialogPage
 //            }
             Label
             {
-                text: "Podaj numer kontaktowy do osoby, z którą należy się skontaktować w razie nagłego wypadku."
+                text: qsTr("Podaj numer kontaktowy do osoby, z którą należy się skontaktować w razie nagłego wypadku.")
                 wrapMode: Text.WordWrap
                 color: "#d9d2b9"
                 anchors
