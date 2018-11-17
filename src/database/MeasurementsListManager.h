@@ -17,8 +17,13 @@ public:
     }
     QString getCreateQuery() const override;
     QString baseQuery() override {
-        return "SELECT * FROM %1 ORDER BY timestamp DESC";
+        return "SELECT *, date(timestamp, 'unixepoch') as date_measured FROM %1";
     }
+
+    QString orderClause() override {
+        return "ORDER BY timestamp DESC";
+    }
+
 
     QVariantMap getDefaults() override;
     Q_INVOKABLE void getLastSequenceNumber(int deviceId);
