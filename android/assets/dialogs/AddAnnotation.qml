@@ -230,7 +230,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: "Ile go przyjąłeś"
+                text: "Dawka"
             }
 
             TextField

@@ -3,11 +3,13 @@ import QtGraphicalEffects 1.0
 import QtQuick.Controls 2.3
 import ".."
 import "../components"
+
 Page
 {
     id: screen
 
     header: PageHeader { title: "Progi" }
+    background: OreoBackground {}
 
     Flickable
     {
@@ -19,6 +21,12 @@ Page
             id: column
             width: screen.width
             spacing: Theme.paddingLarge
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: Theme.horizontalPageMargin
+            }
 
             Button {
                 text: "Przywróć ustawienia domyślne"
@@ -27,13 +35,16 @@ Page
 
             Repeater
             {
+
                 model: thresholds.model
+
 
                 Rectangle
                 {
                     color: "transparent"
                     width: parent.width
                     height: contentColumn.childrenRect.height
+
                     id: section
 
                     property int sectionIndex: index
@@ -66,13 +77,14 @@ Page
                         Rectangle {
                             id: sectionTitle
                             height: 48
-                            color: "#33000000"
+                            color: "#33f7f5f0"
                             width: parent.width
                             Image
                             {
                                 id: sectionIcon
                                 width: 32
                                 height: 32
+
                                 anchors
                                 {
                                     verticalCenter: parent.verticalCenter
@@ -85,6 +97,7 @@ Page
                                     leftMargin: Theme.paddingLarge
                                     verticalCenter: parent.verticalCenter
                                 }
+                                color: "#f7f5f0"
                                 text: changeToString(meal)
                             }
                         }
@@ -104,11 +117,13 @@ Page
                         width: section.width
                         RangeSlider
                         {
+
                             stepSize: 5
                             id: scroll
                             width: parent.width
                             from: 90
                             to: 180
+
                             first {
                                 value: min
                                 onPressedChanged: parent.updateThreshold()
@@ -117,6 +132,7 @@ Page
                                 parent: scroll.first.handle
                                 visible: scroll.first.pressed
                                 text: scroll.first.value.toFixed(1)
+
                             }
                             second {
                                 value: max
