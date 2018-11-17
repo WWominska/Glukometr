@@ -93,7 +93,7 @@ Page
             onPressAndHold: if(model.modelData.secondaryText == consts.phoneNumber) contextMenu.popup()
 
             onClicked: {
-                if (replace)
+                if (model.modelData.replace)
                     pageStack.replace(Qt.resolvedUrl(model.modelData.source))
                 else pageStack.push(Qt.resolvedUrl(model.modelData.source))
             }
