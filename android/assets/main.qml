@@ -60,10 +60,6 @@ Item
         onActivated: pageStack.pop()
     }
 
-    Item {
-        id: pythonGlukometr
-    }
-
     StackView {
         id: pageStack
         initialItem: MeasurementList {}
@@ -86,14 +82,12 @@ Item
         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddMeasurement.qml"))
         dialog.accepted.connect(function()
         {
-            console.log(dialog.value)
-            console.log(dialog.meal)
             measurements.add({
                 "value": dialog.value,
                 "meal": dialog.meal
             });
             if (dialog.remind)
-                pythonGlukometr.reminders.remindInTwoHours()
+                reminders.remindInTwoHours()
         })
     }
 }
