@@ -81,13 +81,13 @@ Page
             height: contentHeight
             model: devices.model
 
-            delegate: ItemDelegate
+            delegate: ListItem
             {
                 id:deviceSet
                 width: parent.width
 
                 height: deviceAdd.height + lastSyncDate.height + Theme.paddingSmall*3
-                Menu
+                menu: Menu
                 {
                     MenuItem
                     {
@@ -106,7 +106,7 @@ Page
                     MenuItem
                     {
                         text: qsTr("Zapomnij urządzenie")
-                        onClicked: devices.remove(device_id, undefined)
+                        onClicked: devices.remove(device_id)
                     }
                 }
 
@@ -233,28 +233,4 @@ Page
             }
         }
     }
-//    InteractionHintLabel
-//    {
-//        id:bluetooth
-//        text: "Tutaj możesz wybrać glukometr, do którego chcesz się połączyć, klikając na niego"
-//        color: Theme.secondaryColor
-//        anchors.bottom: parent.bottom
-//        opacity: tutorialBluetooth ? 1.0 : 0.0
-//        Behavior on opacity { FadeAnimation {} }
-//        invert: false
-//    }
-
-////    TouchInteractionHint
-////    {
-////        id: hint
-////        loops: Animation.Infinite
-////        interactionMode: TouchInteraction.Pull
-////        direction: TouchInteraction.Down
-////    }
-
-//    Connections
-//    {
-//        target: application
-//        onIsTutorialEnabledChanged: hint.start()
-//    }
 }
