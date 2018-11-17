@@ -1,23 +1,39 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import QtQuick.Controls.Material 2.3
 import Qt.labs.calendar 1.0
+import "../components"
+import ".."
+
 
 Item {
     property var date: new Date()
     property var selectedDate: new Date()
+    height: calendarNav.height + calendarGrid.childrenRect.height + napiz.height + Theme.paddingMedium
 
     RowLayout {
         id: calendarNav
         width: parent.width
+
         Label {
             text: date.toLocaleDateString(Qt.locale(), "MMMM yyyy")
+            font.pixelSize: Theme.fontSizeMedium
         }
         Item {
             Layout.fillWidth: true
         }
-        Button {
-            text: "<"
+        RoundButton {
+            background: Rectangle
+            {
+                color: "#99ff7575"
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                height: parent.width
+                radius: parent.width
+            }
+            text: "\ue5cb"
+            font.family: "Material Icons"
             onClicked: {
                 var d = new Date();
                 d.setDate(date.getDate());
@@ -30,8 +46,19 @@ Item {
                 date = d;
             }
         }
-        Button {
-            text: ">"
+        RoundButton {
+            background: Rectangle
+            {
+                color: "#99ff7575"
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width
+                height: parent.width
+                radius: parent.width
+            }
+
+            text: "\ue5cc"
+            font.family: "Material Icons"
+
             onClicked: {
                 var d = new Date();
                 d.setDate(date.getDate());
@@ -57,8 +84,9 @@ Item {
             delegate: Label {
                 width: parent.width/7
                 horizontalAlignment: Text.AlignHCenter
-                color: "#fff"
+                color: "#ff7575"
                 text: model.shortName
+                font.pixelSize: Theme.fontSizeExtraSmall
             }
         }
 
@@ -68,10 +96,19 @@ Item {
             month: date.getMonth()
             year: date.getFullYear()
             locale: Qt.locale()
+            spacing: 0
+
 
             delegate: ToolButton {
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: "#85000000"
+                }
+                //Material.foreground: "black"
+
                 opacity: model.month === grid.month ? 1.0 : 0.6
                 text: model.day
+
                 onClicked: {
                     var d = new Date();
                     d.setFullYear(model.year)
@@ -83,11 +120,16 @@ Item {
         }
     }
     Label {
-        anchors {
+        id: napiz
+        anchors
+        {
             top: calendarGrid.bottom
+            topMargin: Theme.paddingSmall
+            bottomMargin:Theme.paddingLarge
             horizontalCenter: parent.horizontalCenter
         }
 
         text: selectedDate.toLocaleDateString(Qt.locale(), "dd MMMM yyyy")
+        color: "#ff7575"
     }
 }
