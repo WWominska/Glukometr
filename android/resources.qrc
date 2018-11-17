@@ -76,5 +76,7 @@
         <file>icons/24x24@2/after-meal.png</file>
         <file>icons/24x24@3/after-meal.png</file>
         <file>icons/24x24@4/after-meal.png</file>
+        <file>assets/pages/Calendar.qml</file>
+        <file>assets/components/CalendarWidget.qml</file>
     </qresource>
 </RCC>

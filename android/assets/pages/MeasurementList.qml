@@ -57,6 +57,15 @@ Page
         }
     }
 
+    FloatingActionButton {
+        anchors.left: parent.left
+        anchors.right: unset
+        Material.foreground: "#000"
+        Material.background: "#99f7f5f0"
+        text: "w"
+        onClicked: pageStack.push("qrc:/assets/pages/Calendar.qml")
+    }
+
     ListView
     {
         ScrollBar.vertical: ScrollBar { }
