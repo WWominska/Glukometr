@@ -20,6 +20,10 @@ Item
     property bool bluetoothPageOpen: false
     property real disabledOpacity: 0.2
 
+    property var beginDate: new Date()
+    property var endDate: new Date()
+    property bool datesSet: false
+
     property var mealListModel: [
         {
             "meal": 0,

@@ -4,13 +4,28 @@ import QtQuick.Layouts 1.3
 import "../components"
 import ".."
 
-Page
+DialogPage
 {
-    header: PageHeader
-    {
-        id: pageHeader
-        title: qsTr("Wybierz przedział")
+    id: calendarPage
+    property bool datesChanged: false
+    onAccepted: {
+        if (datesChanged) {
+            application.beginDate = new Date(
+                kalednarz.selectedDate.getFullYear(),
+                kalednarz.selectedDate.getMonth(),
+                kalednarz.selectedDate.getDate(), 0, 0, 0);
+            application.endDate = new Date(
+                        kadenlarz.selectedDate.getFullYear(),
+                        kadenlarz.selectedDate.getMonth(),
+                        kadenlarz.selectedDate.getDate(), 23, 59, 59);
+            measurements.get({
+                "timestamp": [Date.parse(application.endDate)/1000, "<=", Date.parse(application.beginDate)/1000, ">="]
+            })
+            application.datesSet = true
+        }
     }
+
+    title: qsTr("Wybierz przedział")
     background: OreoBackground {}
     Rectangle {
         anchors
@@ -18,8 +33,6 @@ Page
             left: parent.left
             right: parent.right
             margins: Theme.horizontalPageMargin
-//            rightMargin: Theme.horizontalPageMargin
-//            leftMargin: Theme.horizontalPageMargin
             top: parent.top
 
         }
@@ -37,7 +50,8 @@ Page
         }
 
         Label {
-            text: qsTr("Data początkowa")
+            id: poczatek
+            text: qsTr("Początek")
             anchors
             {
                 left:parent.left
@@ -45,7 +59,20 @@ Page
                 verticalCenter: parent.verticalCenter
             }
         }
+        Label
+        {
+            anchors
+            {
+                right: picon.left
+                rightMargin: Theme.paddingLarge
+                verticalCenter: parent.verticalCenter
+            }
+            color: "#473e3e"
+            text: kalednarz.selectedDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy")
+        }
+
         IconLabel {
+            id:picon
             anchors
             {
                 right: parent.right
@@ -71,6 +98,8 @@ Page
         CalendarWidget
         {
             id: kalednarz
+            selectedDate: application.beginDate
+            onSelectedDateChanged: calendarPage.datesChanged = true
             anchors
             {
 
@@ -109,7 +138,7 @@ Page
         }
 
         Label {
-            text: qsTr("Data końcowa")
+            text: qsTr("Koniec")
             anchors
             {
                 left:parent.left
@@ -117,7 +146,21 @@ Page
                 verticalCenter: parent.verticalCenter
             }
         }
+
+        Label
+        {
+            anchors
+            {
+                right: kicon.left
+                rightMargin: Theme.paddingLarge
+                verticalCenter: parent.verticalCenter
+            }
+            color: "#473e3e"
+            text: kadenlarz.selectedDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy")
+        }
+
         IconLabel {
+            id: kicon
             anchors
             {
                 right: parent.right
@@ -143,6 +186,8 @@ Page
         CalendarWidget
         {
             id: kadenlarz
+            selectedDate: application.endDate
+            onSelectedDateChanged: calendarPage.datesChanged = true
             anchors
             {
 

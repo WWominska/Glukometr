@@ -8,7 +8,6 @@ import ".."
 
 
 Item {
-    property var date: new Date()
     property var selectedDate: new Date()
     height: calendarNav.height + calendarGrid.childrenRect.height + napiz.height + Theme.paddingMedium
 
@@ -17,7 +16,7 @@ Item {
         width: parent.width
 
         Label {
-            text: date.toLocaleDateString(Qt.locale(), "MMMM yyyy")
+            text: selectedDate.toLocaleDateString(Qt.locale(), "MMMM yyyy")
             font.pixelSize: Theme.fontSizeMedium
         }
         Item {
@@ -36,14 +35,14 @@ Item {
             font.family: "Material Icons"
             onClicked: {
                 var d = new Date();
-                d.setDate(date.getDate());
-                if (date.getMonth() > 0)
-                    d.setMonth(date.getMonth() - 1);
+                d.setDate(selectedDate.getDate());
+                if (selectedDate.getMonth() > 0)
+                    d.setMonth(selectedDate.getMonth() - 1);
                 else {
                     d.setMonth(11)
-                    d.setFullYear(date.getFullYear() - 1)
+                    d.setFullYear(selectedDate.getFullYear() - 1)
                 }
-                date = d;
+                selectedDate = d;
             }
         }
         RoundButton {
@@ -61,14 +60,14 @@ Item {
 
             onClicked: {
                 var d = new Date();
-                d.setDate(date.getDate());
-                if (date.getMonth() < 11)
-                    d.setMonth(date.getMonth() + 1);
+                d.setDate(selectedDate.getDate());
+                if (selectedDate.getMonth() < 11)
+                    d.setMonth(selectedDate.getMonth() + 1);
                 else {
                     d.setMonth(0)
-                    d.setFullYear(date.getFullYear() + 1)
+                    d.setFullYear(selectedDate.getFullYear() + 1)
                 }
-                date = d;
+                selectedDate = d;
             }
         }
     }
@@ -93,8 +92,8 @@ Item {
         MonthGrid {
             id: grid
             width: parent.width
-            month: date.getMonth()
-            year: date.getFullYear()
+            month: selectedDate.getMonth()
+            year: selectedDate.getFullYear()
             locale: Qt.locale()
             spacing: 0
 

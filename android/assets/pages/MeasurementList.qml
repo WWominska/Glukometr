@@ -8,12 +8,37 @@ import "../components"
 
 Page
 {
-    header: PageHeader {
-        id: pageHeader
-        title: qsTr("Pomiary")
-        rightIcon: "\ue8b8"
-        rightCallback: function () {
-            pageStack.push("qrc:/assets/pages/Settings.qml")
+    header: Item {
+        width: parent.width
+        height: pageHeader.height + (resetDates.visible ? resetDates.height + Theme.paddingSmall*2 : 0)
+        PageHeader {
+            id: pageHeader
+            title: qsTr("Pomiary")
+            rightIcon: "\ue8b8"
+            rightCallback: function () {
+                pageStack.push("qrc:/assets/pages/Settings.qml")
+            }
+        }
+        Button {
+            id: resetDates
+            anchors
+            {
+                top: pageHeader.bottom
+                left: parent.left
+                right: parent.right
+                topMargin: Theme.paddingSmall
+                bottomMargin: Theme.paddingSmall
+                leftMargin: Theme.horizontalPageMargin
+                rightMargin: Theme.horizontalPageMargin
+            }
+            width: parent.width
+            z: 20
+            text: qsTr("Pokaż wszystkie")
+            onClicked: {
+                application.datesSet = false
+                measurements.get(true)
+            }
+            visible: application.datesSet
         }
     }
     background: OreoBackground {}
@@ -25,48 +50,16 @@ Page
 
     FloatingActionButton {
         Material.foreground: "#000"
-        Material.background: "#99f7f5f0"
+        Material.background: "#ccff7575"
         text: "\ue145"
         onClicked: openAddMeasurementDialog()
     }
 
-    /*Button {
-        anchors {
-            left: parent.left
-            bottom: hlep.top
-        }
-        z: 20
-        text: "bukła"
-        onClicked: {
-            measurements.get(true)
-        }
-    }
-
-    Button {
-        id: hlep
-        anchors {
-            left: parent.left
-            bottom: parent.bottom
-        }
-        z: 20
-        text: "hlep"
-        onClicked: {
-            var date = new Date();
-            date.setDate(date.getDate() - 1);
-            var date1 = new Date();
-            date1.setDate(date.getDate() - 7);
-            measurements.get({
-                "date_measured": [date, "<=", date1, ">="]
-            })
-        }
-    }*/
-
     FloatingActionButton {
         anchors.left: parent.left
         anchors.right: unset
-        Material.foreground: "#000"
         Material.background: "#99f7f5f0"
-        text: "w"
+        text: "K"
         onClicked: pageStack.push("qrc:/assets/pages/Calendar.qml")
     }
 
@@ -83,7 +76,7 @@ Page
             {
                 height: tekst.paintedHeight + Theme.paddingMedium
                 width: parent.width
-                color: "#66000000"
+                color: "#77000000"
                 Label
                 {
                     id: tekst
@@ -142,7 +135,6 @@ Page
                     height: Theme.itemSizeExtraSmall/3
                     anchors.centerIn: parent
                     color: thresholds.evaluateMeasurement(value, meal)
-
                     radius: width
                 }
 
