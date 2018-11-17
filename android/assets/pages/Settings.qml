@@ -19,6 +19,13 @@ Page
 
     property var settingList: [
         {
+            "settingText": qsTr("Bluetooth"),
+            "secondaryText": 0,
+            "replace": false,
+            "source": "qrc:/assets/pages/DeviceList.qml",
+            "image": "bluetooth"
+        },
+        {
             "settingText": qsTr("Progi"),
             "secondaryText": 0,
             "replace": false,

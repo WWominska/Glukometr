@@ -76,6 +76,11 @@
         <file>icons/24x24@2/after-meal.png</file>
         <file>icons/24x24@3/after-meal.png</file>
         <file>icons/24x24@4/after-meal.png</file>
+        <file>icons/24x24/bluetooth.png</file>
+        <file>icons/24x24@1.5/bluetooth.png</file>
+        <file>icons/24x24@2/bluetooth.png</file>
+        <file>icons/24x24@3/bluetooth.png</file>
+        <file>icons/24x24@4/bluetooth.png</file>
         <file>assets/pages/Calendar.qml</file>
         <file>assets/components/CalendarWidget.qml</file>
         <file>icons/cukierek.svg</file>

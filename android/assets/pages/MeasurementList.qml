@@ -14,6 +14,11 @@ Page
         PageHeader {
             id: pageHeader
             title: qsTr("Pomiary")
+            leftIcon: "\ue8df"
+            leftCallback: function () {
+                pageStack.push("qrc:/assets/pages/Calendar.qml")
+            }
+
             rightIcon: "\ue8b8"
             rightCallback: function () {
                 pageStack.push("qrc:/assets/pages/Settings.qml")
@@ -53,14 +58,6 @@ Page
         Material.background: "#ccff7575"
         text: "\ue145"
         onClicked: openAddMeasurementDialog()
-    }
-
-    FloatingActionButton {
-        anchors.left: parent.left
-        anchors.right: unset
-        Material.background: "#99f7f5f0"
-        text: "K"
-        onClicked: pageStack.push("qrc:/assets/pages/Calendar.qml")
     }
 
     ListView

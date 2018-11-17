@@ -29,6 +29,14 @@ DialogPage
              id: nameField
              width: parent.width
              text: name
+             anchors
+             {
+                 left: parent.left
+                 right: parent.right
+                 top: parent.top
+                 margins: Theme.horizontalPageMargin
+
+             }
              placeholderText: qsTr("Np. Glukometr w domu")
              //label: "Twoja nazwa"
          }
