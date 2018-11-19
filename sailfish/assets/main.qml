@@ -17,6 +17,44 @@ ApplicationWindow {
         return false
     }
 
+    property var beginDate: new Date()
+    property var endDate: new Date()
+    property bool datesSet: false
+
+    property var mealListModel: [
+        {
+            "meal": 0,
+            "lightIcon": "qrc:/icons/icon-fasting-light.svg",
+            "icon": "qrc:/icons/icon-fasting.svg",
+            "name": qsTr("Na czczo")
+        },
+        {
+            "meal": 1,
+            "lightIcon": "qrc:/icons/icon-before-meal-light.svg",
+            "icon": "qrc:/icons/icon-before-meal.svg",
+            "name": qsTr("Przed posiłkiem")
+        },
+        {
+            "meal": 2,
+            "lightIcon": "qrc:/icons/icon-after-meal-light.svg",
+            "icon": "qrc:/icons/icon-after-meal.svg",
+            "name": qsTr("Po posiłku")
+        },
+        {
+            "meal": 3,
+            "lightIcon": "image://Theme/icon-m-night",
+            "icon": "image://Theme/icon-m-night",
+            "name": qsTr("Nocna")
+        },
+        {
+            "meal": 4,
+            "lightIcon": "image://Theme/icon-m-question",
+            "icon": "image://Theme/icon-m-question",
+            "name": qsTr("Nie określono")
+        }
+    ]
+
+
     cover: Qt.resolvedUrl("qrc:/assets/cover/CoverPage.qml")
     initialPage: Component { MeasurementList {} }
     allowedOrientations: defaultAllowedOrientations
