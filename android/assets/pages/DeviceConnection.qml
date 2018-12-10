@@ -1,6 +1,8 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick.Controls 2.3
 import glukometr 1.0
+import "../components"
+import ".."
 
 Page
 {
@@ -10,6 +12,10 @@ Page
 
     function getLastSequenceNumber() {
         measurements.getLastSequenceNumber(deviceId);
+    }
+
+    header: PageHeader {
+        title: qsTr("Połączenie")
     }
 
     Connections {
@@ -23,13 +29,15 @@ Page
         }
     }
 
+    Component.onDestruction: measurements.get()
+
     Component.onCompleted: {
         if (deviceId != -1)
             getLastSequenceNumber()
-        else pythonGlukometr.devices.getDeviceId(macAddress, function (deviceId) {
-            page.deviceId = deviceId
+        else {
+            page.deviceId = devices.getDeviceId(macAddress)
             getLastSequenceNumber()
-        })
+        }
     }
 
     Glucometer
@@ -37,24 +45,23 @@ Page
         id: glucometer
         deviceId: page.deviceId
 
-        onError: logi.text = "Wystąpił błąd"
-        onInvalidService: logi.text = "Nie pobrano danych"
+        onError: logi.text = qsTr("Wystąpił błąd")
+        onInvalidService: logi.text = qsTr("Nie pobrano danych")
         onConnecting: {
             reconnectBtn.visible = false
             logi.text = "Łączenie..."
         }
-        onConnected: logi.text = "Połączono"
+        onConnected: logi.text = qsTr("Połączono")
         onDisconnected: {
             reconnectBtn.visible = true
-            logi.text = "Rozłączono"
+            logi.text = qsTr("Rozłączono")
         }
-        onNotAGlucometer: logi.text = "Urządzenie nie jest glukometrem"
-        onPairing: logi.text = "Parowanie..."
-        onRacpStarted: logi.text = "Pobieranie pomiarów"
+        onNotAGlucometer: logi.text = qsTr("Urządzenie nie jest glukometrem")
+        onPairing: logi.text = qsTr("Parowanie...")
+        onRacpStarted: logi.text = qsTr("Pobieranie pomiarów")
         onRacpFinished: {
-            pythonGlukometr.devices.update(page.deviceId, {"last_sync": -1})
-            measurements.get()
-            logi.text = "Pobrano wszystko"
+            devices.update(page.deviceId, {"last_sync": -1})
+            logi.text = qsTr("Pobrano wszystko")
             pageStack.pop(0)
         }
         onMealChanged:
@@ -73,18 +80,18 @@ Page
             measurements.update({
                 "sequence_number": sequence_number,
                 "device_id": device
-            }, {"meal": newMeal}, true)
+            }, {"meal": newMeal}, false)
         }
 
         onNewMeasurement:
         {
             measurements.add({
                 "value": value,
-                "timestamp": timestamp,
+                "timestamp": Date.parse(timestamp)/1000,
                 "device_id": device,
                 "sequence_number": sequence_number,
                 "meal": -1
-            })
+            }, false)
         }
     }
 
@@ -103,7 +110,7 @@ Page
         Label
         {
             id: logi
-            text: "Oczekiwanie..."
+            text: qsTr("Oczekiwanie...")
             anchors.centerIn: updatei
             color: Theme.highlightColor
         }
@@ -115,7 +122,7 @@ Page
                 topMargin: Theme.paddingMedium
                 horizontalCenter: logi.horizontalCenter
             }
-            text: "Spróbuj ponownie"
+            text: qsTr("Spróbuj ponownie")
             onClicked: getLastSequenceNumber()
             visible: false
         }

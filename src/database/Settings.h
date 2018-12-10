@@ -56,6 +56,7 @@ public:
     Q_INVOKABLE QVariant get(const QString & group, const QString & key, const QVariant & defaultValue=QVariant());
     Q_INVOKABLE void     set(const QString & group, const QString & key, const QVariant & data);
 public slots:
+    Q_INVOKABLE void appInitialized() {};
     Q_INVOKABLE bool getNotFirstRun();
     Q_INVOKABLE void setNotFirstRun(bool notFirstRun);
     Q_INVOKABLE QString getPhoneNumber();

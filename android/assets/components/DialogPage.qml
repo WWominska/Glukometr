@@ -5,6 +5,8 @@ import ".."
 
 
 Page {
+    id: page
+    background: OreoBackground {}
     signal accepted
     signal canceled
     signal done
@@ -12,12 +14,19 @@ Page {
     property bool canAccept: true
     property bool canCancel: true
 
+    header: PageHeader {
+        id: pageHeader
+        title: page.title
+        leftCallback: function () { cancel() }
+        rightIcon: "\ue5ca"
+        rightCallback: function () { accept() }
+    }
+
     function accept() {
         if (canAccept) {
             result = true
             done()
             accepted()
-            pageStack.pop()
         }
     }
     function cancel() {
@@ -25,7 +34,6 @@ Page {
             result = false
             done()
             canceled()
-            pageStack.pop()
         }
     }
 

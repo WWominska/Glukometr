@@ -1,137 +1,155 @@
-
 import QtQuick 2.0
-import Sailfish.Silica 1.0
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
+import QtQuick.Layouts 1.3
+
+import ".."
+import "../components"
+
 Page
 {
     id: screen
 
-    SilicaFlickable
+    header: PageHeader { title: qsTr("Progi") }
+    background: OreoBackground {}
+
+    Flickable
     {
         anchors.fill: parent
         contentHeight: column.height
-
-        PullDownMenu
-        {
-            MenuItem
-            {
-                text: "Przywróć ustawienia domyślne"
-                onClicked: thresholds.setDefaults()
-            }
-        }
 
         Column
         {
             id: column
             width: screen.width
             spacing: Theme.paddingLarge
-
-            PageHeader
+            anchors
             {
-                title: "Ustaw progi"
+                left: parent.left
+                right: parent.right
+                margins: Theme.horizontalPageMargin
             }
 
-            ExpandingSectionGroup
+            Button {
+                text: qsTr("Przywróć ustawienia domyślne")
+                onClicked: thresholds.setDefaults()
+            }
+
+            Repeater
             {
-                currentIndex: 0
-                Repeater
+
+                model: thresholds.model
+
+
+                Rectangle
                 {
-                    model: thresholds.model
+                    color: "transparent"
+                    width: parent.width
+                    height: contentColumn.childrenRect.height
 
-                    ExpandingSection
+                    id: section
+
+                    property int sectionIndex: index
+
+
+                    function changeToString(meal)
                     {
-                        id: section
-
-                        property int sectionIndex: index
-                        title: changeToString(meal)
-
-                        Image
+                        switch(meal)
                         {
-                            width: Theme.iconSizeMedium
-                            height: width
+                            case 0: return qsTr("Na czczo")
+                            case 1: return qsTr("Przed posiłkiem")
+                            case 2: return qsTr("Po posiłku")
+                            case 3: return qsTr("Nocna")
+                        }
+                    }
 
-                            x: !expanded ? Theme.horizontalPageMargin : parent.width - width - Theme.horizontalPageMargin
-                            Behavior on x
-                            {
-                                NumberAnimation
-                                {
-                                easing.type: Easing.InCubic
-                                easing.amplitude: 3.0
-                                easing.period: 2.0
-                                duration: 250
+                    function changeToIcon(meal)
+                    {
+                        switch(meal)
+                        {
+                            case 0: return "fasting"
+                            case 1: return "apple"
+                            case 2: return "after-meal"
+                            case 3: return "night"
+                        }
+                    }
+
+                    Column
+                    {
+                        Rectangle {
+                            id: sectionTitle
+                            height: 48
+                            color: "#33f7f5f0"
+                            width: parent.width
+                            ToolButton {
+                                id: sectionIcon
+                                icon.name: changeToIcon(meal)
+                            }
+                            Label {
+                                anchors {
+                                    left: sectionIcon.right
+                                    leftMargin: Theme.paddingLarge
+                                    verticalCenter: parent.verticalCenter
                                 }
-                            }
-                            anchors
-                            {
-                                top: parent.top
-                                topMargin: (Theme.itemSizeMedium - height)/2
-                            }
-
-                            source: changeToIcon(meal)
-
-
-                        }
-
-                        function changeToString(meal)
-                        {
-                            switch(meal)
-                            {
-                                case 0: return "Na czczo"
-                                case 1: return "Przed posiłkiem"
-                                case 2: return "Po posiłku"
-                                case 3: return "Nocna"
+                                color: "#f7f5f0"
+                                text: changeToString(meal)
                             }
                         }
 
-                        function changeToIcon(meal)
-                        {
-                            switch(meal)
-                            {
-                                case 0: return "qrc:/icons/icon-fasting.svg"
-                                case 1: return "qrc:/icons/icon-before-meal.svg"
-                                case 2: return "qrc:/icons/icon-after-meal.svg"
-                                case 3: return "image://Theme/icon-m-night"
+                        id: contentColumn
+                        function updateThreshold() {
+                            if (min != scroll.first.value || max != scroll.second.value) {
+                                thresholds.update({
+                                    "threshold_id": threshold_id,
+                                }, {
+                                    "min": scroll.first.value.toFixed(0),
+                                    "max": scroll.second.value.toFixed(0)
+                                }, false)
                             }
                         }
 
-                        content.sourceComponent: Column
-                        {
-                            function updateThreshold() {
-                                if (min != minScroll.value|| max != maxScroll.value) {
-                                    thresholds.update({
-                                        "threshold_id": threshold_id,
-                                    }, {
-                                        "min": minScroll.value,
-                                        "max": maxScroll.value
-                                    }, false)
+                        width: section.width
+                        RowLayout {
+                            width: parent.width
+                            spacing: Theme.paddingLarge
+                            Label {
+                                text: "90"
+                            }
+
+                            RangeSlider
+                            {
+                                Layout.fillWidth: true
+                                stepSize: 5
+                                id: scroll
+                                from: 90
+                                to: 180
+
+                                Material.accent: Material.Red
+
+                                first {
+                                    value: min
+                                    onPressedChanged: parent.updateThreshold()
                                 }
-                            }
+                                ToolTip {
+                                    parent: scroll.first.handle
+                                    visible: scroll.first.pressed
+                                    text: scroll.first.value.toFixed(1)
 
-                            width: section.width
-                            Slider
-                            {
-                                stepSize: 5
-                                id: minScroll
-                                width: parent.width
-                                minimumValue: 90
-                                maximumValue: 180
-                                value: min
-                                valueText: value
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                onDownChanged: updateThreshold()
+                                }
+                                second {
+                                    value: max
+                                    onPressedChanged: parent.updateThreshold()
+                                }
+                                ToolTip {
+                                    parent: scroll.second.handle
+                                    visible: scroll.second.pressed
+                                    text: scroll.second.value.toFixed(0)
+                                }
+                                live: true
                             }
-
-                            Slider
-                            {
-                                stepSize: 5
-                                id: maxScroll
-                                width: parent.width
-                                minimumValue: 110
-                                maximumValue: 260
-                                value: max
-                                valueText: value
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                onDownChanged: updateThreshold()
+                            Label {
+                                text: "180"
                             }
                         }
                     }

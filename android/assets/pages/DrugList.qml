@@ -1,34 +1,36 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.1
+import ".."
+import "../components"
 
 Page
 {
     id: drugsPage
-
-    SilicaListView
+    header: PageHeader
     {
-        header: PageHeader
-        {
-            id: pageHeader
-            title: "Leki"
-        }
-        PullDownMenu
-        {
-            MenuItem
-            {
-                text: "Dodaj lek"
-                onClicked:
-                {
-                    var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
-                    dialog.accepted.connect(function()
-                    {
-                        drugs.add({"name": dialog.value})
-                    })
-                }
-            }
-        }
-        VerticalScrollDecorator {}
+        id: pageHeader
+        title: qsTr("Leki")
+    }
+    background: OreoBackground {}
 
+    FloatingActionButton {
+        Material.foreground: "#000"
+        Material.background: "#99f7f5f0"
+        text: "\ue145"
+        onClicked: {
+            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
+            dialog.accepted.connect(function()
+            {
+                drugs.add({"name": dialog.value})
+            })
+        }
+    }
+
+    ListView
+    {
+
+        ScrollBar.vertical: ScrollBar { }
 
         id: drugsBook
         anchors.fill: parent
@@ -36,18 +38,17 @@ Page
         delegate: ListItem
         {
             id: drugItem
-            RemorseItem { id: remorseDrug }
-            menu: ContextMenu
+            menu: Menu
             {
                 MenuItem
                 {
-                    text: "Usuń"
-                    onClicked: remorseDrug.execute(drugItem, "Usunięcie leku", function() {drugs.remove(drug_id) } )
+                    text: qsTr("Usuń")
+                    onClicked: drugs.remove(drug_id)
                 }
 
                 MenuItem
                 {
-                    text: "Edytuj"
+                    text: qsTr("Edytuj")
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"), {

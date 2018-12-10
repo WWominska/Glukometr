@@ -1,16 +1,8 @@
 <RCC>
     <qresource prefix="/">
+        <file alias="translations/glukometr.qm">../translations/glukometr_en.qm</file>
         <file>assets/main.qml</file>
-        <file>icons/icon-after-meal.svg</file>
-        <file>icons/icon-before-meal.svg</file>
-        <file>icons/icon-fasting.svg</file>
-        <file>icons/icon-annotations-drug.svg</file>
-        <file>icons/icon-annotations-meal.svg</file>
         <file>icons/icon-glucometer.svg</file>
-        <file>icons/icon-settings-threshold.svg</file>
-        <file>icons/icon-m-acknowledge.svg</file>
-        <file>icons/icon-m-night.svg</file>
-        <file>icons/icon-m-question.svg</file>
         <file>assets/dialogs/AddAnnotation.qml</file>
         <file>assets/dialogs/AddDrug.qml</file>
         <file>assets/dialogs/AddMeasurement.qml</file>
@@ -30,14 +22,67 @@
         <file>assets/Theme.qml</file>
         <file>assets/qmldir</file>
         <file>assets/components/PageHeader.qml</file>
-        <file>icons/icon-m-add.svg</file>
-        <file>icons/icon-m-bluetooth.svg</file>
-        <file>icons/icon-m-developer-mode.svg</file>
-        <file>icons/icon-m-alarm.svg</file>
-        <file>icons/icon-l-answer.svg</file>
         <file>assets/components/SectionHeader.qml</file>
-        <file>assets/components/DialogHeader.qml</file>
         <file>assets/components/DialogPage.qml</file>
         <file>assets/components/ListItem.qml</file>
+        <file alias="tuo.jpg">37267ae379d43f14ad475de97ea877de.jpg</file>
+        <file>assets/components/OreoBackground.qml</file>
+        <file>assets/fonts/MaterialIcons-Regular.ttf</file>
+        <file>assets/components/FloatingActionButton.qml</file>
+        <file>assets/components/IconLabel.qml</file>
+        <file>icons/index.theme</file>
+        <file>icons/24x24/night.png</file>
+        <file>icons/24x24@1.5/night.png</file>
+        <file>icons/24x24@2/night.png</file>
+        <file>icons/24x24@3/night.png</file>
+        <file>icons/24x24@4/night.png</file>
+        <file>icons/24x24/question.png</file>
+        <file>icons/24x24@1.5/question.png</file>
+        <file>icons/24x24@2/question.png</file>
+        <file>icons/24x24@3/question.png</file>
+        <file>icons/24x24@4/question.png</file>
+        <file>icons/24x24/apple.png</file>
+        <file>icons/24x24@1.5/apple.png</file>
+        <file>icons/24x24@2/apple.png</file>
+        <file>icons/24x24@3/apple.png</file>
+        <file>icons/24x24@4/apple.png</file>
+        <file>icons/24x24/fasting.png</file>
+        <file>icons/24x24@1.5/fasting.png</file>
+        <file>icons/24x24@2/fasting.png</file>
+        <file>icons/24x24@3/fasting.png</file>
+        <file>icons/24x24@4/fasting.png</file>
+        <file>icons/24x24/needle.png</file>
+        <file>icons/24x24@1.5/needle.png</file>
+        <file>icons/24x24@2/needle.png</file>
+        <file>icons/24x24@3/needle.png</file>
+        <file>icons/24x24@4/needle.png</file>
+        <file>icons/24x24/phone.png</file>
+        <file>icons/24x24@1.5/phone.png</file>
+        <file>icons/24x24@2/phone.png</file>
+        <file>icons/24x24@3/phone.png</file>
+        <file>icons/24x24@4/phone.png</file>
+        <file>icons/24x24/food.png</file>
+        <file>icons/24x24@1.5/food.png</file>
+        <file>icons/24x24@2/food.png</file>
+        <file>icons/24x24@3/food.png</file>
+        <file>icons/24x24@4/food.png</file>
+        <file>icons/24x24/thresholds.png</file>
+        <file>icons/24x24@1.5/thresholds.png</file>
+        <file>icons/24x24@2/thresholds.png</file>
+        <file>icons/24x24@3/thresholds.png</file>
+        <file>icons/24x24@4/thresholds.png</file>
+        <file>icons/24x24/after-meal.png</file>
+        <file>icons/24x24@1.5/after-meal.png</file>
+        <file>icons/24x24@2/after-meal.png</file>
+        <file>icons/24x24@3/after-meal.png</file>
+        <file>icons/24x24@4/after-meal.png</file>
+        <file>icons/24x24/bluetooth.png</file>
+        <file>icons/24x24@1.5/bluetooth.png</file>
+        <file>icons/24x24@2/bluetooth.png</file>
+        <file>icons/24x24@3/bluetooth.png</file>
+        <file>icons/24x24@4/bluetooth.png</file>
+        <file>assets/pages/Calendar.qml</file>
+        <file>assets/components/CalendarWidget.qml</file>
+        <file>icons/cukierek.svg</file>
     </qresource>
 </RCC>

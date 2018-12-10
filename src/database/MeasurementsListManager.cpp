@@ -5,7 +5,7 @@ MeasurementsListManager::MeasurementsListManager(
         DatabaseWorker *db, QObject *parent) : BaseListManager(db, parent) {}
 
 QString MeasurementsListManager::getCreateQuery() const {
-    return "CREATE TABLE measurement (" \
+    return "CREATE TABLE IF NOT EXISTS measurement (" \
            "measurement_id integer primary key " \
            "autoincrement, " \
            "value real not null, " \

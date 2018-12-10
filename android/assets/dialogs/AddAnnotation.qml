@@ -1,17 +1,22 @@
-import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import QtQuick.Controls.Material 2.3
+import ".."
+import "../components"
 
-Dialog
+DialogPage
 {
     id:addNotes
+    title: qsTr("Dodaj notatkę")
+
     property alias noteType: selectId.currentIndex
     property alias foodName: nameOfFood.text
     property alias foodAmount: unitFood.text
-    property alias foodUnit: unitId.value
+    property alias foodUnit: unitId.currentText
     property alias drugId: drugsName.drugId
-    property alias drugName: drugsName.value
+    property alias drugName: drugsName.currentText
     property alias drugsUnit: unitDrugs.text
-    property alias idDrugs: drugsId.value
+    property alias idDrugs: drugsId.currentText
     property alias textNotes: notesText.text
 
     property bool isEdited: false
@@ -23,10 +28,11 @@ Dialog
 
     //
 
-    SilicaFlickable
+    Flickable
     {
-        VerticalScrollDecorator {}
+        ScrollBar.vertical: ScrollBar { }
         anchors.fill: parent
+        anchors.topMargin: Theme.paddingMedium
         contentWidth: parent.width
         contentHeight: column.childrenRect.height
 
@@ -36,125 +42,203 @@ Dialog
             width: parent.width
             spacing: Theme.paddingSmall
 
-            DialogHeader {id: header}
-
-            SectionHeader
-            {
-                id: addNotesHeader
-                font.pixelSize: Theme.fontSizeLarge
-                text: "Dodaj notatkę"
+            ComboBox {
+                id: selectId
+                Material.foreground: "#fff"
+                Material.background: "#55737373"
+                Material.theme: Material.Light
+                model: [qsTr("Posiłek"), qsTr("Lek"), qsTr("Notatka tekstowa")]
+               anchors {
+                   left: parent.left
+                   leftMargin: Theme.horizontalPageMargin
+                   right: parent.right
+                   rightMargin: Theme.horizontalPageMargin
+               }
             }
 
-            ComboBox
+            Label
             {
-                visible: !isEdited
-                id: selectId
-                currentIndex: -1
-                label: "Rodzaj notatki: "
-                value: "Wybierz"
-                menu: ContextMenu
+                id: mealAfterMeasurement
+                anchors
                 {
-                    MenuItem
-                    {
-                        text: "Posiłek"
-                        onClicked: selectId.value=text
-                    }
-
-                    MenuItem
-                    {
-                        text: "Lek"
-                        onClicked: selectId.value=text
-                    }
-
-                    MenuItem
-                    {
-                        text: "Notatka tekstowa"
-                        onClicked: selectId.value=text
-                    }
+                   left: parent.left
+                   leftMargin: Theme.horizontalPageMargin
+                   right: parent.right
+                   rightMargin: Theme.horizontalPageMargin
                 }
+                visible: selectId.currentIndex == 0
+                font.pixelSize: Theme.fontSizeMedium
+                color: "#e3decb"
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                text: qsTr("Co zjadłeś przed pomiarem?")
             }
 
             TextField
             {
                 id: nameOfFood
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                }
                 visible: selectId.currentIndex == 0
                 width: parent.width
-                placeholderText: "Schabowy"
-                label: "Co zjadłeś przed pomiarem?"
+                placeholderText: qsTr("Schabowy")
+                color: "#f7f5f0"
+            }
+
+            Label
+            {
+                id: howMuchYouEat
+                anchors
+                {
+                   left: parent.left
+                   leftMargin: Theme.horizontalPageMargin
+                   right: parent.right
+                   rightMargin: Theme.horizontalPageMargin
+                }
+                visible: selectId.currentIndex == 0
+                font.pixelSize: Theme.fontSizeMedium
+                color: "#e3decb"
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                text: qsTr("Ile tego zjadłeś?")
             }
 
             TextField
             {
                 id: unitFood
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                }
                 visible: selectId.currentIndex == 0
                 width: parent.width
                 inputMethodHints: Qt.ImhDigitsOnly
                 placeholderText: "200"
-                label: "Ile zjadłeś?"
+                color: "#f7f5f0"
                 validator: IntValidator
                 {
                     bottom: 1
                 }
             }
-
-            ComboBox
-            {
+            ComboBox {
                 id: unitId
+                Material.foreground: "#fff"
+                Material.background: "#55737373"
+                Material.theme: Material.Light
                 visible: selectId.currentIndex == 0
-                currentIndex: 0
-                label: "Jednostka: "
-                value: "g"
-                menu: ContextMenu
+                model: [qsTr("g"), qsTr("ml"), qsTr("sztuk")]
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                }
+            }
+
+            Label
+            {
+                id: drug
+                anchors
                 {
-                    MenuItem
-                    {
-                        text: "g"
-                        onClicked: unitId.value=text
+                   left: parent.left
+                   leftMargin: Theme.horizontalPageMargin
+                   right: parent.right
+                   rightMargin: Theme.horizontalPageMargin
+                }
+                visible: selectId.currentIndex == 1
+                font.pixelSize: Theme.fontSizeMedium
+                color: "#e3decb"
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                text: qsTr("Wybierz lek")
+            }
+
+            ComboBox {
+                id: drugsName
+                Material.foreground: "#fff"
+                Material.background: "#55737373"
+                Material.theme: Material.Light
+                property int drugId
+                visible: selectId.currentIndex == 1
+                model: drugs.model
+                textRole: "name"
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                }
+                delegate: ItemDelegate {
+                    Component.onCompleted: {
+                        if (!drugsName.drugId)
+                            drugsName.drugId = drug_id
                     }
 
-                    MenuItem
-                    {
-                        text: "ml"
-                        onClicked: unitId.value=text
-                    }
-
-                    MenuItem
-                    {
-                        text: "sztuk"
-                        onClicked: unitId.value=text
+                    text: name
+                    width: parent.width
+                    onClicked: {
+                        drugsName.drugId = drug_id
+                        drugsName.popup.close()
                     }
                 }
             }
 
-            ComboBox
+
+//            ComboBox
+//            {
+//                id: drugsName
+//
+//                property int drugId
+//                currentIndex: 0
+//                label: "Lek "
+//                value: "Wybierz"
+//                menu: ContextMenu
+//                {
+//                    Repeater
+//                    {
+//                        model: drugs.model
+//                        MenuItem
+//                        {
+//                            text: name
+//                            onClicked:
+//                            {
+//                                drugsName.drugId = id
+//                                drugsName.value = text
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+
+            Label
             {
-                id: drugsName
-                visible: selectId.currentIndex == 1
-                property int drugId
-                currentIndex: 0
-                label: "Lek "
-                value: "Wybierz"
-                menu: ContextMenu
+                id: howMachYouDope
+                anchors
                 {
-                    Repeater
-                    {
-                        model: drugs.model
-                        MenuItem
-                        {
-                            text: name
-                            onClicked:
-                            {
-                                drugsName.drugId = id
-                                drugsName.value = text
-                            }
-                        }
-                    }
+                   left: parent.left
+                   leftMargin: Theme.horizontalPageMargin
+                   right: parent.right
+                   rightMargin: Theme.horizontalPageMargin
                 }
+                visible: selectId.currentIndex == 1
+                font.pixelSize: Theme.fontSizeMedium
+                color: "#e3decb"
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                text: qsTr("Dawka")
             }
 
             TextField
             {
                 id: unitDrugs
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                }
                 visible: selectId.currentIndex == 1
                 width: parent.width
                 inputMethodHints: Qt.ImhDigitsOnly
@@ -163,51 +247,55 @@ Dialog
                     bottom: 1
                 }
                 placeholderText: "6"
-                label: "Ile przyjąłeś?"
+                color: "#f7f5f0"
             }
 
-            ComboBox
-            {
+            ComboBox {
                 id: drugsId
+                Material.foreground: "#fff"
+                Material.background: "#55737373"
+                Material.theme: Material.Light
                 visible: selectId.currentIndex == 1
-                currentIndex: 0
-                label: "Jednostka: "
-                value: "dm/L"
-                menu: ContextMenu
-                {
-                    MenuItem
-                    {
-                        text: "dm/L"
-                        onClicked: drugsId.value=text
-                    }
-
-                    MenuItem
-                    {
-                        text: "g"
-                        onClicked: drugsId.value=text
-                    }
-
-                    MenuItem
-                    {
-                        text: "ml"
-                        onClicked: drugsId.value=text
-                    }
-
-                    MenuItem
-                    {
-                        text: "sztuk"
-                        onClicked: drugsId.value=text
-                    }
+                model: ["dm/L","g","ml", qsTr("sztuk")]
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
                 }
             }
+
+            Label
+            {
+                id: notesMemorise
+                anchors
+                {
+                   left: parent.left
+                   leftMargin: Theme.horizontalPageMargin
+                   right: parent.right
+                   rightMargin: Theme.horizontalPageMargin
+                }
+                visible: selectId.currentIndex == 2
+                font.pixelSize: Theme.fontSizeMedium
+                color: "#e3decb"
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                text: qsTr("Uwagi dotyczące pomiaru")
+            }
+
 
             TextField
             {
                 id: notesText
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.horizontalPageMargin
+                    right: parent.right
+                    rightMargin: Theme.horizontalPageMargin
+                }
                 visible: selectId.currentIndex == 2
                 width: parent.width
-                placeholderText: "Jeździłem na rowerze przez 30 min"
-                label: "Uwagi, aktywność fizyczna"
+                placeholderText: qsTr("Jeździłem na rowerze przez 30 min")
+                color: "#f7f5f0"
             }
 
         }

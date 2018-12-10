@@ -1,8 +1,8 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Window 2.11
-import QtQuick.Controls.Material 2.1
-import QtQuick.Controls.Universal 2.1
+import QtQuick.Controls.Material 2.3
+import QtQuick.Controls.Universal 2.3
 
 import "pages"
 
@@ -20,27 +20,87 @@ Item
     property bool bluetoothPageOpen: false
     property real disabledOpacity: 0.2
 
+    property var beginDate: new Date()
+    property var endDate: new Date()
+    property bool datesSet: false
+
+    property var mealListModel: [
+        {
+            "meal": 0,
+            "iconSource": "fasting",
+            "name": qsTr("Na czczo")
+        },
+        {
+            "meal": 1,
+            "iconSource": "apple",
+            "name": qsTr("Przed posiłkiem")
+        },
+        {
+            "meal": 2,
+            "iconSource": "after-meal",
+            "name": qsTr("Po posiłku")
+        },
+        {
+            "meal": 3,
+            "iconSource": "night",
+            "name": qsTr("Nocna")
+        },
+        {
+            "meal": 4,
+            "iconSource": "question",
+            "name": qsTr("Nie określono")
+        }
+    ]
+
+    FontLoader {
+        id: materialFont
+        name: "Material Icons"
+        source: "qrc:/assets/fonts/MaterialIcons-Regular.ttf"
+    }
+
     Shortcut {
         sequences: ["Esc", "Back"]
         enabled: pageStack.depth > 1
         onActivated: pageStack.pop()
     }
 
-    Item {
-        id: pythonGlukometr
-    }
-
-    Item {
-        id: remorse
-        function execute(component, label, callback) {
-            callback();
-        }
-    }
-
     StackView {
         id: pageStack
         initialItem: MeasurementList {}
+        background: Rectangle {
+            color: "black"
+            anchors.fill: parent
+        }
+
         anchors.fill: parent
+
+        pushEnter: Transition {
+            id: pushEnter
+            ParallelAnimation {
+                PropertyAction { property: "x"; value: pushEnter.ViewTransition.item.pos }
+                NumberAnimation { properties: "y"; from: pushEnter.ViewTransition.item.pos + pageStack.offset; to: pushEnter.ViewTransition.item.pos; duration: 400; easing.type: Easing.OutCubic }
+                NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic }
+            }
+        }
+        popExit: Transition {
+            id: popExit
+            ParallelAnimation {
+                PropertyAction { property: "x"; value: popExit.ViewTransition.item.pos }
+                NumberAnimation { properties: "y"; from: popExit.ViewTransition.item.pos; to: popExit.ViewTransition.item.pos + pageStack.offset; duration: 400; easing.type: Easing.OutCubic }
+                NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 400; easing.type: Easing.OutCubic }
+            }
+        }
+
+        pushExit: Transition {
+            id: pushExit
+            PropertyAction { property: "x"; value: pushExit.ViewTransition.item.pos }
+            PropertyAction { property: "y"; value: pushExit.ViewTransition.item.pos }
+        }
+        popEnter: Transition {
+            id: popEnter
+            PropertyAction { property: "x"; value: popEnter.ViewTransition.item.pos }
+            PropertyAction { property: "y"; value: popEnter.ViewTransition.item.pos }
+        }
     }
 
 
@@ -48,9 +108,8 @@ Item
     {
         if (!settings.notFirstRun)
         {
-            console.log("TODO: implement welcome page")
-            // settings.notFirstRun = true
-            // pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/Tutorial.qml"), {}, PageStackAction.Immediate)
+            settings.notFirstRun = true
+            pageStack.push(Qt.resolvedUrl("qrc:/assets/pages/Tutorial.qml"), {}, StackView.Immediate)
         }
     }
 
@@ -59,14 +118,12 @@ Item
         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddMeasurement.qml"))
         dialog.accepted.connect(function()
         {
-            console.log(dialog.value)
-            console.log(dialog.meal)
             measurements.add({
                 "value": dialog.value,
                 "meal": dialog.meal
             });
             if (dialog.remind)
-                pythonGlukometr.reminders.remindInTwoHours()
+                reminders.remindInTwoHours()
         })
     }
 }

@@ -1,41 +1,45 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick.Controls 2.3
+import ".."
+import "../components"
 
-Dialog
+DialogPage
 {
     id: addDrugsDialog
     property alias value: nameField.text
     property bool isEdited: false
+    title: isEdited ? qsTr("Zmień nazwe") : qsTr("Dodaj lek")
 
-    SilicaFlickable
+    Flickable
     {
-        VerticalScrollDecorator {}
+        ScrollBar.vertical: ScrollBar { }
         anchors.fill: parent
         contentWidth: parent.width
-        contentHeight: column.childrenRect.height
+        //contentHeight: column.childrenRect.height
 
-        Column
-        {
-            id: column
-            width: parent.width
-            spacing: Theme.paddingSmall
+//        Column
+//        {
+//            id: column
+//            width: parent.width
+//            spacing: Theme.paddingSmall
 
-             DialogHeader { id: header }
-
-             SectionHeader
-             {
-                font.pixelSize: Theme.fontSizeLarge
-                text: isEdited ? "Zmień nazwe leku" : "Dodaj nowy lek"
-             }
 
              TextField
              {
                  id: nameField
                  width: parent.width
                  placeholderText: "Novorapid"
-                 placeholderColor: Theme.highlightBackgroundColor
-                 label: isEdited ? "Nowa nazwa" : "Lek, który chcesz dodać"
+                 anchors
+                 {
+                     left: parent.left
+                     right: parent.right
+                     top: parent.top
+                     margins: Theme.horizontalPageMargin
+
+                 }
+                 //placeholderColor: Theme.highlightBackgroundColor
+                 //label: isEdited ? "Nowa nazwa" : "Lek, który chcesz dodać"
              }
-        }
+//        }
     }
 }

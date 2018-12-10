@@ -7,7 +7,7 @@ QString TextAnnotations::getTableName() const {
 }
 
 QString TextAnnotations::getCreateQuery() const {
-    return "CREATE TABLE annotation_text (" \
+    return "CREATE TABLE IF NOT EXISTS annotation_text (" \
            "annotation_text_id integer primary key " \
            "autoincrement, " \
            "measurement_id integer REFERENCES " \

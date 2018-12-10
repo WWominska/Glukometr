@@ -9,8 +9,6 @@ Page
     {
         id: column
         spacing: Theme.paddingMedium
-        // opacity: hint.running ? 0.2 : 1.0
-        //Behavior on opacity { FadeAnimation {} }
         anchors
         {
             left: parent.left
@@ -31,7 +29,7 @@ Page
                 rightMargin: Theme.horizontalPageMargin
             }
 
-            text: "Witaj w aplikacji Glukometr\n3000+"
+            text: qsTr("Witaj w aplikacji Glukometr\n500+")
             horizontalAlignment: Text.AlignHCenter
             font.bold: true
             font.pixelSize: Theme.fontSizeHuge
@@ -42,32 +40,8 @@ Page
         Button
         {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Rozpocznij tutorial"
-            //color: Theme.highlightColor
-            //highlightBackgroundColor: Theme.highlightBackgroundColor
-            onClicked:
-            {
-                application.isTutorialEnabled = true //
-                // hint.start()
-            }
+            text: qsTr("Rozpocznij")
+            onClicked: pageStack.pop()
         }
     }
-
-    /*
-    InteractionHintLabel
-    {
-        text: "Aby przejść dalej przesuń palcem w prawo"
-        color: Theme.secondaryColor
-        anchors.bottom: parent.bottom
-        opacity: hint.running ? 1.0 : 0.0
-        Behavior on opacity { FadeAnimation {} }
-    }
-
-    TouchInteractionHint
-    {
-        id: hint
-        loops: Animation.Infinite
-        interactionMode: TouchInteraction.EdgeSwipe
-        direction: TouchInteraction.Right
-    }*/
 }

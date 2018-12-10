@@ -10,6 +10,12 @@ Page
     id: screen
     property int tutorialBluetooth: application.isTutorialEnabled
 
+    header: PageHeader {
+        id: pageHeader
+        title: qsTr("Wybierz urządzenie")
+    }
+    background: OreoBackground {}
+
     ListModel {
         id: discoveredDevices
     }
@@ -18,63 +24,36 @@ Page
     {
         id: bleDiscovery
         onNewDevice: {
-            pythonGlukometr.devices.isKnown(macAddress, function (result) {
-                if (result)
-                    return;
-
+            if (!devices.isKnown(macAddress)) {
                 discoveredDevices.append({
                     "name": name,
                     "macAddress": macAddress
                 })
-            })
+            }
         }
     }
 
     Component.onCompleted: {
         bleDiscovery.startDiscovery()
-        pythonGlukometr.devices.get()
+        devices.get()
         application.bluetoothPageOpen = true
 
     }
     Component.onDestruction: {
         application.bluetoothPageOpen = false
         bleDiscovery.stopDiscovery()
+        measurements.get()
     }
 
     Flickable
     {
         anchors.fill: parent
-        /*PullDownMenu
-        {
-            MenuItem
-            {
-                text: bleDiscovery.running ? "Zatrzymaj wyszukiwanie" : "Szukaj urządzeń"
-                onClicked: {
-                    if (bleDiscovery.running)
-                        bleDiscovery.stopDiscovery();
-                    else {
-                        discoveredDevices.clear()
-                        bleDiscovery.startDiscovery();
-                    }
-                }
-            }
-        }*/
-
-        PageHeader
-        {
-            id: pageHeader
-            title: "Wybierz urządzenie"
-        }
 
         SectionHeader
         {
             id: rememberedDevicesHeader
-            anchors {
-                top: pageHeader.bottom;
-                topMargin: Theme.paddingLarge
-            }
-            // font.pixelSize: Theme.fontSizeLarge
-            text: "Zapamiętane urządzenie"
+            font.pixelSize: Theme.fontSizeLarge
+            text: qsTr("Zapamiętane urządzenie")
         }
 
         ListView
@@ -86,65 +65,50 @@ Page
             }
             width: parent.width
             height: contentHeight
-            model: pythonGlukometr.devices.model
+            model: devices.model
 
-            delegate: ItemDelegate
+            delegate: ListItem
             {
                 id:deviceSet
                 width: parent.width
+                icon.name: "bluetooth"
 
-                //RemorseItem { id: remorse }
                 height: deviceAdd.height + lastSyncDate.height + Theme.paddingSmall*3
-                Menu
+                menu: Menu
                 {
                     MenuItem
                     {
-                        text: "Zmień nazwę urządzenia"
+                        text: qsTr("Zmień nazwę urządzenia")
                         onClicked:
                         {
                             var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
                             dialog.accepted.connect(function()
                             {
-                                pythonGlukometr.devices.update(
-                                            id, {"name": dialog.name})
+                                devices.update(
+                                            device_id, {"name": dialog.name})
                             })
                         }
                     }
 
                     MenuItem
                     {
-                        text: "Zapomnij urządzenie"
-                        onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {
-                            pythonGlukometr.devices.remove(id, undefined, function () {
-                                measurements.get()
-                            })
-                        })
+                        text: qsTr("Zapomnij urządzenie")
+                        onClicked: {
+                            devices.remove(device_id)
+                        }
                     }
                 }
 
-                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": id, "macAddress": mac_address });
-
-                Image {
-                    id: bluetoothIcon
-                    source: "qrc:/icons/icon-m-bluetooth-device.svg"
-                    anchors {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    width: Theme.iconSizeMedium
-                    height: width
-                }
+                onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": device_id, "macAddress": mac_address });
 
                 Label
                 {
                     id: deviceAdd
+                    x: 56
                     anchors
                     {
-                       left: bluetoothIcon.right
                        top: parent.top
                        topMargin: Theme.paddingSmall
-                       leftMargin: Theme.paddingSmall
                     }
                     font.pixelSize: Theme.fontSizeMedium
                     color: Theme.primaryColor
@@ -154,16 +118,15 @@ Page
                 Label
                 {
                     id: lastSyncDate
+                    x: 56
                     anchors
                     {
                         top: deviceAdd.bottom
-                        left: bluetoothIcon.right
-                        leftMargin: Theme.paddingSmall
                     }
 
                     font.pixelSize: Theme.fontSizeTiny
-                    text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : "Nigdy"
-                    color: Theme.secondaryColor
+                    text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : qsTr("Nigdy")
+                    color: Theme.primaryColor
                 }
             }
         }
@@ -175,8 +138,31 @@ Page
                 top: rememberedDevicesList.bottom
                 topMargin: Theme.paddingLarge
             }
-            // font.pixelSize: Theme.fontSizeLarge
-            text: "Wykryte urządzenia"
+            font.pixelSize: Theme.fontSizeLarge
+            text: qsTr("Wykryte urządzenia")
+        }
+
+        Button {
+            id: refreshButton
+            anchors {
+                top: discoveredDevicesHeader.bottom
+                topMargin: Theme.paddingLarge
+                left: parent.left
+                leftMargin: Theme.horizontalPageMargin
+                right: parent.right
+                rightMargin: Theme.horizontalPageMargin
+            }
+
+            text: bleDiscovery.running ? qsTr("Zatrzymaj wyszukiwanie") : qsTr("Szukaj urządzeń")
+            onClicked: {
+                if (bleDiscovery.running)
+                    bleDiscovery.stopDiscovery();
+                else {
+                    discoveredDevices.clear()
+                    bleDiscovery.startDiscovery();
+                }
+            }
+            visible: !discoveryProgressBar.visible
         }
 
         ProgressBar
@@ -187,7 +173,9 @@ Page
                 top: discoveredDevicesHeader.bottom
                 topMargin: Theme.paddingLarge
                 left: parent.left
+                leftMargin: Theme.horizontalPageMargin
                 right: parent.right
+                rightMargin: Theme.horizontalPageMargin
             }
             visible: bleDiscovery.running
             //label: "Szukanie urządzeń"
@@ -197,7 +185,7 @@ Page
         ListView
         {
             anchors {
-                top: discoveryProgressBar.visible ? discoveryProgressBar.bottom : discoveredDevicesHeader.bottom
+                top: discoveryProgressBar.visible ? discoveryProgressBar.bottom : refreshButton.bottom
             }
             width: parent.width
             height: contentHeight
@@ -207,7 +195,7 @@ Page
                 width: parent.width
                 onClicked:
                 {
-                    pythonGlukometr.devices.add({
+                    devices.add({
                         "name": name,
                         "mac_address": macAddress
                     })
@@ -215,57 +203,9 @@ Page
                                        "deviceId": -1,
                                        "macAddress": macAddress});
                 }
-                Image {
-                    id: bluetoothIcon2
-                    source: "qrc:/icons/icon-m-bluetooth-device"
-                    anchors {
-                        left: parent.left
-                        top: parent.top
-                        topMargin: Theme.paddingSmall
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    width: Theme.iconSizeMedium
-                    height: width
-                }
-
-                Label
-                {
-                    id: device
-                    anchors
-                    {
-                       left: bluetoothIcon2.right
-                       verticalCenter: parent.verticalCenter
-                       leftMargin: Theme.paddingSmall
-                    }
-                    font.pixelSize: Theme.fontSizeMedium
-                    color: Theme.primaryColor
-                    text: name
-                }
+                icon.name: "bluetooth"
+                text: name
             }
         }
     }
-//    InteractionHintLabel
-//    {
-//        id:bluetooth
-//        text: "Tutaj możesz wybrać glukometr, do którego chcesz się połączyć, klikając na niego"
-//        color: Theme.secondaryColor
-//        anchors.bottom: parent.bottom
-//        opacity: tutorialBluetooth ? 1.0 : 0.0
-//        Behavior on opacity { FadeAnimation {} }
-//        invert: false
-//    }
-
-////    TouchInteractionHint
-////    {
-////        id: hint
-////        loops: Animation.Infinite
-////        interactionMode: TouchInteraction.Pull
-////        direction: TouchInteraction.Down
-////    }
-
-//    Connections
-//    {
-//        target: application
-//        onIsTutorialEnabledChanged: hint.start()
-//    }
 }

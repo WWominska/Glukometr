@@ -11,7 +11,7 @@ QString Thresholds::getTableName() const {
 }
 
 QString Thresholds::getCreateQuery() const {
-    return "CREATE TABLE threshold (" \
+    return "CREATE TABLE IF NOT EXISTS threshold (" \
            "threshold_id integer primary key " \
            "autoincrement, " \
            "min real not null, " \
@@ -49,12 +49,12 @@ QString Thresholds::evaluateMeasurement(int value, int meal) {
         initializeTable();
 
     if (!m_thresholdCache.contains(meal))
-        return "gray";
+        return "#8F8F87";
     QPair<int, int> threshold = m_thresholdCache[meal];
     if (value < threshold.first)
-        return "red";
+        return "#DB4F56";
     if (value > threshold.second)
-        return "yellow";
-    return "green";
+        return "#FFF757";
+    return "#1DDE4D";
 }
 

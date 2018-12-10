@@ -11,7 +11,7 @@ QString Devices::getTableName() const {
 }
 
 QString Devices::getCreateQuery() const {
-    return "CREATE TABLE device (" \
+    return "CREATE TABLE IF NOT EXISTS device (" \
            "device_id integer primary key " \
            "autoincrement, " \
            "name text, " \

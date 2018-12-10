@@ -1,11 +1,14 @@
 import QtQuick 2.0
-import Sailfish.Silica 1.0
+import QtQuick.Controls 2.3
+import ".."
+import "../components"
 
-Dialog
+DialogPage
 {
     id: dialogDevice
     property string name;
 
+    title: qsTr("Zmień nazwę")
     canAccept: nameField.text != ""
     onDone:
     {
@@ -21,21 +24,21 @@ Dialog
         width: parent.width
         spacing: Theme.paddingSmall
 
-         DialogHeader { id: naglowek }
-
-         SectionHeader
-         {
-            font.pixelSize: Theme.fontSizeLarge
-            text: "Zmień nazwe"
-         }
-
          TextField
          {
              id: nameField
              width: parent.width
              text: name
-             placeholderText: "Np. Glukometr w domu"
-             label: "Twoja nazwa"
+             anchors
+             {
+                 left: parent.left
+                 right: parent.right
+                 top: parent.top
+                 margins: Theme.horizontalPageMargin
+
+             }
+             placeholderText: qsTr("Np. Glukometr w domu")
+             //label: "Twoja nazwa"
          }
     }
 }

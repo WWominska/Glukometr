@@ -9,93 +9,32 @@ DialogPage
 {
     id: dialog
     property int meal;
-    header: DialogHeader { id: naglowek }
+    title: qsTr("Zmień porę")
 
     Column
     {
         width: parent.width
 
-
         Repeater
         {
-            model: ListModel
-            {
-                ListElement
-                {
-                    meal: 0
-                    iconSource: "qrc:/icons/icon-fasting.svg"
-                    name: "Na czczo"
-                }
-
-                ListElement
-                {
-                    meal: 1
-                    iconSource: "qrc:/icons/icon-before-meal.svg"
-                    name: "Przed posiłkiem"
-                }
-
-                ListElement
-                {
-                    meal: 2
-                    iconSource: "qrc:/icons/icon-after-meal.svg"
-                    name: "Po posiłku"
-                }
-
-                ListElement
-                {
-                    meal: 3
-                    iconSource: "qrc:/icons/icon-m-night.svg"
-                    name: "Nocna"
-                }
-
-                ListElement
-                {
-                    meal: 4
-                    iconSource: "qrc:/icons/icon-m-question.svg"
-                    name: "Nie określono"
-                }
-            }
-
+            model: application.mealListModel
             delegate: ItemDelegate
             {
                 Connections {
                     target: dialog
-                    onMealChanged: checkIcon.visible = dialog.meal == meal
+                    onMealChanged: checkIcon.visible = dialog.meal === model.modelData.meal
                 }
+                icon.name: model.modelData.iconSource
+                text: model.modelData.name
                 highlighted: checkIcon.visible
-                height: mealIcon.height + 20
-
                 width: parent.width
-                Image
-                {
-                    id: mealIcon
-                    source: iconSource
-                    sourceSize {
-                        width: 32
-                        height: 32
-                    }
 
-                    width: 32
-                    height: 32
-                    anchors
-                    {
-                        left: parent.left
-                        leftMargin: Theme.horizontalPageMargin
-                        verticalCenter: parent.verticalCenter
-                    }
-                }
-
-                Image
+                IconLabel
                 {
                     id: checkIcon
-                    source: "qrc:/icons/icon-m-acknowledge.svg"
-                    sourceSize {
-                        width: 32
-                        height: 32
-                    }
-                    visible: dialog.meal == meal
-                    width: 32
-                    height: 32
+                    text: "\ue86c"
+                    font.pixelSize: 32
+                    visible: dialog.meal === model.modelData.meal
                     anchors
                     {
                         right: parent.right
@@ -103,19 +42,7 @@ DialogPage
                         verticalCenter: parent.verticalCenter
                     }
                 }
-
-                Label
-                {
-                    anchors
-                    {
-                       left: mealIcon.right
-                       verticalCenter: parent.verticalCenter
-                       leftMargin: Theme.paddingMedium
-                    }
-                    text: name
-                }
-
-                onClicked: { dialog.meal = meal; dialog.accept() }
+                onClicked: { dialog.meal = model.modelData.meal; dialog.accept() }
             }
         }
     }
