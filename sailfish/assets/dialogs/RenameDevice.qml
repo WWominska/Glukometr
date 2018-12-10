@@ -26,7 +26,7 @@ Dialog
          SectionHeader
          {
             font.pixelSize: Theme.fontSizeLarge
-            text: "Zmień nazwe"
+            text: qsTr("Zmień nazwe")
          }
 
          TextField
@@ -34,8 +34,8 @@ Dialog
              id: nameField
              width: parent.width
              text: name
-             placeholderText: "Np. Glukometr w domu"
-             label: "Twoja nazwa"
+             placeholderText: qsTr("Np. Glukometr w domu")
+             label: qsTr("Twoja nazwa")
          }
     }
 }

@@ -15,7 +15,7 @@ Page
         {
             MenuItem
             {
-                text: "Przywróć ustawienia domyślne"
+                text: qsTr("Przywróć ustawienia domyślne")
                 onClicked: thresholds.setDefaults()
             }
         }
@@ -28,7 +28,7 @@ Page
 
             PageHeader
             {
-                title: "Ustaw progi"
+                title: qsTr("Ustaw progi")
             }
 
             ExpandingSectionGroup
@@ -43,7 +43,7 @@ Page
                         id: section
 
                         property int sectionIndex: index
-                        title: changeToString(meal)
+                        title: application.mealListModel[meal].name
 
                         Image
                         {
@@ -67,32 +67,9 @@ Page
                                 topMargin: (Theme.itemSizeMedium - height)/2
                             }
 
-                            source: changeToIcon(meal)
-
-
+                            source: application.lightTheme ? application.mealListModel[meal].lightIcon : application.mealListModel[meal].icon
                         }
 
-                        function changeToString(meal)
-                        {
-                            switch(meal)
-                            {
-                                case 0: return "Na czczo"
-                                case 1: return "Przed posiłkiem"
-                                case 2: return "Po posiłku"
-                                case 3: return "Nocna"
-                            }
-                        }
-
-                        function changeToIcon(meal)
-                        {
-                            switch(meal)
-                            {
-                            case 0: return "qrc:/icons/icon-fasting" + (application.lightTheme ? "-light" : "") + ".svg"
-                                case 1: return "qrc:/icons/icon-before-meal" + (application.lightTheme ? "-light" : "") + ".svg"
-                                case 2: return "qrc:/icons/icon-after-meal" + (application.lightTheme ? "-light" : "") + ".svg"
-                                case 3: return "image://Theme/icon-m-night"
-                            }
-                        }
 
                         content.sourceComponent: Column
                         {

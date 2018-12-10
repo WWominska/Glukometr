@@ -33,5 +33,7 @@
         <file>icons/icon-fasting-light.svg</file>
         <file>icons/icon-glucometer-light.svg</file>
         <file>icons/icon-settings-threshold-light.svg</file>
+        <file>assets/components/MealComponent.qml</file>
+        <file>assets/pages/Calendar.qml</file>
     </qresource>
 </RCC>
