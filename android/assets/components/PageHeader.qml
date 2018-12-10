@@ -20,7 +20,6 @@ ToolBar {
     property var leftCallback: function () {
         if (pageStack.depth > 1)
             pageStack.pop()
-        else pageStack.push("qrc:/assets/pages/DeviceList.qml")
     }
 
     //height: content.childrenRect.height + 2 * Theme.paddingMedium
@@ -36,7 +35,7 @@ ToolBar {
             id: leftButton
             font.family: "Material Icons"
             font.pixelSize: 20
-            text: pageStack.depth > 1 ? "\ue5c4" : "\ue1a7"
+            text: "\ue5c4"
             onClicked: leftCallback()
         }
 

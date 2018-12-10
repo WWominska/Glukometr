@@ -14,57 +14,56 @@ Page
     {
         opacity: hint.running ? disabledOpacity : 1.0
         Behavior on opacity { FadeAnimation {} }
-        header: Item
-        {
-            width: parent.width
-            height: pageHeader.height + dit.height
-            PageHeader
+        section {
+            property: "date_measured"
+            delegate: Rectangle
             {
-                id: pageHeader
-                title: "Pomiary"
-            }
-
-            Rectangle
-            {
-                id: dit
+                height: tekst.paintedHeight + Theme.paddingMedium
                 width: parent.width
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                    leftMargin: Theme.horizontalPageMargin
-                    rightMargin: Theme.horizontalPageMargin
-                    top: pageHeader.bottom
-                }
-                height: sweetValue.paintedHeight + Theme.paddingMedium
-                color: "transparent"
-
+                color: application.lightTheme ? "#77ffffff" : "#77000000"
                 Label
                 {
-                    id: sweetValue
-                    font.pixelSize: Theme.fontSizeMedium
-                    text: "Cukier"
+                    id: tekst
+                    text: section
+                    color: Theme.primaryColor
                     anchors
                     {
                         left: parent.left
-                        top: parent.top
+                        leftMargin: Theme.paddingLarge
+                        verticalCenter: parent.verticalCenter
                     }
-                    color: Theme.primaryColor
                 }
+            }
+        }
 
-                Label
-                {
-                    id: dateAndTime
-                    font.pixelSize: Theme.fontSizeMedium
-                    horizontalAlignment: Text.AlignRight
-                    text: "Data i Czas"
-                    anchors
-                    {
-                        right: parent.right
-                        top: parent.top
+        header: Item {
+            width: parent.width
+            height: pageHeader.height + (application.datesSet ? filtersHeader.height : 0)
+            PageHeader {
+                id: pageHeader
+                title: "Pomiary"
+            }
+            Item {
+                anchors.top: pageHeader.bottom
+                id: filtersHeader
+                width: parent.width
+                height: Theme.itemSizeLarge
+                visible: application.datesSet
+                Label {
+                    x: Theme.horizontalPageMargin
+                    anchors.verticalCenter: parent.verticalCenter
+                    textFormat: Text.RichText
+                    text: "Okres: <span style='color: " + Theme.secondaryColor + "'>" + application.beginDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + "</span> - <span style='color: " + Theme.secondaryColor + "'>" + application.endDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + "</span>"
+                }
+                IconButton {
+                    anchors.right: parent.right
+                    anchors.rightMargin: Theme.horizontalPageMargin
+                    anchors.verticalCenter: parent.verticalCenter
+                    icon.source: "image://Theme/icon-m-dismiss"
+                    onClicked: {
+                        application.datesSet = false
+                        measurements.get(true)
                     }
-                    color: Theme.primaryColor
-                    clip: true
                 }
             }
         }
@@ -81,6 +80,11 @@ Page
             {
                 text: "Bluetooth"
                 onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/DeviceList.qml")
+            }
+
+            MenuItem {
+                text: "Wybierz przedział"
+                onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/Calendar.qml")
             }
 
             MenuItem
@@ -159,20 +163,9 @@ Page
 
             Label
             {
-                function changeToString(meal)
-                {
-                    switch(meal)
-                    {
-                        case 0: return "Na czczo"
-                        case 1: return "Przed posiłkiem"
-                        case 2: return "Po posiłku"
-                        case 3: return "Nocna"
-                        default: return "Nie określono"
-                    }
-                }
                 id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall
-                text: changeToString(meal)
+                text: application.mealListModel[meal < 0 ? 4 : meal].name
                 color: Theme.secondaryColor
                 anchors
                 {
@@ -188,7 +181,7 @@ Page
                 id: dateLabel
                 font.pixelSize: Theme.fontSizeSmall
                 horizontalAlignment: Text.AlignRight
-                text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                text: new Date(timestamp*1000).toLocaleString(Qt.locale(), "HH:mm")
                 anchors
                 {
                     left: whenMeasurement.right

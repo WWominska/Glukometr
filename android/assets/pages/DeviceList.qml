@@ -42,26 +42,12 @@ Page
     Component.onDestruction: {
         application.bluetoothPageOpen = false
         bleDiscovery.stopDiscovery()
+        measurements.get()
     }
 
     Flickable
     {
         anchors.fill: parent
-        /*PullDownMenu
-        {
-            MenuItem
-            {
-                text: bleDiscovery.running ? "Zatrzymaj wyszukiwanie" : "Szukaj urządzeń"
-                onClicked: {
-                    if (bleDiscovery.running)
-                        bleDiscovery.stopDiscovery();
-                    else {
-                        discoveredDevices.clear()
-                        bleDiscovery.startDiscovery();
-                    }
-                }
-            }
-        }*/
 
         SectionHeader
         {
@@ -81,13 +67,14 @@ Page
             height: contentHeight
             model: devices.model
 
-            delegate: ItemDelegate
+            delegate: ListItem
             {
                 id:deviceSet
                 width: parent.width
+                icon.name: "bluetooth"
 
                 height: deviceAdd.height + lastSyncDate.height + Theme.paddingSmall*3
-                Menu
+                menu: Menu
                 {
                     MenuItem
                     {
@@ -106,33 +93,22 @@ Page
                     MenuItem
                     {
                         text: qsTr("Zapomnij urządzenie")
-                        onClicked: devices.remove(device_id, undefined)
+                        onClicked: {
+                            devices.remove(device_id)
+                        }
                     }
                 }
 
                 onClicked: pageStack.push("qrc:/assets/pages/DeviceConnection.qml", {"deviceId": device_id, "macAddress": mac_address });
 
-                IconLabel {
-                    id: bluetoothIcon
-                    anchors {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    text: "\ue1a7"
-                    width: Theme.iconSizeMedium
-                    height: width
-                }
-
                 Label
                 {
                     id: deviceAdd
+                    x: 56
                     anchors
                     {
-                       left: bluetoothIcon.right
                        top: parent.top
                        topMargin: Theme.paddingSmall
-                       leftMargin: Theme.paddingSmall
                     }
                     font.pixelSize: Theme.fontSizeMedium
                     color: Theme.primaryColor
@@ -142,11 +118,10 @@ Page
                 Label
                 {
                     id: lastSyncDate
+                    x: 56
                     anchors
                     {
                         top: deviceAdd.bottom
-                        left: bluetoothIcon.right
-                        leftMargin: Theme.paddingSmall
                     }
 
                     font.pixelSize: Theme.fontSizeTiny
@@ -165,6 +140,29 @@ Page
             }
             font.pixelSize: Theme.fontSizeLarge
             text: qsTr("Wykryte urządzenia")
+        }
+
+        Button {
+            id: refreshButton
+            anchors {
+                top: discoveredDevicesHeader.bottom
+                topMargin: Theme.paddingLarge
+                left: parent.left
+                leftMargin: Theme.horizontalPageMargin
+                right: parent.right
+                rightMargin: Theme.horizontalPageMargin
+            }
+
+            text: bleDiscovery.running ? qsTr("Zatrzymaj wyszukiwanie") : qsTr("Szukaj urządzeń")
+            onClicked: {
+                if (bleDiscovery.running)
+                    bleDiscovery.stopDiscovery();
+                else {
+                    discoveredDevices.clear()
+                    bleDiscovery.startDiscovery();
+                }
+            }
+            visible: !discoveryProgressBar.visible
         }
 
         ProgressBar
@@ -187,7 +185,7 @@ Page
         ListView
         {
             anchors {
-                top: discoveryProgressBar.visible ? discoveryProgressBar.bottom : discoveredDevicesHeader.bottom
+                top: discoveryProgressBar.visible ? discoveryProgressBar.bottom : refreshButton.bottom
             }
             width: parent.width
             height: contentHeight
@@ -205,56 +203,9 @@ Page
                                        "deviceId": -1,
                                        "macAddress": macAddress});
                 }
-                IconLabel {
-                    id: bluetoothIcon2
-                    anchors {
-                        left: parent.left
-                        verticalCenter: parent.verticalCenter
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    text: "\ue1a7"
-                    width: Theme.iconSizeMedium
-                    height: width
-                }
-
-                Label
-                {
-                    id: device
-                    anchors
-                    {
-                       left: bluetoothIcon2.right
-                       verticalCenter: parent.verticalCenter
-                       leftMargin: Theme.paddingMedium
-                    }
-                    font.pixelSize: Theme.fontSizeMedium
-                    color: Theme.primaryColor
-                    text: name
-                }
+                icon.name: "bluetooth"
+                text: name
             }
         }
     }
-//    InteractionHintLabel
-//    {
-//        id:bluetooth
-//        text: "Tutaj możesz wybrać glukometr, do którego chcesz się połączyć, klikając na niego"
-//        color: Theme.secondaryColor
-//        anchors.bottom: parent.bottom
-//        opacity: tutorialBluetooth ? 1.0 : 0.0
-//        Behavior on opacity { FadeAnimation {} }
-//        invert: false
-//    }
-
-////    TouchInteractionHint
-////    {
-////        id: hint
-////        loops: Animation.Infinite
-////        interactionMode: TouchInteraction.Pull
-////        direction: TouchInteraction.Down
-////    }
-
-//    Connections
-//    {
-//        target: application
-//        onIsTutorialEnabledChanged: hint.start()
-//    }
 }

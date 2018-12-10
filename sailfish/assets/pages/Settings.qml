@@ -9,58 +9,48 @@ Page
         property int phoneNumber: 1
     }
 
-    ListModel
-    {
-        id: settingList
-        ListElement
+    property var settingList: [
         {
-            settingText: "Progi"
-            secondaryText: 0
-            replace: false
-            source: "qrc:/assets/pages/Thresholds.qml"
-            image: "qrc:/icons/icon-settings-threshold.svg"
-            lightImage: "qrc:/icons/icon-settings-threshold-light.svg"
-        }
-
-        ListElement
+            "settingText": qsTr("Progi"),
+            "secondaryText": 0,
+            "replace": false,
+            "source": "qrc:/assets/pages/Thresholds.qml",
+            "image": "qrc:/icons/icon-settings-threshold.svg",
+            "lightImage": "qrc:/icons/icon-settings-threshold-light.svg",
+        },
         {
-            settingText: "Przypomnienia"
-            secondaryText: 0
-            replace: false
-            source: "qrc:/assets/pages/ReminderList.qml"
-            image: "image://Theme/icon-m-alarm"
-            lightImage: "image://Theme/icon-m-alarm"
-        }
-
-        ListElement
+            "settingText": qsTr("Przypomnienia"),
+            "secondaryText": 0,
+            "replace": false,
+            "source": "qrc:/assets/pages/ReminderList.qml",
+            "image": "image://Theme/icon-m-alarm",
+            "lightImage": "image://Theme/icon-m-alarm"
+        },
         {
-            settingText: "Telefon: "
-            secondaryText: 1
-            replace: false
-            source: "qrc:/assets/dialogs/ChangePhoneNumber.qml"
-            image: "image://Theme/icon-m-answer"
-            lightImage: "image://Theme/icon-m-answer"
-        }
-
-        ListElement
+            "settingText": qsTr("Telefon: "),
+            "secondaryText": 1,
+            "replace": false,
+            "source": "qrc:/assets/dialogs/ChangePhoneNumber.qml",
+            "image": "image://Theme/icon-m-answer",
+            "lightImage": "image://Theme/icon-m-answer"
+        },
         {
-            settingText: "Leki"
-            secondaryText: 0
-            replace: false
-            source: "qrc:/assets/pages/DrugList.qml"
-            image: "qrc:/icons/icon-annotations-drug.svg"
-            lightImage: "qrc:/icons/icon-annotations-drug-light.svg"
-        }
-        ListElement
+            "settingText": qsTr("Leki"),
+            "secondaryText": 0,
+            "replace": false,
+            "source": "qrc:/assets/pages/DrugList.qml",
+            "image": "qrc:/icons/icon-annotations-drug.svg",
+            "lightImage": "qrc:/icons/icon-annotations-drug-light.svg"
+        },
         {
-            secondaryText: 0
-            settingText: "Rozpocznij tutorial"
-            source: "qrc:/assets/pages/Tutorial.qml"
-            replace: true
-            image: "image://Theme/icon-m-question"
-            lightImage: "image://Theme/icon-m-question"
+            "settingText": "Rozpocznij tutorial",
+            "secondaryText": 0,
+            "replace": true,
+            "source": "qrc:/assets/pages/Tutorial.qml",
+            "image": "image://Theme/icon-m-question",
+            "lightImage": "image://Theme/icon-m-question"
         }
-    }
+    ]
 
     id: setting
     SilicaListView
@@ -89,12 +79,12 @@ Page
                 sourceSize.width: width
                 sourceSize.height: height
                 smooth: true
-                source: application.lightTheme ? lightImage : image
+                source: application.lightTheme ? model.modelData.lightImage : model.modelData.image
             }
             Label
             {
                 id: label
-                text: settingText
+                text: model.modelData.settingText
                 anchors
                 {
                     left: icon.right
@@ -105,7 +95,7 @@ Page
             Label {
                 text:
                 {
-                    switch (secondaryText) {
+                    switch (model.modelData.secondaryText) {
                     case consts.phoneNumber:
                         return settings.phoneNumber ? settings.phoneNumber : "Naciśnij aby ustawić";
                     default: return "";
@@ -121,7 +111,7 @@ Page
                 }
             }
 
-            menu: secondaryText == consts.phoneNumber ? contextMenu : undefined
+            menu: model.modelData.secondaryText == consts.phoneNumber ? contextMenu : undefined
 
             ContextMenu {
                 id: contextMenu
@@ -133,9 +123,9 @@ Page
             }
 
             onClicked: {
-                if (replace)
-                    pageStack.replace(Qt.resolvedUrl(source))
-                else pageStack.push(Qt.resolvedUrl(source))
+                if (model.modelData.replace)
+                    pageStack.replace(Qt.resolvedUrl(model.modelData.source))
+                else pageStack.push(Qt.resolvedUrl(model.modelData.source))
             }
         }
     }
