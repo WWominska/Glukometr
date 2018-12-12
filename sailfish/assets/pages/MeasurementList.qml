@@ -4,12 +4,21 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
+    property bool inSelectMode: false
+    property var selected: []
     property var colors: [
         "#DB4F56", "#FFF757", "#1DDE4D"
     ]
     Connections {
         target: thresholds
         onModelChanged: measurements.get()
+    }
+    Connections {
+        target: measurements
+        onModelChanged: {
+            if (measurements.model.rowCount() === 0)
+                inSelectMode = false;
+        }
     }
 
     SilicaListView
@@ -246,23 +255,63 @@ Page
             {
                 text: "Ustawienia"
                 onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/Settings.qml")
+                visible: !inSelectMode
             }
 
             MenuItem
             {
                 text: "Bluetooth"
+                visible: !inSelectMode
                 onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
 
             MenuItem {
                 text: "Wybierz przedział"
+                visible: !inSelectMode
                 onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/Calendar.qml")
+            }
+            MenuItem {
+                text: "Wybierz pomiary"
+                visible: !inSelectMode
+                onClicked: {
+                    selected = [];
+                    inSelectMode = true;
+                }
             }
 
             MenuItem
             {
                 text: "Dodaj pomiar"
+                visible: !inSelectMode
                 onClicked: openAddMeasurementDialog()
+            }
+
+            MenuItem {
+                visible: inSelectMode
+                text: qsTr("Usuń wszystkie")
+                onClicked: measurements.remove({}, true)
+            }
+
+            MenuItem {
+                visible: inSelectMode
+                text: qsTr("Usuń zaznaczone")
+                onClicked: {
+                    selected.map(
+                        function (id) {
+                            measurements.remove(id, false);
+                        }
+                    )
+                    measurements.get()
+                }
+            }
+
+            MenuItem {
+                visible: inSelectMode
+                text: qsTr("Odznacz wszystkie")
+                onClicked: {
+                    selected = [];
+                    inSelectMode = false;
+                }
             }
         }
         VerticalScrollDecorator {}
@@ -283,8 +332,43 @@ Page
                                           "meal": meal,
                                           "timestamp": timestamp
                                       })
+            Switch {
+                id: listItemCheckbox
+                anchors {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                }
+                Connections {
+
+                    target: results
+                    onInSelectModeChanged: {
+                        listItemCheckbox.checked = false
+                    }
+                }
+
+                onCheckedChanged: {
+                    if (checked) {
+                        if (selected.indexOf(measurement_id) == -1)
+                            selected.push(measurement_id)
+                    } else {
+                        selected = selected.filter(function (id) { return id !== measurement_id; });
+                    }
+                }
+
+                visible: inSelectMode
+            }
             menu: ContextMenu
             {
+                MenuItem {
+                    text: qsTr("Zaznacz")
+                    onClicked: {
+                        if (!inSelectMode) {
+                            selected = [];
+                            inSelectMode = true;
+                        }
+                        listItemCheckbox.checked = true;
+                    }
+                }
                 MenuItem
                 {
                     text: "Zmień pore posiłku"
@@ -357,7 +441,7 @@ Page
                 anchors
                 {
                     left: whenMeasurement.right
-                    right: parent.right
+                    right: listItemCheckbox.visible ? listItemCheckbox.left : parent.right
                     rightMargin: Theme.horizontalPageMargin
                     top: parent.top
                     topMargin: Theme.paddingSmall

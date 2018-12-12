@@ -8,6 +8,32 @@ Page
     property date timestamp
     property int value
 
+    property bool inSelectMode: false
+    property var selectedDrug: []
+    property var selectedMeal: []
+    property var selectedText: []
+
+    Connections {
+        target: drugAnnotations
+        onModelChanged: bigos();
+    }
+    Connections {
+        target: textAnnotations
+        onModelChanged: bigos();
+    }
+    Connections {
+        target: mealAnnotations
+        onModelChanged: bigos();
+    }
+
+    function bigos() {
+        if (textAnnotations.model.rowCount() === 0 &&
+            mealAnnotations.model.rowCount() === 0 &&
+            drugAnnotations.model.rowCount() === 0) {
+            inSelectMode = false;
+        }
+    }
+
     SilicaFlickable
     {
         VerticalScrollDecorator  {}
@@ -18,9 +44,21 @@ Page
 
         PullDownMenu
         {
+            MenuItem {
+                text: "Wybierz notatki"
+                visible: !inSelectMode
+                onClicked: {
+                    selectedText = [];
+                    selectedMeal = [];
+                    selectedDrug = [];
+                    inSelectMode = true;
+                }
+            }
+
             MenuItem
             {
                 text: "Dodaj notatkę"
+                visible: !inSelectMode
                 onClicked: {
                     var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"))
                     dialog.accepted.connect(function()
@@ -50,6 +88,52 @@ Page
                             break;
                         }
                     })
+                }
+            }
+
+            MenuItem {
+                visible: inSelectMode
+                text: qsTr("Usuń wszystkie")
+                onClicked: {
+                    drugAnnotations.remove({"measurement_id": measurement_id}, true)
+                    textAnnotations.remove({"measurement_id": measurement_id}, true)
+                    mealAnnotations.remove({"measurement_id": measurement_id}, true)
+                }
+            }
+
+            MenuItem {
+                visible: inSelectMode
+                text: qsTr("Usuń zaznaczone")
+                onClicked: {
+                    selectedMeal.map(
+                        function (id) {
+                            mealAnnotations.remove(id, false)
+                        }
+                    )
+                    selectedDrug.map(
+                        function (id) {
+                            drugAnnotations.remove(id, false)
+                        }
+                    )
+                    selectedText.map(
+                        function (id) {
+                            textAnnotations.remove(id, false)
+                        }
+                    )
+                    drugAnnotations.get()
+                    textAnnotations.get()
+                    mealAnnotations.get()
+                }
+            }
+
+            MenuItem {
+                visible: inSelectMode
+                text: qsTr("Odznacz wszystkie")
+                onClicked: {
+                    selectedText = [];
+                    selectedMeal = [];
+                    selectedDrug = [];
+                    inSelectMode = false;
                 }
             }
         }
@@ -107,6 +191,32 @@ Page
             {
                 id: foreverFood
 
+                Switch {
+                    id: listItemCheckbox
+                    anchors {
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                    }
+                    Connections {
+
+                        target: details
+                        onInSelectModeChanged: {
+                            listItemCheckbox.checked = false
+                        }
+                    }
+
+                    onCheckedChanged: {
+                        if (checked) {
+                            if (selectedMeal.indexOf(annotation_meal_id) == -1)
+                                selectedMeal.push(annotation_meal_id)
+                        } else {
+                            selectedMeal = selectedMeal.filter(function (id) { return id !== annotation_meal_id; });
+                        }
+                    }
+
+                    visible: inSelectMode
+                }
+
                 Image
                 {
                     id: foodIcon
@@ -127,6 +237,7 @@ Page
                    anchors
                    {
                        left: foodIcon.right
+                       right: listItemCheckbox.visible ? listItemCheckbox.left : parent.right
                        top: parent.top
                        topMargin: Theme.paddingSmall
                        leftMargin: Theme.paddingMedium
@@ -156,6 +267,7 @@ Page
                    anchors
                    {
                        top: amountId.top
+                       right: listItemCheckbox.visible ? listItemCheckbox.left : parent.right
                        left: amountId.right
                        leftMargin: Theme.paddingSmall
                    }
@@ -167,6 +279,18 @@ Page
                contentHeight: nameId.height + amountId.height + Theme.paddingSmall * 3
                menu: ContextMenu
                {
+                   MenuItem {
+                       text: qsTr("Zaznacz")
+                       onClicked: {
+                           if (!inSelectMode) {
+                               selectedText = [];
+                               selectedDrug = [];
+                               selectedMeal = [];
+                               inSelectMode = true;
+                           }
+                           listItemCheckbox.checked = true;
+                       }
+                   }
                    MenuItem
                    {
                        text: "Edytuj"
@@ -221,6 +345,32 @@ Page
             {
                 id: drugsEverywhere
 
+                Switch {
+                    id: drugListItemCheckbox
+                    anchors {
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                    }
+                    Connections {
+
+                        target: details
+                        onInSelectModeChanged: {
+                            drugListItemCheckbox.checked = false
+                        }
+                    }
+
+                    onCheckedChanged: {
+                        if (checked) {
+                            if (selectedDrug.indexOf(annotation_drug_id) == -1)
+                                selectedDrug.push(annotation_drug_id)
+                        } else {
+                            selectedDrug = selectedDrug.filter(function (id) { return id !== annotation_drug_id; });
+                        }
+                    }
+
+                    visible: inSelectMode
+                }
+
                 Image
                 {
                     id: drugsIcon
@@ -228,6 +378,7 @@ Page
                     anchors
                     {
                         left: parent.left
+                        right: drugListItemCheckbox.visible ? drugListItemCheckbox.left : parent.right
                         verticalCenter: parent.verticalCenter
                         leftMargin: Theme.horizontalPageMargin
                     }
@@ -242,6 +393,7 @@ Page
                     anchors
                     {
                         left: drugsIcon.right
+                        right: drugListItemCheckbox.visible ? drugListItemCheckbox.left : parent.right
                         top: parent.top
                         topMargin: Theme.paddingSmall
                         leftMargin: Theme.paddingMedium
@@ -271,6 +423,7 @@ Page
                     {
                         top: doseId.top
                         left: doseId.right
+                        right: drugListItemCheckbox.visible ? drugListItemCheckbox.left : parent.right
                         leftMargin: Theme.paddingSmall
                     }
                     color: Theme.secondaryColor
@@ -281,6 +434,18 @@ Page
                 contentHeight: drugNameId.height + doseId.height + Theme.paddingSmall*3
                 menu: ContextMenu
                 {
+                    MenuItem {
+                        text: qsTr("Zaznacz")
+                        onClicked: {
+                            if (!inSelectMode) {
+                                selectedText = [];
+                                selectedDrug = [];
+                                selectedMeal = [];
+                                inSelectMode = true;
+                            }
+                            drugListItemCheckbox.checked = true;
+                        }
+                    }
                     MenuItem
                     {
                        text: "Edytuj"
@@ -337,6 +502,33 @@ Page
             delegate: ListItem
             {
                 id: notes
+
+                Switch {
+                    id: textListItemCheckbox
+                    anchors {
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                    }
+                    Connections {
+
+                        target: details
+                        onInSelectModeChanged: {
+                            textListItemCheckbox.checked = false
+                        }
+                    }
+
+                    onCheckedChanged: {
+                        if (checked) {
+                            if (selectedText.indexOf(annotation_text_id) == -1)
+                                selectedText.push(annotation_text_id)
+                        } else {
+                            selectedText = selectedText.filter(function (id) { return id !== annotation_text_id; });
+                        }
+                    }
+
+                    visible: inSelectMode
+                }
+
                 Label
                 {
                     id:contentId
@@ -344,6 +536,7 @@ Page
                     anchors
                     {
                         left: parent.left
+                        right: textListItemCheckbox.visible ? textListItemCheckbox.left : parent.right
                         top: parent.top
                         topMargin: Theme.paddingSmall
                         leftMargin: Theme.horizontalPageMargin
@@ -354,6 +547,18 @@ Page
                contentHeight: contentId.height + Theme.paddingSmall*3
                menu: ContextMenu
                {
+                   MenuItem {
+                       text: qsTr("Zaznacz")
+                       onClicked: {
+                           if (!inSelectMode) {
+                               selectedText = [];
+                               selectedDrug = [];
+                               selectedMeal = [];
+                               inSelectMode = true;
+                           }
+                           textListItemCheckbox.checked = true;
+                       }
+                   }
                    MenuItem
                    {
                        text: "Edytuj"
