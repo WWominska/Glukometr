@@ -22,6 +22,7 @@
 #ifdef Q_OS_SAILFISH
 #include <sailfishapp.h>
 #else
+#include <QApplication>
 #include <QIcon>
 #include <QQuickStyle>
 #endif
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
 #else
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QScopedPointer<QGuiApplication> app(new QGuiApplication(argc, argv));
+    QScopedPointer<QApplication> app(new QApplication(argc, argv));
 
     // enable translations
     QTranslator translator;

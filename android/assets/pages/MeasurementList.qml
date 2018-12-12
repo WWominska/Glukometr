@@ -1,4 +1,5 @@
 import QtQuick 2.9
+import QtCharts 2.0
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Material 2.1
@@ -64,6 +65,90 @@ Page
     {
         ScrollBar.vertical: ScrollBar { }
         id: book
+        header: Rectangle {
+            color: "#66000000"
+            height: (results.height * 0.3) + 20
+            width: parent.width
+            Column {
+                id: przepisNaPlacek
+                spacing: Theme.paddingLarge
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: Theme.paddingLarge *2
+                }
+                width: parent.width / 2
+
+                Row {
+                    spacing: Theme.paddingMedium
+                    Rectangle {
+                        color: "#DB4F56"
+                        height: 14
+                        width: 14
+                        radius: 7
+                    }
+
+                    Label {
+                        text: "Hipoglikemia"
+                    }
+                }
+
+                Row {
+                    spacing: Theme.paddingMedium
+                    Rectangle {
+                        color: "#1DDE4D"
+                        height: 14
+                        width: 14
+                        radius: 7
+                    }
+
+                    Label {
+                        text: "Prawidłowo"
+                    }
+                }
+
+                Row {
+                    spacing: Theme.paddingMedium
+                    Rectangle {
+                        color: "#FFF757"
+                        height: 14
+                        width: 14
+                        radius: 7
+                    }
+
+                    Label {
+                        text: "Hiperglikemia"
+                    }
+                }
+            }
+
+            ChartView {
+                id: plaaceeek
+                height: parent.height
+                width: (parent.width / 2) + 40
+                x: (parent.x + parent.width) - (width - 20)
+                y: 0
+                antialiasing: true
+                backgroundColor: "transparent"
+                backgroundRoundness: 0
+                legend.visible: false
+
+                margins {
+                    bottom: 0
+                    top: 0
+                    left :0
+                    right: 0
+                }
+
+                PieSeries {
+                    id: pieSeries
+                    PieSlice { label: "Prawidłowe"; value: measurements.green; color: "#1DDE4D"; borderColor: 'transparent' }
+                    PieSlice { label: "Hipoglikemia"; value: measurements.red; color: "#DB4F56"; borderColor: 'transparent'}
+                    PieSlice { label: "Hiperglikemia"; value: measurements.yellow; color: "#FFF757"; borderColor: 'transparent' }
+                }
+            }
+        }
+
         anchors.fill: parent
 
         model: measurements.model

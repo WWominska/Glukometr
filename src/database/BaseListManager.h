@@ -37,6 +37,13 @@ public:
 
     bool m_tableCreated = false;
 
+    QString keysToBindings(const QVariantMap &fields,
+            QVariantMap *params=nullptr,
+            const QString &prefix="",
+            const QString &separator=" AND ");
+
+    QVariantMap lastFilter;
+
 signals:
     void modelChanged();
     void tableCreated();
@@ -49,14 +56,9 @@ public slots:
 protected:
     SqlQueryModel* m_model;
     DatabaseWorker* m_db;
-    QVariantMap lastFilter;
 
 private:
     SqlQueryModel* getModel();
-    QString keysToBindings(const QVariantMap &fields,
-            QVariantMap *params=nullptr,
-            const QString &prefix="",
-            const QString &separator=" AND ");
 };
 
 #endif // BASELISTMANAGER_H
