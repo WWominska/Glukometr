@@ -1,7 +1,6 @@
 #include <QtCore/QLoggingCategory>
 #include <QScopedPointer>
 #include <QQmlContext>
-#include <QApplication>
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QTranslator>
@@ -23,6 +22,7 @@
 #ifdef Q_OS_SAILFISH
 #include <sailfishapp.h>
 #else
+#include <QApplication>
 #include <QIcon>
 #include <QQuickStyle>
 #endif

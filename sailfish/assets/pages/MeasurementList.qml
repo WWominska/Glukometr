@@ -4,7 +4,9 @@ import Sailfish.Silica 1.0
 Page
 {
     id: results
-
+    property var colors: [
+        "#DB4F56", "#FFF757", "#1DDE4D"
+    ]
     Connections {
         target: thresholds
         onModelChanged: measurements.get()
@@ -38,7 +40,7 @@ Page
 
         header: Item {
             width: parent.width
-            height: pageHeader.height + (application.datesSet ? filtersHeader.height : 0)
+            height: pageHeader.height + (application.datesSet ? filtersHeader.height : 0) + (chartContainer.visible ? chartContainer.height : 0)
             PageHeader {
                 id: pageHeader
                 title: "Pomiary"
@@ -63,6 +65,176 @@ Page
                     onClicked: {
                         application.datesSet = false
                         measurements.get(true)
+                    }
+                }
+            }
+            Item {
+                visible: measurements.model.rowCount()
+                anchors {
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+                id: chartContainer
+                width: parent.width
+                height: chart.height + 2 * Theme.paddingMedium
+                Column {
+                    id: przepisNaPlacek
+                    spacing: Theme.paddingLarge
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        leftMargin: Theme.paddingLarge *2
+                    }
+                    width: parent.width / 2
+
+                    Row {
+                        spacing: Theme.paddingMedium
+                        Rectangle {
+                            color: colors[0]
+                            height: 14
+                            width: 14
+                            radius: 7
+                            anchors.verticalCenter: parent.verticalCenter
+
+                        }
+
+                        Label {
+                            text: "Hipoglikemia"
+                        }
+                    }
+
+                    Row {
+                        spacing: Theme.paddingMedium
+                        Rectangle {
+                            color: colors[2]
+                            height: 14
+                            width: 14
+                            radius: 7
+                            anchors.verticalCenter: parent.verticalCenter
+
+                        }
+
+                        Label {
+                            text: "Prawidłowo"
+                        }
+                    }
+
+                    Row {
+                        spacing: Theme.paddingMedium
+                        Rectangle {
+                            color: colors[1]
+                            height: 14
+                            width: 14
+                            radius: 7
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+
+                        Label {
+                            text: "Hiperglikemia"
+                        }
+                    }
+                }
+
+                Item {
+                    id: chart
+                    y: Theme.paddingMedium
+                    x: parent.width / 2
+                    height: 300
+                    width: parent.width / 2
+
+                    Column {
+                        width: Theme.itemSizeHuge * 0.7
+                        anchors.centerIn: parent
+                        Text {
+                            id: topLabel
+                            width: parent.width
+                            text: "" + measurements.model.rowCount()
+                            verticalAlignment: Text.AlignBottom
+                            horizontalAlignment: Text.AlignHCenter
+                            font.pixelSize: Theme.fontSizeLarge
+                            color: Theme.primaryColor
+                            fontSizeMode: Text.Fit
+                        }
+                        Rectangle {
+                            id: ruler
+                            width: parent.width
+                            height: Math.round(2*Theme.pixelRatio)
+                            color: Theme.rgba(Theme.secondaryColor, 0.4)
+                            x: 0
+                        }
+                        Text {
+                            id: bottomLabel
+                            text: {
+                                if (measurements.model.rowCount() === 1) {
+                                    return qsTr("pomiar");
+                                } else {
+                                    if (measurements.model.rowCount() <= 4) {
+                                        return qsTr("pomiary");
+                                    } else {
+                                        return qsTr("pomiarów");
+                                    }
+                                }
+                            }
+                            width: parent.width
+                            color: Theme.rgba(Theme.secondaryColor, 0.6)
+                            font.pixelSize: Theme.fontSizeMedium
+                            horizontalAlignment: topLabel.horizontalAlignment
+                            height: topLabel.height // makes vertically centering the ruler within the surrounding circle easier
+                            fontSizeMode: Text.Fit
+                        }
+                    }
+
+                    Repeater {
+                        id: repeater
+                        model: ListModel {
+                            property int total: 100
+                            ListElement {
+                                position: 0.0
+                                bytes: 0.0
+                            }
+                            ListElement {
+                                position: 0.0
+                                bytes: 0.0
+                            }
+                            ListElement {
+                                position: 0.0
+                                bytes: 0.0
+                            }
+                        }
+                        ProgressCircleBase {
+                            backgroundColor: "transparent"
+                            progressColor: colors[model.index % colors.length]
+                            rotation: 360*model.position/repeater.model.total
+                            value: bytes/repeater.model.total
+                            anchors.centerIn: parent
+
+                            height: width
+                            width: implicitWidth
+                            implicitWidth: Theme.itemSizeHuge
+                            borderWidth: Math.round(Theme.paddingLarge/3)
+                        }
+                    }
+                }
+                Connections {
+                    target: measurements
+                    onRedChanged: {
+                        repeater.model.set(0, {
+                                          "bytes": measurements.red,
+                                          "position" : 0
+                                        })
+                    }
+                    onYellowChanged: {
+                        repeater.model.set(1, {
+                                          "bytes": measurements.yellow,
+                                          "position" : measurements.red
+                                        })
+                    }
+                    onGreenChanged: {
+                        repeater.model.set(2, {
+                                          "bytes": measurements.green,
+                                          "position" : measurements.yellow + measurements.red
+                                        })
                     }
                 }
             }
