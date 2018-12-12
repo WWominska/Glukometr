@@ -11,7 +11,7 @@ Page
 {
     header: Item {
         width: parent.width
-        height: pageHeader.height + (resetDates.visible ? resetDates.height + Theme.paddingSmall*2 : 0)
+        height: pageHeader.height + (resetDates.visible ? resetDates.height + Theme.paddingSmall*2 : 0) + (buttons.visible ? buttons.height + Theme.paddingSmall*2 : 0)
         PageHeader {
             id: pageHeader
             title: qsTr("Pomiary")
@@ -25,6 +25,52 @@ Page
                 pageStack.push("qrc:/assets/pages/Settings.qml")
             }
         }
+        Row {
+            id: buttons
+            anchors
+            {
+                top: pageHeader.bottom
+                left: parent.left
+                right: parent.right
+                topMargin: Theme.paddingSmall
+                bottomMargin: Theme.paddingSmall
+                leftMargin: Theme.horizontalPageMargin
+                rightMargin: Theme.horizontalPageMargin
+            }
+            spacing: Theme.paddingSmall
+            width: parent.width
+            visible: inSelectMode
+            ToolButton {
+                text: "\ue5c4"
+                font.family: "Material Icons"
+                font.pixelSize: 20
+                onClicked: {
+                    selected = [];
+                    inSelectMode = false;
+                }
+            }
+            ToolButton {
+                text: "Usuń wszystkie"
+                font.pixelSize: 20
+                onClicked: {
+                    measurements.remove({}, true)
+                }
+            }
+            ToolButton {
+                text: "\ue872"
+                font.family: "Material Icons"
+                font.pixelSize: 20
+                onClicked: {
+                    selected.map(
+                        function (id) {
+                            measurements.remove(id, false);
+                        }
+                    )
+                    measurements.get()
+                }
+            }
+        }
+
         Button {
             id: resetDates
             anchors
@@ -47,6 +93,14 @@ Page
             visible: application.datesSet
         }
     }
+    Connections {
+        target: measurements
+        onModelChanged: if (measurements.model.rowCount() === 0) {
+                                inSelectMode = false;
+                            }
+    }
+    property bool inSelectMode: false
+    property var selected: []
     background: OreoBackground {}
     id: results
     Connections {
@@ -55,10 +109,14 @@ Page
     }
 
     FloatingActionButton {
+        visible: !inSelectMode
         Material.foreground: "#000"
         Material.background: "#ccff7575"
         text: "\ue145"
-        onClicked: openAddMeasurementDialog()
+        onClicked: {
+            inSelectMode = false;
+            openAddMeasurementDialog();
+        }
     }
 
     ListView
@@ -66,7 +124,7 @@ Page
         ScrollBar.vertical: ScrollBar { }
         id: book
         header: Rectangle {
-            color: "#66000000"
+            color: "#66262626"
             height: (results.height * 0.3) + 20
             width: parent.width
             Column {
@@ -188,19 +246,31 @@ Page
             menu: Menu
             {
                 id: contextMenu
+                MenuItem {
+                    text: qsTr("Zaznacz")
+                    onClicked: {
+                        if (!inSelectMode) {
+                            selected = [];
+                            inSelectMode = true;
+                            listItemCheckbox.checked = true;
+                        }
+                        listItemCheckbox.checked = true;
+                    }
+                }
+
                 MenuItem
                 {
                     text: qsTr("Zmień pore posiłku")
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
-                                                                         {"meal": meal})
-                        dialog.accepted.connect(function()
-                        {
-                            measurements.update({
-                                "measurement_id": measurement_id
-                            }, {"meal": dialog.meal}, true);
-                        })
+                                                    {"meal": meal})
+                       dialog.accepted.connect(function()
+                       {
+                           measurements.update({
+                               "measurement_id": measurement_id
+                           }, {"meal": dialog.meal}, true);
+                       })
                     }
                 }
                 MenuItem
@@ -208,6 +278,33 @@ Page
                     text: qsTr("Usuń")
                     onClicked: measurements.remove(measurement_id)
                 }
+            }
+
+            CheckBox {
+                id: listItemCheckbox
+                Material.accent: "#99000000"
+                anchors {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                }
+                Connections {
+
+                    target: results
+                    onInSelectModeChanged: {
+                        listItemCheckbox.checked = false
+                    }
+                }
+
+                onCheckedChanged: {
+                    if (checked) {
+                        if (selected.indexOf(measurement_id) == -1)
+                            selected.push(measurement_id)
+                    } else {
+                        selected = selected.filter(function (id) { return id !== measurement_id; });
+                    }
+                }
+
+                visible: inSelectMode
             }
 
             Item
@@ -276,7 +373,7 @@ Page
                 anchors
                 {
                     left: whenMeasurement.right
-                    right: parent.right
+                    right: inSelectMode ? listItemCheckbox.left : parent.right
                     rightMargin: Theme.horizontalPageMargin
                     top: parent.top
                     topMargin: Theme.paddingSmall
