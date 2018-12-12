@@ -11,6 +11,105 @@ Page
     property var measurement_id
     property date timestamp
     property int value
+    property bool inSelectMode: false
+    property var selectedDrug: []
+    property var selectedMeal: []
+    property var selectedText: []
+
+    function bigos() {
+        if (textAnnotations.model.rowCount() === 0 &&
+            mealAnnotations.model.rowCount() === 0 &&
+            drugAnnotations.model.rowCount() === 0) {
+            inSelectMode = false;
+        }
+    }
+
+    Connections {
+        target: drugAnnotations
+        onModelChanged: bigos();
+    }
+    Connections {
+        target: textAnnotations
+        onModelChanged: bigos();
+    }
+    Connections {
+        target: mealAnnotations
+        onModelChanged: bigos();
+    }
+
+    header: Item
+    {
+        width: parent.width
+        height: pageHeader.height + (buttons.visible ? buttons.height + Theme.paddingSmall*2 : 0)
+        PageHeader
+        {
+            id: pageHeader
+            title: qsTr("Szczegóły pomiaru")
+        }
+        Row
+        {
+            id: buttons
+            anchors
+            {
+                top: pageHeader.bottom
+                left: parent.left
+                right: parent.right
+                topMargin: Theme.paddingSmall
+                bottomMargin: Theme.paddingSmall
+                leftMargin: Theme.horizontalPageMargin
+                rightMargin: Theme.horizontalPageMargin
+            }
+            spacing: Theme.paddingSmall
+            width: parent.width
+            visible: inSelectMode
+            ToolButton {
+                text: "\ue5c4"
+                font.family: "Material Icons"
+                font.pixelSize: 20
+                onClicked: {
+                    selectedText = [];
+                    selectedMeal = [];
+                    selectedDrug = [];
+                    inSelectMode = false;
+                }
+            }
+            ToolButton {
+                text: "Usuń wszystkie"
+                font.pixelSize: 20
+                onClicked: {
+                    drugAnnotations.remove({"measurement_id": measurement_id}, true)
+                    textAnnotations.remove({"measurement_id": measurement_id}, true)
+                    mealAnnotations.remove({"measurement_id": measurement_id}, true)
+                }
+            }
+            ToolButton {
+                text: "\ue872"
+                font.family: "Material Icons"
+                font.pixelSize: 20
+                onClicked: {
+                    selectedMeal.map(
+                        function (id) {
+                            mealAnnotations.remove(id, false)
+                        }
+                    )
+                    selectedDrug.map(
+                        function (id) {
+                            drugAnnotations.remove(id, false)
+                        }
+                    )
+                    selectedText.map(
+                        function (id) {
+                            textAnnotations.remove(id, false)
+                        }
+                    )
+                    drugAnnotations.get()
+                    textAnnotations.get()
+                    mealAnnotations.get()
+                }
+            }
+        }
+    }
+
 
     FloatingActionButton {
        Material.foreground: "#000"
@@ -18,6 +117,7 @@ Page
        text: "\ue145"
        onClicked:
        {
+          inSelectMode = false;
           var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"))
           dialog.accepted.connect(function()
           {
@@ -49,10 +149,7 @@ Page
       }
    }
 
-    header: PageHeader {
-        id: pageHeader
-        title: qsTr("Szczegóły pomiaru")
-    }
+
     background: OreoBackground {}
 
     Flickable
@@ -161,6 +258,19 @@ Page
 
                menu: Menu
                {
+                   MenuItem {
+                       text: qsTr("Zaznacz")
+                       onClicked: {
+                           if (!inSelectMode) {
+                               selectedMeal = [];
+                               selectedText = [];
+                               selectedDrug = [];
+                               inSelectMode = true;
+                           }
+                           listItemCheckbox.checked = true;
+                       }
+                   }
+
                    MenuItem
                    {
                        text: qsTr("Edytuj")
@@ -190,6 +300,34 @@ Page
                        onClicked: mealAnnotations.remove(annotation_meal_id)
                    }
                }
+
+               CheckBox {
+                   id: listItemCheckbox
+                   Material.accent: "#99000000"
+                   anchors {
+                       right: parent.right
+                       verticalCenter: parent.verticalCenter
+                   }
+                   Connections {
+
+                       target: details
+                       onInSelectModeChanged: {
+                           listItemCheckbox.checked = false
+                       }
+                   }
+
+                   onCheckedChanged: {
+                       if (checked) {
+                           if (selectedMeal.indexOf(annotation_meal_id) == -1)
+                               selectedMeal.push(annotation_meal_id)
+                       } else {
+                           selectedMeal = selectedMeal.filter(function (id) { return id !== annotation_meal_id; });
+                       }
+                   }
+
+                   visible: inSelectMode
+               }
+
             }
         }
 
@@ -257,6 +395,17 @@ Page
                 contentHeight: drugNameId.height + doseId.height + Theme.paddingSmall*3
                 menu: Menu
                 {
+                    MenuItem {
+                        text: qsTr("Zaznacz")
+                        onClicked: {
+                            if (!inSelectMode) {
+                                selectedMeal = [];
+                                selectedText = [];
+                                selectedDrug = [];
+                                inSelectMode = true;
+                            }
+                            drugCheckbox.checked = true;
+                        }
                     MenuItem
                     {
                        text: qsTr("Edytuj")
@@ -287,6 +436,33 @@ Page
                        onClicked: drugAnnotations.remove(annotation_drug_id)
                    }
              }
+                }
+                CheckBox {
+                    id: drugCheckbox
+                    Material.accent: "#99000000"
+                    anchors {
+                        right: parent.right
+                        verticalCenter: parent.verticalCenter
+                    }
+                    Connections {
+
+                        target: details
+                        onInSelectModeChanged: {
+                            drugCheckbox.checked = false
+                        }
+                    }
+
+                    onCheckedChanged: {
+                        if (checked) {
+                            if (selectedDrug.indexOf(annotation_drug_id) == -1)
+                                selectedDrug.push(annotation_drug_id)
+                        } else {
+                            selectedDrug = selectedMeal.filter(function (id) { return id !== annotation_drug_id; });
+                        }
+                    }
+
+                    visible: inSelectMode
+                }
             }
         }
 
@@ -329,6 +505,17 @@ Page
                contentHeight: contentId.height + Theme.paddingSmall*3
                menu: Menu
                {
+                   MenuItem {
+                       text: qsTr("Zaznacz")
+                       onClicked: {
+                           if (!inSelectMode) {
+                               selectedMeal = [];
+                               selectedText = [];
+                               selectedDrug = [];
+                               inSelectMode = true;
+                           }
+                           textCheckbox.checked = true;
+                       }
                    MenuItem
                    {
                        text: qsTr("Edytuj")
@@ -353,8 +540,34 @@ Page
                        onClicked: textAnnotations.remove(annotation_text_id)
                    }
                }
+               }
+               CheckBox {
+                   id: textCheckbox
+                   Material.accent: "#99000000"
+                   anchors {
+                       right: parent.right
+                       verticalCenter: parent.verticalCenter
+                   }
+                   Connections {
+
+                       target: details
+                       onInSelectModeChanged: {
+                           textCheckbox.checked = false
+                       }
+                   }
+
+                   onCheckedChanged: {
+                       if (checked) {
+                           if (selectedText.indexOf(annotation_text_id) == -1)
+                               selectedText.push(annotation_text_id)
+                       } else {
+                           selectedText = selectedText.filter(function (id) { return id !== annotation_text_id; });
+                       }
+                   }
+
+                   visible: inSelectMode
+               }
             }
         }
     }
-
 }
