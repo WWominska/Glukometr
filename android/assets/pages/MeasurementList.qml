@@ -25,7 +25,7 @@ Page
                 pageStack.push("qrc:/assets/pages/Settings.qml")
             }
         }
-        Row {
+        RowLayout {
             id: buttons
             anchors
             {
@@ -34,8 +34,6 @@ Page
                 right: parent.right
                 topMargin: Theme.paddingSmall
                 bottomMargin: Theme.paddingSmall
-                leftMargin: Theme.horizontalPageMargin
-                rightMargin: Theme.horizontalPageMargin
             }
             spacing: Theme.paddingSmall
             width: parent.width
@@ -52,6 +50,7 @@ Page
             ToolButton {
                 text: "Usuń wszystkie"
                 font.pixelSize: 20
+                Layout.fillWidth: true
                 onClicked: {
                     measurements.remove({}, true)
                 }
