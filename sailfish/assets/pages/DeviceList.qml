@@ -43,7 +43,7 @@ Page
         {
             MenuItem
             {
-                text: bleDiscovery.running ? "Zatrzymaj wyszukiwanie" : "Szukaj urządzeń"
+                text: bleDiscovery.running ? qsTr("DEVICE_SEARCH_STOP_LABEL") : qsTr("DEVICE_SEARCH_START_LABEL")
                 onClicked: {
                     if (bleDiscovery.running)
                         bleDiscovery.stopDiscovery();
@@ -58,7 +58,7 @@ Page
         PageHeader
         {
             id: pageHeader
-            title: "Wybierz urządzenie"
+            title: qsTr("DEVICE_LIST_TITLE")
         }
 
         SectionHeader
@@ -69,7 +69,7 @@ Page
                 topMargin: Theme.paddingLarge
             }
             font.pixelSize: Theme.fontSizeLarge
-            text: "Zapamiętane urządzenie"
+            text: qsTr("DEVICE_KNOWN_LABEL")
         }
 
         ListView
@@ -92,7 +92,7 @@ Page
                 {
                     MenuItem
                     {
-                        text: "Zmień nazwę urządzenia"
+                        text: qsTr("DEVICE_RENAME_LABEL")
                         onClicked:
                         {
                             var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
@@ -105,8 +105,8 @@ Page
 
                     MenuItem
                     {
-                        text: "Zapomnij urządzenie"
-                        onClicked: remorse.execute(deviceSet, "Urządzenie zostanie zapomniane", function() {
+                        text: qsTr("DEVICE_FORGET_LABEL")
+                        onClicked: remorse.execute(deviceSet, qsTr("DEVICE_FORGET_REMORSE"), function() {
                             devices.remove(device_id)
                         })
                     }
@@ -152,7 +152,7 @@ Page
                     }
 
                     font.pixelSize: Theme.fontSizeTiny
-                    text: last_sync > 0 ? new Date(last_sync*1000).toLocaleDateString() : "Nigdy"
+                    text: last_sync > 0 ? new Date(last_sync*1000).toLocaleDateString() : qsTr("DEVICE_SYNC_NEVER")
                     color: Theme.secondaryColor
                 }
             }
@@ -166,7 +166,7 @@ Page
                 topMargin: Theme.paddingLarge
             }
             font.pixelSize: Theme.fontSizeLarge
-            text: "Wykryte urządzenia"
+            text: qsTr("DEVICE_DISCOVERED_LABEL")
         }
 
         ProgressBar
@@ -180,7 +180,7 @@ Page
                 right: parent.right
             }
             visible: bleDiscovery.running
-            label: "Szukanie urządzeń"
+            label: qsTr("DEVICE_PROGRESS_LABEL")
             indeterminate: true
         }
 

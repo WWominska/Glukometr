@@ -42,7 +42,7 @@ Dialog
             SectionHeader
             {
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Wybierz przedział"
+                text: qsTr("CALENDAR_TITLE")
             }
 
             ExpandingSectionGroup
@@ -50,7 +50,7 @@ Dialog
                 currentIndex: 0
                 ExpandingSection
                 {
-                    title: "Początek (" + calendarPage.beginDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + ")"
+                    title: qsTr("CALENDAR_BEGIN") + " (" + calendarPage.beginDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + ")"
                     content.sourceComponent: Column {
                         DatePicker {
                             id: kalednarz
@@ -64,7 +64,7 @@ Dialog
                 }
                 ExpandingSection
                 {
-                    title: "Koniec (" + calendarPage.endDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + ")"
+                    title: qsTr("CALENDAR_END") + " (" + calendarPage.endDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + ")"
                     content.sourceComponent: DatePicker {
                         id: kadenlarz
                         date: calendarPage.endDate

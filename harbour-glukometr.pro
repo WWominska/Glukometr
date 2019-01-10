@@ -2,8 +2,8 @@ TEMPLATE = app
 TARGET = harbour-glukometr
 QT += quick bluetooth sql
 CONFIG += c++11
+TRANSLATIONS += translations/harbour-glukometr-en.ts translations/harbour-glukometr-pl.ts
 
-TRANSLATIONS += translations/glukometr_en.ts
 
 winrt {
     TEMPLATE += vcapp
@@ -18,15 +18,11 @@ unix:packagesExist(sailfishapp):!android {
     SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
     CONFIG += sailfishapp
     DEFINES += Q_OS_SAILFISH
-    DISTFILES += harbour-glukometr.desktop
-    OTHER_FILES += sailfish/* \
-                   sailfish/rpm/* \
-                   sailfish/assets/*.qml \
-                   sailfish/assets/pages/*.qml \
-                   sailfish/assets/dialogs/*.qml \
-                   sailfish/assets/cover/*.qml
+    DISTFILES += harbour-glukometr.desktop \
+                 sailfish/icons/* \
+                 sailfish/rpm/*
 } else {
-    QT += quickcontrols2 widgets charts
+    QT += quickcontrols2 widgets charts svg
     RESOURCES += android/resources.qrc
     OTHER_FILES += android/assets/*.qml \
                android/assets/pages/*.qml \

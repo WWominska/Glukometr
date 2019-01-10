@@ -20,7 +20,7 @@ Dialog
             y: header.y + header.height - Theme.paddingSmall
             id: addNotesHeader
             font.pixelSize: Theme.fontSizeLarge
-            text: qsTr("Dodaj powiadomienia")
+            text: qsTr("ADD_REMINDER_TITLE")
         }
         ValueButton
         {
@@ -44,7 +44,7 @@ Dialog
             }
 
             anchors { top: addNotesHeader.bottom; }
-            label: qsTr("Godzina: ")
+            label: qsTr("REMINDER_TIME_LABEL")
             value: "13:00"
             width: parent.width
             onClicked: openTimeDialog()
@@ -62,25 +62,25 @@ Dialog
             //visible: !isEdited
             id: combo
             currentIndex: -1
-            label: qsTr("Rodzaj przypomnienia: ")
-            value: qsTr("Wybierz")
+            label: qsTr("REMINDER_TYPE_LABEL")
+            value: qsTr("COMBOBOX_PLACEHOLDER")
             menu: ContextMenu
             {
                 MenuItem
                 {
-                    text: qsTr("Zmierz cukier")
+                    text: qsTr("REMINDERS_MEASUREMENT")
                     onClicked: combo.value=text
                 }
 
                 MenuItem
                 {
-                    text: qsTr("Weź leki")
+                    text: qsTr("REMINDERS_DRUG")
                     onClicked: combo.value=text
                 }
 
                 MenuItem
                 {
-                    text: qsTr("Zjedz coś")
+                    text: qsTr("REMINDERS_FOOD")
                     onClicked: combo.value=text
                 }
             }
@@ -97,8 +97,8 @@ Dialog
                 topMargin: Theme.paddingSmall
             }
             checked: true
-            text: qsTr("Powtórz")
-            description: qsTr("Przypomnienie będzie powtarzane codziennie")
+            text: qsTr("REMINDERS_REPEAT_TEXT")
+            description: qsTr("REMINDERS_REPEAT_DESCRIPTION")
         }
     }
 }

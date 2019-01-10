@@ -8,11 +8,11 @@ DialogPage
     id: dialogDevice
     property string name;
 
-    title: qsTr("Zmień nazwę")
+    title: qsTr("RENAME_DEVICE_TITLE")
     canAccept: nameField.text != ""
     onDone:
     {
-        if (result == DialogResult.Accepted)
+        if (result === DialogResult.Accepted)
         {
             name = nameField.text
         }
@@ -37,8 +37,7 @@ DialogPage
                  margins: Theme.horizontalPageMargin
 
              }
-             placeholderText: qsTr("Np. Glukometr w domu")
-             //label: "Twoja nazwa"
+             placeholderText: qsTr("RENAME_DEVICE_PLACEHOLDER")
          }
     }
 }

@@ -33,7 +33,7 @@ Dialog
             {
                 id: phoneNumberHead
                 font.pixelSize: Theme.fontSizeLarge
-                text: qsTr("Podaj numer telefonu")
+                text: qsTr("PHONE_NUMBER_TITLE")
             }
 
             TextField

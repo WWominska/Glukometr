@@ -17,9 +17,10 @@ Page
     {
         switch (type)
         {
-        case 0: return "Przypomnienie o pomiarze";
-        case 1: return "Przypomnienie o lekach";
-        case 2: return "Przypomnienie o jedzeniu";
+        case 0: return qsTr("REMINDERS_MEASUREMENT")
+        case 1: return qsTr("REMINDERS_DRUG");
+        case 2: return qsTr("REMINDERS_FOOD");
+        default: return qsTr("REMINDERS_REMINDER")
         }
     }
 
@@ -30,7 +31,7 @@ Page
         {         
             MenuItem
             {
-                text: "Dodaj przypomnienie"
+                text: qsTr("REMINDERS_ADD_LABEL")
                 onClicked: {
                     var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddReminder.qml"))
                     dialog.accepted.connect(function()
@@ -52,7 +53,7 @@ Page
         }
 
         model: reminders.model
-        header: PageHeader { title: "Przypomnienia" }
+        header: PageHeader { title: qsTr("REMINDERS_ADD_LABEL") }
         delegate: ListItem
         {
             id:list
@@ -61,8 +62,8 @@ Page
             {
                 MenuItem
                 {
-                    text: "Usuń"
-                    onClicked: remorse.execute(list, "Usunięcie powiadomienia", function()
+                    text: qsTr("REMOVE_LABEL")
+                    onClicked: remorse.execute(list, qsTr("REMINDERS_REMOVE_REMORSE"), function()
                     {
                         reminders.cancel(cookie_id);
                         reminders.remove(reminder_id);
@@ -83,7 +84,7 @@ Page
             Label
             {
                 id:whenCall
-                text: new Date(reminder_datetime*1000).toLocaleString(Qt.locale("pl_PL"),"HH:mm")
+                text: new Date(reminder_datetime*1000).toLocaleString(Qt.locale(),"HH:mm")
                 anchors
                 {
                     right: parent.right

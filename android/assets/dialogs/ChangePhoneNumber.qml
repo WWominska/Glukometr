@@ -18,7 +18,7 @@ DialogPage
         }
     }
 
-    title: qsTr("Ustaw numer")
+    title: qsTr("PHONE_NUMBER_TITLE")
 
     Flickable
     {
@@ -38,15 +38,9 @@ DialogPage
             width: parent.width
             spacing: Theme.paddingMedium
 
-//            SectionHeader
-//            {
-//                id: phoneNumberHead
-//                font.pixelSize: Theme.fontSizeLarge
-//                text: "Podaj numer kontaktowy"
-//            }
             Label
             {
-                text: qsTr("Podaj numer kontaktowy do osoby, z którą należy się skontaktować w razie nagłego wypadku.")
+                text: qsTr("PHONE_NUMBER_HELP")
                 wrapMode: Text.WordWrap
                 color: "#d9d2b9"
                 anchors

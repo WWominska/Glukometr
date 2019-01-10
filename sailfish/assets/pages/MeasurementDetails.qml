@@ -45,7 +45,7 @@ Page
         PullDownMenu
         {
             MenuItem {
-                text: "Wybierz notatki"
+                text: qsTr("MEASUREMENT_DETAILS_SELECT_ANNOTATIONS")
                 visible: !inSelectMode
                 onClicked: {
                     selectedText = [];
@@ -57,7 +57,7 @@ Page
 
             MenuItem
             {
-                text: "Dodaj notatkę"
+                text: qsTr("MEASUREMENT_DETAILS_ADD_ANNOTATION")
                 visible: !inSelectMode
                 onClicked: {
                     var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"))
@@ -93,7 +93,7 @@ Page
 
             MenuItem {
                 visible: inSelectMode
-                text: qsTr("Usuń wszystkie")
+                text: qsTr("REMOVE_ALL_LABEL")
                 onClicked: {
                     drugAnnotations.remove({"measurement_id": measurement_id}, true)
                     textAnnotations.remove({"measurement_id": measurement_id}, true)
@@ -103,7 +103,7 @@ Page
 
             MenuItem {
                 visible: inSelectMode
-                text: qsTr("Usuń zaznaczone")
+                text: qsTr("REMOVE_SELECTED_LABEL")
                 onClicked: {
                     selectedMeal.map(
                         function (id) {
@@ -128,7 +128,7 @@ Page
 
             MenuItem {
                 visible: inSelectMode
-                text: qsTr("Odznacz wszystkie")
+                text: qsTr("QUIT_SELECTION_MODE_LABEL")
                 onClicked: {
                     selectedText = [];
                     selectedMeal = [];
@@ -140,7 +140,7 @@ Page
         PageHeader
         {
             id: measurementHeader
-            title: "Pomiar"
+            title: qsTr("MEASUREMENT_DETAILS_TITLE")
         }
 
         Rectangle
@@ -280,7 +280,7 @@ Page
                menu: ContextMenu
                {
                    MenuItem {
-                       text: qsTr("Zaznacz")
+                       text: qsTr("SELECT_LABEL")
                        onClicked: {
                            if (!inSelectMode) {
                                selectedText = [];
@@ -293,7 +293,7 @@ Page
                    }
                    MenuItem
                    {
-                       text: "Edytuj"
+                       text: qsTr("EDIT_LABEL")
                        onClicked:
                        {
                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
@@ -316,8 +316,8 @@ Page
 
                    MenuItem
                    {
-                       text: "Usuń"
-                       onClicked: remorseFood.execute(foreverFood, "Usunięcie posiłku", function() {mealAnnotations.remove(annotation_meal_id) } )
+                       text: qsTr("REMOVE_LABEL")
+                       onClicked: remorseFood.execute(foreverFood, qsTr("REMOVE_MEAL_REMORSE"), function() {mealAnnotations.remove(annotation_meal_id) } )
                    }
                }
             }
@@ -435,7 +435,7 @@ Page
                 menu: ContextMenu
                 {
                     MenuItem {
-                        text: qsTr("Zaznacz")
+                        text: qsTr("SELECT_LABEL")
                         onClicked: {
                             if (!inSelectMode) {
                                 selectedText = [];
@@ -448,7 +448,7 @@ Page
                     }
                     MenuItem
                     {
-                       text: "Edytuj"
+                       text: qsTr("EDIT_LABEL")
                        onClicked:
                        {
                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
@@ -472,8 +472,8 @@ Page
 
                    MenuItem
                    {
-                       text: "Usuń"
-                       onClicked: remorseDrugs.execute(drugsEverywhere, "Usunięcie leku", function() {drugAnnotations.remove(annotation_drug_id) } )
+                       text: qsTr("REMOVE_LABEL")
+                       onClicked: remorseDrugs.execute(drugsEverywhere, qsTr("REMOVE_DRUG_REMORSE"), function() {drugAnnotations.remove(annotation_drug_id) } )
                    }
              }
             }
@@ -548,7 +548,7 @@ Page
                menu: ContextMenu
                {
                    MenuItem {
-                       text: qsTr("Zaznacz")
+                       text: qsTr("SELECT_LABEL")
                        onClicked: {
                            if (!inSelectMode) {
                                selectedText = [];
@@ -561,7 +561,7 @@ Page
                    }
                    MenuItem
                    {
-                       text: "Edytuj"
+                       text: qsTr("EDIT_LABEL")
                        onClicked:
                        {
                            var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddAnnotation.qml"), {
@@ -579,8 +579,8 @@ Page
                    }
                    MenuItem
                    {
-                       text: "Usuń"
-                       onClicked: remorseNotes.execute(notes, "Usunięcie notatki", function() {textAnnotations.remove(annotation_text_id) } )
+                       text: qsTr("REMOVE_LABEL")
+                       onClicked: remorseNotes.execute(notes, qsTr("TEXT_ANNOTATION_REMORSE"), function() {textAnnotations.remove(annotation_text_id) } )
                    }
                }
             }

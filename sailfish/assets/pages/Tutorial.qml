@@ -29,7 +29,7 @@ Page
                 rightMargin: Theme.horizontalPageMargin
             }
 
-            text: "Witaj w aplikacji Glukometr\n3000+"
+            text: qsTr("WELCOME_TEXT")
             horizontalAlignment: Text.AlignHCenter
             font.bold: true
             font.pixelSize: Theme.fontSizeHuge
@@ -40,7 +40,7 @@ Page
         Button
         {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Rozpocznij tutorial"
+            text: qsTr("WELCOME_BEGIN")
             color: Theme.highlightColor
             highlightBackgroundColor: Theme.highlightBackgroundColor
             onClicked:
@@ -53,7 +53,7 @@ Page
 
     InteractionHintLabel
     {
-        text: "Aby przejść dalej przesuń palcem w prawo"
+        text: qsTr("WELCOME_HINT")
         color: Theme.secondaryColor
         anchors.bottom: parent.bottom
         opacity: hint.running ? 1.0 : 0.0

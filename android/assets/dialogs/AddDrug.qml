@@ -8,38 +8,27 @@ DialogPage
     id: addDrugsDialog
     property alias value: nameField.text
     property bool isEdited: false
-    title: isEdited ? qsTr("Zmień nazwe") : qsTr("Dodaj lek")
+    title: isEdited ? qsTr("ADD_DRUG_TITLE_EDIT") : qsTr("ADD_DRUG_TITLE_ADD")
 
     Flickable
     {
         ScrollBar.vertical: ScrollBar { }
         anchors.fill: parent
         contentWidth: parent.width
-        //contentHeight: column.childrenRect.height
 
-//        Column
-//        {
-//            id: column
-//            width: parent.width
-//            spacing: Theme.paddingSmall
-
-
-             TextField
+         TextField
+         {
+             id: nameField
+             width: parent.width
+             placeholderText: qsTr("DRUG_NAME_PLACEHOLDER")
+             anchors
              {
-                 id: nameField
-                 width: parent.width
-                 placeholderText: "Novorapid"
-                 anchors
-                 {
-                     left: parent.left
-                     right: parent.right
-                     top: parent.top
-                     margins: Theme.horizontalPageMargin
+                 left: parent.left
+                 right: parent.right
+                 top: parent.top
+                 margins: Theme.horizontalPageMargin
 
-                 }
-                 //placeholderColor: Theme.highlightBackgroundColor
-                 //label: isEdited ? "Nowa nazwa" : "Lek, który chcesz dodać"
              }
-//        }
+         }
     }
 }

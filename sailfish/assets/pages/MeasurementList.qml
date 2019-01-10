@@ -52,7 +52,7 @@ Page
             height: pageHeader.height + (application.datesSet ? filtersHeader.height : 0) + (chartContainer.visible ? chartContainer.height : 0)
             PageHeader {
                 id: pageHeader
-                title: "Pomiary"
+                title: qsTr("MEASUREMENTS_TITLE")
             }
             Item {
                 anchors.top: pageHeader.bottom
@@ -64,7 +64,7 @@ Page
                     x: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
                     textFormat: Text.RichText
-                    text: "Okres: <span style='color: " + Theme.secondaryColor + "'>" + application.beginDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + "</span> - <span style='color: " + Theme.secondaryColor + "'>" + application.endDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + "</span>"
+                    text: qsTr("BETWEEN_LABEL") + " <span style='color: " + Theme.secondaryColor + "'>" + application.beginDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + "</span> - <span style='color: " + Theme.secondaryColor + "'>" + application.endDate.toLocaleDateString(Qt.locale(), "dd-MM-yyyy") + "</span>"
                 }
                 IconButton {
                     anchors.right: parent.right
@@ -109,7 +109,7 @@ Page
                         }
 
                         Label {
-                            text: "Hipoglikemia"
+                            text: qsTr("CHART_HYPOGLYCEMIA_LABEL")
                         }
                     }
 
@@ -125,7 +125,7 @@ Page
                         }
 
                         Label {
-                            text: "Prawidłowo"
+                            text: qsTr("CHART_CORRECT_LABEL")
                         }
                     }
 
@@ -140,7 +140,7 @@ Page
                         }
 
                         Label {
-                            text: "Hiperglikemia"
+                            text: qsTr("CHART_HYPERGLYCEMIA_LABEL")
                         }
                     }
                 }
@@ -174,17 +174,9 @@ Page
                         }
                         Text {
                             id: bottomLabel
-                            text: {
-                                if (measurements.model.rowCount() === 1) {
-                                    return qsTr("pomiar");
-                                } else {
-                                    if (measurements.model.rowCount() <= 4) {
-                                        return qsTr("pomiary");
-                                    } else {
-                                        return qsTr("pomiarów");
-                                    }
-                                }
-                            }
+                            text: qsTr(
+                                      "MEASUREMENT_COUNT_LABEL", "",
+                                      measurements.model.rowCount())
                             width: parent.width
                             color: Theme.rgba(Theme.secondaryColor, 0.6)
                             font.pixelSize: Theme.fontSizeMedium
@@ -253,25 +245,25 @@ Page
             id: pullDownMenu
             MenuItem
             {
-                text: "Ustawienia"
+                text: qsTr("SETTINGS_TITLE")
                 onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/Settings.qml")
                 visible: !inSelectMode
             }
 
             MenuItem
             {
-                text: "Bluetooth"
+                text: qsTr("SETTINGS_BLUETOOTH")
                 visible: !inSelectMode
                 onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/DeviceList.qml")
             }
 
             MenuItem {
-                text: "Wybierz przedział"
+                text: qsTr("MEASUREMENTS_CALENDAR_LABEL")
                 visible: !inSelectMode
                 onClicked: if (!isTutorialEnabled) pageStack.push("qrc:/assets/pages/Calendar.qml")
             }
             MenuItem {
-                text: "Wybierz pomiary"
+                text: qsTr("MEASUREMENTS_SELECT")
                 visible: !inSelectMode
                 onClicked: {
                     selected = [];
@@ -281,20 +273,20 @@ Page
 
             MenuItem
             {
-                text: "Dodaj pomiar"
+                text: qsTr("MEASUREMENTS_ADD")
                 visible: !inSelectMode
                 onClicked: openAddMeasurementDialog()
             }
 
             MenuItem {
                 visible: inSelectMode
-                text: qsTr("Usuń wszystkie")
+                text: qsTr("REMOVE_ALL_LABEL")
                 onClicked: measurements.remove({}, true)
             }
 
             MenuItem {
                 visible: inSelectMode
-                text: qsTr("Usuń zaznaczone")
+                text: qsTr("REMOVE_SELECTED_LABEL")
                 onClicked: {
                     selected.map(
                         function (id) {
@@ -307,7 +299,7 @@ Page
 
             MenuItem {
                 visible: inSelectMode
-                text: qsTr("Odznacz wszystkie")
+                text: qsTr("QUIT_SELECTION_MODE_LABEL")
                 onClicked: {
                     selected = [];
                     inSelectMode = false;
@@ -360,7 +352,7 @@ Page
             menu: ContextMenu
             {
                 MenuItem {
-                    text: qsTr("Zaznacz")
+                    text: qsTr("SELECT_LABEL")
                     onClicked: {
                         if (!inSelectMode) {
                             selected = [];
@@ -371,7 +363,7 @@ Page
                 }
                 MenuItem
                 {
-                    text: "Zmień pore posiłku"
+                    text: qsTr("CHANGE_MEAL_LABEL")
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
@@ -386,8 +378,8 @@ Page
                 }
                 MenuItem
                 {
-                    text: "Usuń"
-                    onClicked: remorse.execute(measurement, "Usunięcie pomiaru", function() {
+                    text: qsTr("REMOVE_LABEL")
+                    onClicked: remorse.execute(measurement, qsTr("REMOVE_MEASUREMENT_REMORSE"), function() {
                         measurements.remove(measurement_id)
                     })
                 }
@@ -453,7 +445,7 @@ Page
 
     InteractionHintLabel
     {
-        text: "Aby przejść dalej przesuń palcem w dół"
+        text: qsTr("MEASUREMENTS_PULLEY_HINT")
         color: Theme.secondaryColor
         anchors.top: parent.top
         opacity: hint.running ? (pullDownMenu.active ? 0.0 : 1.0) : 0.0
@@ -463,7 +455,7 @@ Page
 
     InteractionHintLabel
     {
-        text: "Wybierz 'Dodaj pomiar'"
+        text: qsTr("MEASUREMENTS_ADD_HINT")
         color: Theme.secondaryColor
         anchors.bottom: parent.bottom
         opacity: hint.running ? (pullDownMenu.active ? 1.0 : 0.0) : 0.0

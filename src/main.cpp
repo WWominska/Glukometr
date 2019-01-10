@@ -5,6 +5,7 @@
 #include <QQuickView>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QLocale>
 #include <QDebug>
 #include "Glucometer.h"
 #include "BleDiscovery.h"
@@ -41,12 +42,15 @@ int main(int argc, char *argv[])
 #else
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QScopedPointer<QApplication> app(new QApplication(argc, argv));
+#endif
 
     // enable translations
     QTranslator translator;
-    translator.load(":/translations/glukometr");
+    QString systemLocale = QLocale::system().name().split("_")[0];
+    bool loaded = translator.load("harbour-glukometr-" + systemLocale, ":/translations");
+    if (!loaded && systemLocale != "en")
+        translator.load("harbour-glukometr-en", ":/translations");
     app->installTranslator(&translator);
-#endif
 
 #ifdef Q_OS_ANDROID
     QQuickStyle::setStyle("Material");

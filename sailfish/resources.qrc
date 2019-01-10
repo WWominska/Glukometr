@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file alias="translations/harbour-glukometr-en.qm">../translations/harbour-glukometr-en.qm</file>
+        <file alias="translations/harbour-glukometr-pl.qm">../translations/harbour-glukometr-pl.qm</file>
         <file>assets/main.qml</file>
         <file>assets/cover/CoverPage.qml</file>
         <file>icons/icon-after-meal.svg</file>

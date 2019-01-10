@@ -11,7 +11,7 @@ Page
 
     property var settingList: [
         {
-            "settingText": qsTr("Progi"),
+            "settingText": qsTr("SETTINGS_THRESHOLDS"),
             "secondaryText": 0,
             "replace": false,
             "source": "qrc:/assets/pages/Thresholds.qml",
@@ -19,7 +19,7 @@ Page
             "lightImage": "qrc:/icons/icon-settings-threshold-light.svg",
         },
         {
-            "settingText": qsTr("Przypomnienia"),
+            "settingText": qsTr("SETTINGS_REMINDERS"),
             "secondaryText": 0,
             "replace": false,
             "source": "qrc:/assets/pages/ReminderList.qml",
@@ -27,7 +27,7 @@ Page
             "lightImage": "image://Theme/icon-m-alarm"
         },
         {
-            "settingText": qsTr("Telefon: "),
+            "settingText": qsTr("SETTINGS_PHONE_NUMBER") + ": ",
             "secondaryText": 1,
             "replace": false,
             "source": "qrc:/assets/dialogs/ChangePhoneNumber.qml",
@@ -35,7 +35,7 @@ Page
             "lightImage": "image://Theme/icon-m-answer"
         },
         {
-            "settingText": qsTr("Leki"),
+            "settingText": qsTr("SETTINGS_DRUGS"),
             "secondaryText": 0,
             "replace": false,
             "source": "qrc:/assets/pages/DrugList.qml",
@@ -43,7 +43,7 @@ Page
             "lightImage": "qrc:/icons/icon-annotations-drug-light.svg"
         },
         {
-            "settingText": "Rozpocznij tutorial",
+            "settingText": qsTr("SETTINGS_TUTORIAL"),
             "secondaryText": 0,
             "replace": true,
             "source": "qrc:/assets/pages/Tutorial.qml",
@@ -60,7 +60,7 @@ Page
 
         header: PageHeader
         {
-            title: "Ustawienia"
+            title: qsTr("SETTINGS_TITLE")
         }
 
         delegate: ListItem
@@ -97,7 +97,7 @@ Page
                 {
                     switch (model.modelData.secondaryText) {
                     case consts.phoneNumber:
-                        return settings.phoneNumber ? settings.phoneNumber : "Naciśnij aby ustawić";
+                        return settings.phoneNumber ? settings.phoneNumber : qsTr("SETTINGS_PHONE_NUMBER_PLACEHOLDER");
                     default: return "";
                     }
                 }
@@ -117,8 +117,8 @@ Page
                 id: contextMenu
                 MenuItem {
                     enabled: settings.phoneNumber
-                    text: "Dzwoń"
-                    onClicked: Qt.openUrlExternally("tel:+48" + settings.phoneNumber)
+                    text: qsTr("SETTINGS_PHONE_NUMBER_CALL")
+                    onClicked: Qt.openUrlExternally("tel:" + settings.phoneNumber)
                 }
             }
 

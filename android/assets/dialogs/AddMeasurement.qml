@@ -7,7 +7,7 @@ import "../components"
 DialogPage
 {
     id: dialog
-    title: qsTr("Dodaj pomiar")
+    title: qsTr("ADD_MEASUREMENT_TITLE")
 
     property int meal: 4
     property alias value: nameField.text
@@ -49,7 +49,7 @@ DialogPage
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
-                text: qsTr("Podaj cukier")
+                text: qsTr("MEASUREMENT_VALUE_LABEL")
 
                 opacity: showIfPhase(0) ? 1.0 : disabledOpacity
              }
@@ -79,7 +79,7 @@ DialogPage
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
-                text: qsTr("Pora posiłku")
+                text: qsTr("MEASUREMENT_MEAL_LABEL")
                 opacity: showIfPhase(1) ? 1.0 : disabledOpacity
              }
 
@@ -91,7 +91,7 @@ DialogPage
                     margins: Theme.horizontalPageMargin
                     right: parent.right
                 }
-                text: qsTr("Poniżej możesz ustawić pore w jakiej dokonałeś pomiaru")
+                text: qsTr("MEASUREMENT_MEAL_HELP")
                 color: "#d9d2b9"
                 wrapMode: Text.WordWrap
                 enabled: opacity === 1

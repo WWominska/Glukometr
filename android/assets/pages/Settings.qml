@@ -7,7 +7,7 @@ Page
 {
     header: PageHeader {
         id: pageHeader
-        title: qsTr("Ustawienia")
+        title: qsTr("SETTINGS_TITLE")
     }
     background: OreoBackground {}
 
@@ -19,28 +19,28 @@ Page
 
     property var settingList: [
         {
-            "settingText": qsTr("Bluetooth"),
+            "settingText": qsTr("SETTINGS_BLUETOOTH"),
             "secondaryText": 0,
             "replace": false,
             "source": "qrc:/assets/pages/DeviceList.qml",
             "image": "bluetooth"
         },
         {
-            "settingText": qsTr("Progi"),
+            "settingText": qsTr("SETTINGS_THRESHOLDS"),
             "secondaryText": 0,
             "replace": false,
             "source": "qrc:/assets/pages/Thresholds.qml",
             "image": "thresholds"
         },
         {
-            "settingText": qsTr("Telefon: "),
+            "settingText": qsTr("SETTINGS_PHONE_NUMBER") + ": ",
             "secondaryText": 1,
             "replace": false,
             "source": "qrc:/assets/dialogs/ChangePhoneNumber.qml",
             "image": "phone"
         },
         {
-            "settingText": qsTr("Leki"),
+            "settingText": qsTr("SETTINGS_DRUGS"),
             "secondaryText": 0,
             "replace": false,
             "source": "qrc:/assets/pages/DrugList.qml",
@@ -75,7 +75,7 @@ Page
                 {
                     switch (model.modelData.secondaryText) {
                     case consts.phoneNumber:
-                        return settings.phoneNumber ? settings.phoneNumber :qsTr("Naciśnij aby ustawić");
+                        return settings.phoneNumber ? settings.phoneNumber :qsTr("SETTINGS_PHONE_NUMBER_PLACEHOLDER");
                     default: return "";
                     }
                 }
@@ -93,11 +93,11 @@ Page
                 id: contextMenu
                 MenuItem {
                     enabled: settings.phoneNumber
-                    text: qsTr("Dzwoń")
-                    onClicked: Qt.openUrlExternally("tel:+48" + settings.phoneNumber)
+                    text: qsTr("SETTINGS_PHONE_NUMBER_CALL")
+                    onClicked: Qt.openUrlExternally("tel:" + settings.phoneNumber)
                 }
             }
-            onPressAndHold: if(model.modelData.secondaryText == consts.phoneNumber) contextMenu.popup()
+            onPressAndHold: if(model.modelData.secondaryText === consts.phoneNumber) contextMenu.popup()
 
             onClicked: {
                 if (model.modelData.replace)

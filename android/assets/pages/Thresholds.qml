@@ -11,7 +11,7 @@ Page
 {
     id: screen
 
-    header: PageHeader { title: qsTr("Progi") }
+    header: PageHeader { title: qsTr("THRESHOLDS_TITLE") }
     background: OreoBackground {}
 
     Flickable
@@ -32,7 +32,7 @@ Page
             }
 
             Button {
-                text: qsTr("Przywróć ustawienia domyślne")
+                text: qsTr("THRESHOLDS_RESET")
                 onClicked: thresholds.setDefaults()
             }
 
@@ -51,18 +51,6 @@ Page
                     id: section
 
                     property int sectionIndex: index
-
-
-                    function changeToString(meal)
-                    {
-                        switch(meal)
-                        {
-                            case 0: return qsTr("Na czczo")
-                            case 1: return qsTr("Przed posiłkiem")
-                            case 2: return qsTr("Po posiłku")
-                            case 3: return qsTr("Nocna")
-                        }
-                    }
 
                     function changeToIcon(meal)
                     {
@@ -93,7 +81,7 @@ Page
                                     verticalCenter: parent.verticalCenter
                                 }
                                 color: "#f7f5f0"
-                                text: changeToString(meal)
+                                text: mealListModel[meal].name
                             }
                         }
 

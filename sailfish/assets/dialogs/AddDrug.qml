@@ -25,16 +25,16 @@ Dialog
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
-                text: isEdited ? "Zmień nazwe leku" : "Dodaj nowy lek"
+                text: isEdited ? qsTr("ADD_DRUG_TITLE_EDIT") : qsTr("ADD_DRUG_TITLE_ADD")
              }
 
              TextField
              {
                  id: nameField
                  width: parent.width
-                 placeholderText: "Novorapid"
+                 placeholderText: qsTr("DRUG_NAME_PLACEHOLDER")
                  placeholderColor: Theme.highlightBackgroundColor
-                 label: isEdited ? "Nowa nazwa" : "Lek, który chcesz dodać"
+                 label: qsTr("ADD_DRUG_NAME_LABEL")
              }
         }
     }

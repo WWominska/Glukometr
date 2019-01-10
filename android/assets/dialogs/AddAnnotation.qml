@@ -7,7 +7,7 @@ import "../components"
 DialogPage
 {
     id:addNotes
-    title: qsTr("Dodaj notatkę")
+    title: qsTr("ADD_NOTES_TITLE")
 
     property alias noteType: selectId.currentIndex
     property alias foodName: nameOfFood.text
@@ -47,7 +47,7 @@ DialogPage
                 Material.foreground: "#fff"
                 Material.background: "#55737373"
                 Material.theme: Material.Light
-                model: [qsTr("Posiłek"), qsTr("Lek"), qsTr("Notatka tekstowa")]
+                model: [qsTr("NOTE_MEAL"), qsTr("NOTE_DRUG"), qsTr("NOTE_TEXT")]
                anchors {
                    left: parent.left
                    leftMargin: Theme.horizontalPageMargin
@@ -70,7 +70,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: qsTr("Co zjadłeś przed pomiarem?")
+                text: qsTr("NOTE_MEAL_NAME_LABEL")
             }
 
             TextField
@@ -84,7 +84,7 @@ DialogPage
                 }
                 visible: selectId.currentIndex == 0
                 width: parent.width
-                placeholderText: qsTr("Schabowy")
+                placeholderText: qsTr("NOTE_MEAL_NAME_PLACEHOLDER")
                 color: "#f7f5f0"
             }
 
@@ -102,7 +102,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: qsTr("Ile tego zjadłeś?")
+                text: qsTr("NOTE_MEAL_AMOUNT_LABEL")
             }
 
             TextField
@@ -130,7 +130,7 @@ DialogPage
                 Material.background: "#55737373"
                 Material.theme: Material.Light
                 visible: selectId.currentIndex == 0
-                model: [qsTr("g"), qsTr("ml"), qsTr("sztuk")]
+                model: [qsTr("NOTE_UNIT_GRAM"), qsTr("NOTE_UNIT_ML"), qsTr("NOTE_UNIT_UNITS")]
                 anchors {
                     left: parent.left
                     leftMargin: Theme.horizontalPageMargin
@@ -153,7 +153,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: qsTr("Wybierz lek")
+                text: qsTr("NOTE_DRUG_ID_LABEL")
             }
 
             ComboBox {
@@ -186,33 +186,6 @@ DialogPage
                 }
             }
 
-
-//            ComboBox
-//            {
-//                id: drugsName
-//
-//                property int drugId
-//                currentIndex: 0
-//                label: "Lek "
-//                value: "Wybierz"
-//                menu: ContextMenu
-//                {
-//                    Repeater
-//                    {
-//                        model: drugs.model
-//                        MenuItem
-//                        {
-//                            text: name
-//                            onClicked:
-//                            {
-//                                drugsName.drugId = id
-//                                drugsName.value = text
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-
             Label
             {
                 id: howMachYouDope
@@ -227,7 +200,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: qsTr("Dawka")
+                text: qsTr("NOTE_DRUG_AMOUNT_LABEL")
             }
 
             TextField
@@ -256,7 +229,12 @@ DialogPage
                 Material.background: "#55737373"
                 Material.theme: Material.Light
                 visible: selectId.currentIndex == 1
-                model: ["dm/L","g","ml", qsTr("sztuk")]
+                model: [
+                    qsTr("NOTE_UNIT_DM_L"),
+                    qsTr("NOTE_UNIT_GRAM"),
+                    qsTr("NOTE_UNIT_ML"),
+                    qsTr("NOTE_UNIT_UNITS")
+                ]
                 anchors {
                     left: parent.left
                     leftMargin: Theme.horizontalPageMargin
@@ -279,7 +257,7 @@ DialogPage
                 font.pixelSize: Theme.fontSizeMedium
                 color: "#e3decb"
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                text: qsTr("Uwagi dotyczące pomiaru")
+                text: qsTr("NOTE_TEXT_STRING_LABEL")
             }
 
 
@@ -294,7 +272,7 @@ DialogPage
                 }
                 visible: selectId.currentIndex == 2
                 width: parent.width
-                placeholderText: qsTr("Jeździłem na rowerze przez 30 min")
+                placeholderText: qsTr("NOTE_TEXT_STRING_PLACEHOLDER")
                 color: "#f7f5f0"
             }
 

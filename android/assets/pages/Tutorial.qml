@@ -29,7 +29,7 @@ Page
                 rightMargin: Theme.horizontalPageMargin
             }
 
-            text: qsTr("Witaj w aplikacji Glukometr\n500+")
+            text: qsTr("WELCOME_TEXT")
             horizontalAlignment: Text.AlignHCenter
             font.bold: true
             font.pixelSize: Theme.fontSizeHuge
@@ -40,7 +40,7 @@ Page
         Button
         {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("Rozpocznij")
+            text: qsTr("WELCOME_BEGIN")
             onClicked: pageStack.pop()
         }
     }

@@ -10,13 +10,13 @@ Page
         header: PageHeader
         {
             id: pageHeader
-            title: "Leki"
+            title: qsTr("DRUGS_TITLE")
         }
         PullDownMenu
         {
             MenuItem
             {
-                text: "Dodaj lek"
+                text: qsTr("ADD_DRUG_LABEL")
                 onClicked:
                 {
                     var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"))
@@ -41,13 +41,13 @@ Page
             {
                 MenuItem
                 {
-                    text: "Usuń"
-                    onClicked: remorseDrug.execute(drugItem, "Usunięcie leku", function() {drugs.remove(drug_id) } )
+                    text: qsTr("REMOVE_LABEL")
+                    onClicked: remorseDrug.execute(drugItem, qsTr("REMOVE_DRUG_REMORSE"), function() {drugs.remove(drug_id) } )
                 }
 
                 MenuItem
                 {
-                    text: "Edytuj"
+                    text: qsTr("EDIT_LABEL")
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/AddDrug.qml"), {

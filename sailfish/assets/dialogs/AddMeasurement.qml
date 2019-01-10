@@ -40,7 +40,7 @@ Dialog
 
     onDone:
     {
-        if (result == DialogResult.Accepted)
+        if (result === DialogResult.Accepted)
         {
             value = nameField.text
             application.isTutorialEnabled = false
@@ -56,11 +56,11 @@ Dialog
             switch (tutorialPhase)
             {
             case 0:
-                return nameField.focus ? "Wpisz wartosć i stuknij w dowolnym miejscu na ekranie" : "Tutaj możesz wpisać wartość cukru. Stuknij w tym miejscu";
+                return nameField.focus ? qsTr("ADD_MEASUREMENT_VALUE_INPUT_HINT") : qsTr("ADD_MEASUREMENT_VALUE_TAP_HINT");
             case 1:
-                return "Każdy pomiar może mieć ustaloną porę. Stuknij by wybrać";
+                return qsTr("ADD_MEASUREMENT_MEAL_HINT");
             case 2:
-                return "Naciśnij 'Akceptuj' by dodać pomiar";
+                return qsTr("ADD_MEASUREMENT_ACCEPT_HINT");
             }
         }
         invert: tutorialPhase >= 1
@@ -84,7 +84,7 @@ Dialog
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Podaj cukier"
+                text: qsTr("MEASUREMENT_VALUE_LABEL")
                 opacity: showIfPhase(0) ? 1.0 : disabledOpacity
              }
 
@@ -93,7 +93,7 @@ Dialog
                  id: nameField
                  width: parent.width
                  placeholderText: "120..."
-                 label: "Wartość cukru"
+                 label: qsTr("MEASUREMENT_VALUE_INPUT_LABEL")
                  inputMethodHints: Qt.ImhDigitsOnly
                  validator: IntValidator
                  {
@@ -114,7 +114,7 @@ Dialog
              SectionHeader
              {
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Pora posiłku"
+                text: qsTr("MEASUREMENT_MEAL_LABEL")
                 opacity: showIfPhase(1) ? 1.0 : disabledOpacity
              }
 
@@ -126,7 +126,7 @@ Dialog
                     margins: Theme.horizontalPageMargin
                     right: parent.right
                 }
-                text: "Poniżej możesz ustawić pore w jakiej dokonałeś pomiaru"
+                text: qsTr("MEASUREMENT_MEAL_HELP")
                 wrapMode: Text.WordWrap
                 color: Theme.secondaryHighlightColor
                 enabled: opacity === 1
@@ -156,8 +156,8 @@ Dialog
                      right: parent.right
                  }
                  checked: meal === 1
-                 text: "Przypomnij za 2 godziny"
-                 description: "Przypomnienie uaktywni się za 2 godziny"
+                 text: qsTr("MEASUREMENT_REMIND_LABEL")
+                 description: qsTr("MEASUREMENT_REMIND_HELP")
                  enabled: opacity === 1
                  opacity: showIfPhase(2) ? 1.0 : disabledOpacity
              }

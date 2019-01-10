@@ -77,7 +77,7 @@ Page
             Label
             {
                 id:whenCall
-                text: new Date(timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"HH:mm")
+                text: new Date(timestamp*1000).toLocaleString(Qt.locale(),"HH:mm")
                 anchors
                 {
                     right: parent.right

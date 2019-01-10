@@ -15,7 +15,7 @@ Page
         {
             MenuItem
             {
-                text: qsTr("Przywróć ustawienia domyślne")
+                text: qsTr("THRESHOLDS_RESET")
                 onClicked: thresholds.setDefaults()
             }
         }
@@ -28,7 +28,7 @@ Page
 
             PageHeader
             {
-                title: qsTr("Ustaw progi")
+                title: qsTr("THRESHOLDS_TITLE")
             }
 
             ExpandingSectionGroup

@@ -14,7 +14,7 @@ Page
         height: pageHeader.height + (resetDates.visible ? resetDates.height + Theme.paddingSmall*2 : 0) + (buttons.visible ? buttons.height + Theme.paddingSmall*2 : 0)
         PageHeader {
             id: pageHeader
-            title: qsTr("Pomiary")
+            title: qsTr("MEASUREMENTS_TITLE")
             leftIcon: "\ue8df"
             leftCallback: function () {
                 pageStack.push("qrc:/assets/pages/Calendar.qml")
@@ -48,7 +48,7 @@ Page
                 }
             }
             ToolButton {
-                text: "Usuń wszystkie"
+                text: qsTr("REMOVE_ALL_LABEL")
                 font.pixelSize: 20
                 Layout.fillWidth: true
                 onClicked: {
@@ -84,7 +84,7 @@ Page
             }
             width: parent.width
             z: 20
-            text: qsTr("Pokaż wszystkie")
+            text: qsTr("SHOW_ALL_LABEL")
             onClicked: {
                 application.datesSet = false
                 measurements.get(true)
@@ -146,7 +146,7 @@ Page
                     }
 
                     Label {
-                        text: "Hipoglikemia"
+                        text: qsTr("CHART_HYPOGLYCEMIA_LABEL")
                     }
                 }
 
@@ -160,7 +160,7 @@ Page
                     }
 
                     Label {
-                        text: "Prawidłowo"
+                        text: qsTr("CHART_CORRECT_LABEL")
                     }
                 }
 
@@ -174,7 +174,7 @@ Page
                     }
 
                     Label {
-                        text: "Hiperglikemia"
+                        text: qsTr("CHART_HYPERGLYCEMIA_LABEL")
                     }
                 }
             }
@@ -199,9 +199,9 @@ Page
 
                 PieSeries {
                     id: pieSeries
-                    PieSlice { label: "Prawidłowe"; value: measurements.green; color: "#1DDE4D"; borderColor: 'transparent' }
-                    PieSlice { label: "Hipoglikemia"; value: measurements.red; color: "#DB4F56"; borderColor: 'transparent'}
-                    PieSlice { label: "Hiperglikemia"; value: measurements.yellow; color: "#FFF757"; borderColor: 'transparent' }
+                    PieSlice { value: measurements.green; color: "#1DDE4D"; borderColor: 'transparent' }
+                    PieSlice { value: measurements.red; color: "#DB4F56"; borderColor: 'transparent'}
+                    PieSlice { value: measurements.yellow; color: "#FFF757"; borderColor: 'transparent' }
                 }
             }
         }
@@ -246,7 +246,7 @@ Page
             {
                 id: contextMenu
                 MenuItem {
-                    text: qsTr("Zaznacz")
+                    text: qsTr("SELECT_LABEL")
                     onClicked: {
                         if (!inSelectMode) {
                             selected = [];
@@ -259,7 +259,7 @@ Page
 
                 MenuItem
                 {
-                    text: qsTr("Zmień pore posiłku")
+                    text: qsTr("CHANGE_MEAL_LABEL")
                     onClicked:
                     {
                         var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/ChangeMeal.qml"),
@@ -274,7 +274,7 @@ Page
                 }
                 MenuItem
                 {
-                    text: qsTr("Usuń")
+                    text: qsTr("REMOVE_LABEL")
                     onClicked: measurements.remove(measurement_id)
                 }
             }
@@ -341,14 +341,9 @@ Page
             {
                 function changeToString(meal)
                 {
-                    switch(meal)
-                    {
-                        case 0: return qsTr("Na czczo")
-                        case 1: return qsTr("Przed posiłkiem")
-                        case 2: return qsTr("Po posiłku")
-                        case 3: return qsTr("Nocna")
-                        default: return qsTr("Nie określono")
-                    }
+                    if (meal >= 0 && meal < 4)
+                        return mealListModel[meal].name;
+                    return mealListModel[4].name;
                 }
                 id: whenMeasurement
                 font.pixelSize: Theme.fontSizeSmall

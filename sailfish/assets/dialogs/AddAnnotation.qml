@@ -42,7 +42,7 @@ Dialog
             {
                 id: addNotesHeader
                 font.pixelSize: Theme.fontSizeLarge
-                text: "Dodaj notatkę"
+                text: qsTr("ADD_NOTES_TITLE")
             }
 
             ComboBox
@@ -50,25 +50,25 @@ Dialog
                 visible: !isEdited
                 id: selectId
                 currentIndex: -1
-                label: "Rodzaj notatki: "
-                value: "Wybierz"
+                label: qsTr("NOTE_TYPE_LABEL")
+                value: qsTr("COMBOBOX_PLACEHOLDER")
                 menu: ContextMenu
                 {
                     MenuItem
                     {
-                        text: "Posiłek"
+                        text: qsTr("NOTE_MEAL")
                         onClicked: selectId.value=text
                     }
 
                     MenuItem
                     {
-                        text: "Lek"
+                        text: qsTr("NOTE_DRUG")
                         onClicked: selectId.value=text
                     }
 
                     MenuItem
                     {
-                        text: "Notatka tekstowa"
+                        text: qsTr("NOTE_TEXT")
                         onClicked: selectId.value=text
                     }
                 }
@@ -79,8 +79,8 @@ Dialog
                 id: nameOfFood
                 visible: selectId.currentIndex == 0
                 width: parent.width
-                placeholderText: "Schabowy"
-                label: "Co zjadłeś przed pomiarem?"
+                placeholderText: qsTr("NOTE_MEAL_NAME_PLACEHOLDER")
+                label: qsTr("NOTE_MEAL_NAME_LABEL")
             }
 
             TextField
@@ -90,7 +90,7 @@ Dialog
                 width: parent.width
                 inputMethodHints: Qt.ImhDigitsOnly
                 placeholderText: "200"
-                label: "Ile zjadłeś?"
+                label: qsTr("NOTE_MEAL_AMOUNT_LABEL")
                 validator: IntValidator
                 {
                     bottom: 1
@@ -102,25 +102,25 @@ Dialog
                 id: unitId
                 visible: selectId.currentIndex == 0
                 currentIndex: 0
-                label: "Jednostka: "
+                label: qsTr("NOTE_UNIT_LABEL")
                 value: "g"
                 menu: ContextMenu
                 {
                     MenuItem
                     {
-                        text: "g"
+                        text: qsTr("NOTE_UNIT_GRAM")
                         onClicked: unitId.value=text
                     }
 
                     MenuItem
                     {
-                        text: "ml"
+                        text: qsTr("NOTE_UNIT_ML")
                         onClicked: unitId.value=text
                     }
 
                     MenuItem
                     {
-                        text: "sztuk"
+                        text: qsTr("NOTE_UNIT_UNITS")
                         onClicked: unitId.value=text
                     }
                 }
@@ -132,8 +132,8 @@ Dialog
                 visible: selectId.currentIndex == 1
                 property int drugId
                 currentIndex: 0
-                label: "Lek "
-                value: "Wybierz"
+                label: qsTr("NOTE_DRUG")
+                value: qsTr("COMBOBOX_PLACEHOLDER")
                 menu: ContextMenu
                 {
                     Repeater
@@ -163,7 +163,7 @@ Dialog
                     bottom: 1
                 }
                 placeholderText: "6"
-                label: "Ile przyjąłeś?"
+                label: qsTr("NOTE_DRUG_AMOUNT_LABEL")
             }
 
             ComboBox
@@ -171,31 +171,31 @@ Dialog
                 id: drugsId
                 visible: selectId.currentIndex == 1
                 currentIndex: 0
-                label: "Jednostka: "
-                value: "dm/L"
+                label: qsTr("NOTE_UNIT_LABEL")
+                value: qsTr("NOTE_UNIT_DM_L")
                 menu: ContextMenu
                 {
                     MenuItem
                     {
-                        text: "dm/L"
+                        text: qsTr("NOTE_UNIT_DM_L")
                         onClicked: drugsId.value=text
                     }
 
                     MenuItem
                     {
-                        text: "g"
+                        text: qsTr("NOTE_UNIT_GRAM")
                         onClicked: drugsId.value=text
                     }
 
                     MenuItem
                     {
-                        text: "ml"
+                        text: qsTr("NOTE_UNIT_ML")
                         onClicked: drugsId.value=text
                     }
 
                     MenuItem
                     {
-                        text: "sztuk"
+                        text: qsTr("NOTE_UNIT_UNITS")
                         onClicked: drugsId.value=text
                     }
                 }
@@ -206,8 +206,8 @@ Dialog
                 id: notesText
                 visible: selectId.currentIndex == 2
                 width: parent.width
-                placeholderText: "Jeździłem na rowerze przez 30 min"
-                label: "Uwagi, aktywność fizyczna"
+                placeholderText: qsTr("NOTE_TEXT_STRING_PLACEHOLDER")
+                label: qsTr("NOTE_TEXT_STRING_LABEL")
             }
 
         }

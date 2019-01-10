@@ -24,7 +24,7 @@ CoverBackground
         id: latestMeasurementsLabel
         x: Theme.horizontalPageMargin - (Theme.itemSizeExtraSmall/4)
         y: Theme.paddingMedium
-        text: "Ostatnie pomiary"
+        text: qsTr("COVER_PAGE_TITLE")
         font.pixelSize: Theme.fontSizeMedium
         maximumLineCount: 2
         wrapMode: Text.WordWrap
@@ -82,7 +82,7 @@ CoverBackground
                     font.pixelSize:  Theme.fontSizeTiny
                     truncationMode: TruncationMode.Fade
                     color: Theme.secondaryColor
-                    text: new Date(model.timestamp*1000).toLocaleString(Qt.locale("pl_PL"),"dd.MM.yy    HH:mm")
+                    text: new Date(model.timestamp*1000).toLocaleString(Qt.locale(),"dd.MM.yy    HH:mm")
                 }
             }
         }

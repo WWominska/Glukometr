@@ -9,7 +9,7 @@ DialogPage
 {
     id: dialog
     property int meal;
-    title: qsTr("Zmień porę")
+    title: qsTr("CHANGE_MEAL_TITLE")
 
     Column
     {

@@ -28,27 +28,27 @@ Item
         {
             "meal": 0,
             "iconSource": "fasting",
-            "name": qsTr("Na czczo")
+            "name": qsTr("MEAL_FASTING")
         },
         {
             "meal": 1,
             "iconSource": "apple",
-            "name": qsTr("Przed posiłkiem")
+            "name": qsTr("MEAL_BEFORE")
         },
         {
             "meal": 2,
             "iconSource": "after-meal",
-            "name": qsTr("Po posiłku")
+            "name": qsTr("MEAL_AFTER")
         },
         {
             "meal": 3,
             "iconSource": "night",
-            "name": qsTr("Nocna")
+            "name": qsTr("MEAL_NIGHT")
         },
         {
             "meal": 4,
             "iconSource": "question",
-            "name": qsTr("Nie określono")
+            "name": qsTr("MEAL_UNKNOWN")
         }
     ]
 
@@ -78,7 +78,7 @@ Item
             id: pushEnter
             ParallelAnimation {
                 PropertyAction { property: "x"; value: pushEnter.ViewTransition.item.pos }
-                NumberAnimation { properties: "y"; from: pushEnter.ViewTransition.item.pos + pageStack.offset; to: pushEnter.ViewTransition.item.pos; duration: 400; easing.type: Easing.OutCubic }
+                NumberAnimation { properties: "y"; from: pushEnter.ViewTransition.item.pos + pageStack.offset; to: 0; duration: 400; easing.type: Easing.OutCubic }
                 NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic }
             }
         }
@@ -86,7 +86,7 @@ Item
             id: popExit
             ParallelAnimation {
                 PropertyAction { property: "x"; value: popExit.ViewTransition.item.pos }
-                NumberAnimation { properties: "y"; from: popExit.ViewTransition.item.pos; to: popExit.ViewTransition.item.pos + pageStack.offset; duration: 400; easing.type: Easing.OutCubic }
+                NumberAnimation { properties: "y"; from: 0; to: 0; duration: 400; easing.type: Easing.OutCubic }
                 NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 400; easing.type: Easing.OutCubic }
             }
         }

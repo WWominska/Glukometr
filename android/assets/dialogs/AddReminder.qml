@@ -7,7 +7,7 @@ import QtGraphicalEffects 1.0
 Dialog
 {
     id: dialog
-    title: qsTr("Dodaj przypomnienie")
+    title: qsTr("ADD_REMINDER_TITLE")
     property alias selectedHour: label.selectedHour
     property alias selectedMinute: label.selectedMinute
     property alias reminderType: combo.currentIndex

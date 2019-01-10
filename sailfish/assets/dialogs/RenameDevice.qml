@@ -26,7 +26,7 @@ Dialog
          SectionHeader
          {
             font.pixelSize: Theme.fontSizeLarge
-            text: qsTr("Zmień nazwe")
+            text: qsTr("RENAME_DEVICE_TITLE")
          }
 
          TextField
@@ -34,8 +34,8 @@ Dialog
              id: nameField
              width: parent.width
              text: name
-             placeholderText: qsTr("Np. Glukometr w domu")
-             label: qsTr("Twoja nazwa")
+             placeholderText: qsTr("RENAME_DEVICE_PLACEHOLDER")
+             label: qsTr("RENAME_DEVICE_LABEL")
          }
     }
 }

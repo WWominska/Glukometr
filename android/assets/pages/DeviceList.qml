@@ -12,7 +12,7 @@ Page
 
     header: PageHeader {
         id: pageHeader
-        title: qsTr("Wybierz urządzenie")
+        title: qsTr("DEVICE_LIST_TITLE")
     }
     background: OreoBackground {}
 
@@ -53,7 +53,7 @@ Page
         {
             id: rememberedDevicesHeader
             font.pixelSize: Theme.fontSizeLarge
-            text: qsTr("Zapamiętane urządzenie")
+            text: qsTr("DEVICE_KNOWN_LABEL")
         }
 
         ListView
@@ -78,7 +78,7 @@ Page
                 {
                     MenuItem
                     {
-                        text: qsTr("Zmień nazwę urządzenia")
+                        text: qsTr("DEVICE_RENAME_LABEL")
                         onClicked:
                         {
                             var dialog = pageStack.push(Qt.resolvedUrl("qrc:/assets/dialogs/RenameDevice.qml"), {"name": name})
@@ -92,7 +92,7 @@ Page
 
                     MenuItem
                     {
-                        text: qsTr("Zapomnij urządzenie")
+                        text: qsTr("DEVICE_FORGET_LABEL")
                         onClicked: {
                             devices.remove(device_id)
                         }
@@ -125,7 +125,7 @@ Page
                     }
 
                     font.pixelSize: Theme.fontSizeTiny
-                    text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : qsTr("Nigdy")
+                    text: last_sync > -1 ? new Date(last_sync*1000).toLocaleDateString() : qsTr("DEVICE_SYNC_NEVER")
                     color: Theme.primaryColor
                 }
             }
@@ -139,7 +139,7 @@ Page
                 topMargin: Theme.paddingLarge
             }
             font.pixelSize: Theme.fontSizeLarge
-            text: qsTr("Wykryte urządzenia")
+            text: qsTr("DEVICE_DISCOVERED_LABEL")
         }
 
         Button {
@@ -153,7 +153,7 @@ Page
                 rightMargin: Theme.horizontalPageMargin
             }
 
-            text: bleDiscovery.running ? qsTr("Zatrzymaj wyszukiwanie") : qsTr("Szukaj urządzeń")
+            text: bleDiscovery.running ? qsTr("DEVICE_SEARCH_STOP_LABEL") : qsTr("DEVICE_SEARCH_START_LABEL")
             onClicked: {
                 if (bleDiscovery.running)
                     bleDiscovery.stopDiscovery();

@@ -25,7 +25,7 @@ DialogPage
         }
     }
 
-    title: qsTr("Wybierz przedział")
+    title: qsTr("CALENDAR_TITLE")
     background: OreoBackground {}
     Rectangle {
         anchors
@@ -51,7 +51,7 @@ DialogPage
 
         Label {
             id: poczatek
-            text: qsTr("Początek")
+            text: qsTr("CALENDAR_BEGIN")
             anchors
             {
                 left:parent.left
@@ -138,7 +138,7 @@ DialogPage
         }
 
         Label {
-            text: qsTr("Koniec")
+            text: qsTr("CALENDAR_END")
             anchors
             {
                 left:parent.left
