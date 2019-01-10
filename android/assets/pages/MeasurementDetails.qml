@@ -492,12 +492,15 @@ Page
                 {
                     id:contentId
                     text: content
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                     anchors
                     {
                         left: parent.left
                         top: parent.top
                         topMargin: Theme.paddingSmall
                         leftMargin: Theme.horizontalPageMargin
+                        right: parent.right
+                        rightMargin: Theme.paddingSmall
                     }
                     font.pixelSize: Theme.fontSizeMedium
                 }
