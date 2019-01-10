@@ -406,6 +406,7 @@ Page
                             }
                             drugCheckbox.checked = true;
                         }
+                    }
                     MenuItem
                     {
                        text: qsTr("EDIT_LABEL")
@@ -428,14 +429,12 @@ Page
                                })
                            })
                        }
-                   }
-
-                   MenuItem
-                   {
-                       text: qsTr("REMOVE_LABEL")
-                       onClicked: drugAnnotations.remove(annotation_drug_id)
-                   }
-             }
+                    }
+                    MenuItem
+                    {
+                        text: qsTr("REMOVE_LABEL")
+                        onClicked: drugAnnotations.remove(annotation_drug_id)
+                    }
                 }
                 CheckBox {
                     id: drugCheckbox
@@ -516,6 +515,7 @@ Page
                            }
                            textCheckbox.checked = true;
                        }
+                   }
                    MenuItem
                    {
                        text: qsTr("EDIT_LABEL")
@@ -539,7 +539,6 @@ Page
                        text: qsTr("REMOVE_LABEL")
                        onClicked: textAnnotations.remove(annotation_text_id)
                    }
-               }
                }
                CheckBox {
                    id: textCheckbox
