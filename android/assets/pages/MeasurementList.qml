@@ -74,7 +74,7 @@ Page
             id: resetDates
             anchors
             {
-                top: pageHeader.bottom
+                top: buttons.visible ? buttons.bottom : pageHeader.bottom
                 left: parent.left
                 right: parent.right
                 topMargin: Theme.paddingSmall
