@@ -580,7 +580,7 @@
     <name>Tutorial</name>
     <message>
         <source>WELCOME_TEXT</source>
-        <translation>Witaj w aplikacji Glukometr\n 500+</translation>
+        <translation>Witaj w aplikacji Glukometr 500+</translation>
     </message>
     <message>
         <source>WELCOME_BEGIN</source>
