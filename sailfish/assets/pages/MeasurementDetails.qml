@@ -378,7 +378,6 @@ Page
                     anchors
                     {
                         left: parent.left
-                        right: drugListItemCheckbox.visible ? drugListItemCheckbox.left : parent.right
                         verticalCenter: parent.verticalCenter
                         leftMargin: Theme.horizontalPageMargin
                     }
