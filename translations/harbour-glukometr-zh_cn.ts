@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh_cn">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>AddAnnotation</name>
     <message>
@@ -346,7 +346,7 @@
     </message>
     <message>
         <source>SELECT_LABEL</source>
-        <translation>Select</translation>
+        <translation>选取</translation>
     </message>
     <message>
         <source>EDIT_LABEL</source>
@@ -435,7 +435,6 @@
         <source>MEASUREMENT_COUNT_LABEL</source>
         <translation>
             <numerusform>measurement</numerusform>
-            <numerusform>measurements</numerusform>
         </translation>
     </message>
     <message>

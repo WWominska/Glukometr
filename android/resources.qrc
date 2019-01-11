@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file alias="translations/harbour-glukometr-zh_cn.qm">../translations/harbour-glukometr-zh_cn.qm</file>
+        <file alias="translations/harbour-glukometr-zh.qm">../translations/harbour-glukometr-zh_cn.qm</file>
         <file alias="translations/harbour-glukometr-en_us.qm">../translations/harbour-glukometr-en.qm</file>
         <file alias="translations/harbour-glukometr-en.qm">../translations/harbour-glukometr-en.qm</file>
         <file alias="translations/harbour-glukometr-pl_pl.qm">../translations/harbour-glukometr-pl.qm</file>

@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = harbour-glukometr
 QT += quick bluetooth sql
 CONFIG += c++11
-TRANSLATIONS += translations/harbour-glukometr-en.ts translations/harbour-glukometr-pl.ts
+TRANSLATIONS += translations/harbour-glukometr-en.ts translations/harbour-glukometr-pl.ts translations/harbour-glukometr-zh_cn.ts
 
 
 winrt {
