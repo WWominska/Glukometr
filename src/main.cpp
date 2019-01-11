@@ -46,8 +46,19 @@ int main(int argc, char *argv[])
 
     // enable translations
     QTranslator translator;
-    QString systemLocale = QLocale::system().name().split("_")[0];
-    bool loaded = translator.load("harbour-glukometr-" + systemLocale, ":/translations");
+
+    // look for language_territory file first
+    QString systemLocale = QLocale::system().name();
+    bool loaded = translator.load(
+        "harbour-glukometr-" + systemLocale, ":/translations");
+    if (!loaded) {
+        // try language only
+        systemLocale = systemLocale.split("_")[0];
+        loaded = translator.load(
+            "harbour-glukometr-" + systemLocale, ":/translations");
+    }
+
+    // load English as fallback
     if (!loaded && systemLocale != "en")
         translator.load("harbour-glukometr-en", ":/translations");
     app->installTranslator(&translator);
